@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 namespace AlphaHemClient
 {
+    //Author : ALL
     public class Program
     {
         public static async Task Main(string[] args)
