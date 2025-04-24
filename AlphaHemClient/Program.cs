@@ -19,7 +19,9 @@ namespace AlphaHemClient
                 BaseAddress = new Uri("https://localhost:7109/") 
             });
 
+            // Author: Christoffer
             builder.Services.AddScoped<ListingService>();
+            builder.Services.AddScoped<MunicipalityService>();
 
             await builder.Build().RunAsync();
         }
