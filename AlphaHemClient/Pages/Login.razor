@@ -1,0 +1,105 @@
+﻿@page "/login"
+@* Author: Mattias *@
+
+<section id="login" class="login section" data-aos="fade-up">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-5">
+                <div class="login-register-wraper bg-white p-4 rounded shadow">
+
+                    <ul class="nav nav-tabs nav-tabs-bordered justify-content-center mb-4" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#login-form" type="button" role="tab" aria-selected="true">
+                                <i class="bi bi-box-arrow-in-right me-1"></i>Logga in
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#registration-form" type="button" role="tab" aria-selected="false">
+                                <i class="bi bi-person-plus me-1"></i>Registrera
+                            </button>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+
+                        <div class="tab-pane fade show active" id="login-form" role="tabpanel">
+                            <form>
+                                <div class="mb-3">
+                                    <label for="login-email" class="form-label">E-post</label>
+                                    <input type="email" class="form-control" id="login-email" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="login-password" class="form-label">Lösenord</label>
+                                    <input type="password" class="form-control" id="login-password" required>
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg">Logga in</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="tab-pane fade" id="registration-form" role="tabpanel">
+                            <form>
+                                <div class="row g-3">
+                                    <div class="col-sm-6">
+                                        <div class="mb-3">
+                                            <label for="reg-firstname" class="form-label">Förnamn</label>
+                                            <input type="text" class="form-control" id="reg-firstname" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="mb-3">
+                                            <label for="reg-lastname" class="form-label">Efternamn</label>
+                                            <input type="text" class="form-control" id="reg-lastname" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="mb-3">
+                                            <label for="reg-email" class="form-label">E-post</label>
+                                            <input type="email" class="form-control" id="reg-email" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="mb-3">
+                                            <label for="reg-password" class="form-label">Lösenord</label>
+                                            <input type="password" class="form-control" id="reg-password" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="mb-3">
+                                            <label for="reg-confirm-password" class="form-label">Bekräfta lösenord</label>
+                                            <input type="password" class="form-control" id="reg-confirm-password" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="agency">Välj en mäklarbyrå</label>
+                                        <select id="agency" class="form-control" required>
+                                            <option value="" disabled selected>Välj en mäklarbyrå</option>
+                                            @foreach (var agency in Agencies)
+                                            {
+                                                <option value="@agency.Id">@agency.Name</option>
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="d-grid">
+                                            <button type="submit" class="btn btn-primary btn-lg">Skapa konto</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
