@@ -1,4 +1,4 @@
-﻿namespace AlphaHemAPI.Data.DTO
+﻿namespace AlphaHemClient.Model.DTO
 {
     // Author : Smilla
     public class ListingListDto
