@@ -1,3 +1,4 @@
+using AlphaHemClient.Services;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
@@ -17,6 +18,8 @@ namespace AlphaHemClient
             { 
                 BaseAddress = new Uri("https://localhost:7109/") 
             });
+
+            builder.Services.AddScoped<ListingService>();
 
             await builder.Build().RunAsync();
         }
