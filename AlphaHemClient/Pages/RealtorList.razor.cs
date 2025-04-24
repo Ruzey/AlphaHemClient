@@ -11,7 +11,7 @@ namespace AlphaHemClient.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            var response = await Http.GetFromJsonAsync<List<RealtorDto>>("https://localhost:7109/api/Realtor");
+            var response = await Http.GetFromJsonAsync<List<RealtorDto>>("api/Realtor");
             if (response != null)
             {
                 realtors = response;
