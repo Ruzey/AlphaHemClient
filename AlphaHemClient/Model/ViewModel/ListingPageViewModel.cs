@@ -1,4 +1,4 @@
-﻿using AlphaHemAPI.Data.DTO;
+﻿using AlphaHemClient.Model.DTO;
 
 namespace AlphaHemClient.Model.ViewModel
 {
@@ -14,7 +14,7 @@ namespace AlphaHemClient.Model.ViewModel
         public string? Municipality { get; set; }
         public string? SortBy { get; set; }
 
-        public List<String> SortOptions { get; set; } = new List<String>();
+        public List<string> SortOptions { get; set; } = new List<string>
         {
             "price_asc", "price_desc", "category_asc", "category_desc"
         };
