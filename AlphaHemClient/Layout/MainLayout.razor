@@ -1,16 +1,70 @@
-﻿@inherits LayoutComponentBase
+﻿@* Author: Smilla *@
+@inherits LayoutComponentBase
+
 <div class="page">
-    <div class="sidebar">
-        
-    </div>
-
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+    <header id="header" class="header d-flex align-items-center fixed-top">
+        <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+            <a href="/" class="logo d-flex align-items-center">
+                <h1 class="sitename">Alpha<span>Hem</span></h1>
+            </a>
+            <NavMenu />
         </div>
+    </header>
 
-        <article class="content px-4">
-            @Body
-        </article>
+    <main class="body-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    @Body
+                </div>
+            </div>
+        </div>
     </main>
+
+    <footer id="footer" class="footer light-background">
+        <div class="container">
+            <div class="row gy-3">
+                <div class="col-lg-3 col-md-6 d-flex">
+                    <i class="bi bi-geo-alt icon"></i>
+                    <div class="address">
+                        <h4>Adress</h4>
+                        <p>Kallebovägen 123</p>
+                        <p>Byhåla 456 78</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 d-flex">
+                    <i class="bi bi-telephone icon"></i>
+                    <div>
+                        <h4>Kontakt</h4>
+                        <p>
+                            <strong>Telefon:</strong> <span>+46 123 45 67 89</span><br>
+                            <strong>Email:</strong> <span>info@alphahem.se</span><br>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 d-flex">
+                    <i class="bi bi-clock icon"></i>
+                    <div>
+                        <h4>Öppettider</h4>
+                        <p>
+                            <strong>Mån-fre:</strong> <span>11:00 - 17:00</span><br>
+                            <strong>Lör-sön:</strong> <span>Stängt</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h4>Följ oss på sociala medier</h4>
+                    <div class="social-links d-flex">
+                         <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+                        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container copyright text-center mt-4">
+            <p>© <span>Copyright</span> <strong class="px-1 sitename">AlphaHem</strong></p>
+        </div>
+    </footer>
 </div>
