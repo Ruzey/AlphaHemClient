@@ -4,7 +4,7 @@ using AlphaHemClient.Model.ViewModel;
 
 namespace AlphaHemClient.Mappings
 {
-    // Author: Christoffer
+    //Author: Christoffer
     public class ListingProfile : Profile
     {
         public ListingProfile()
