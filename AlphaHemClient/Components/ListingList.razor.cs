@@ -1,21 +1,11 @@
-﻿using AlphaHemClient.Services;
+﻿using AlphaHemClient.Model.DTO;
 using Microsoft.AspNetCore.Components;
-using System.Threading.Tasks;
-
 
 namespace AlphaHemClient.Components
 {
-    public partial class ListingList : ComponentBase
+    @* Author: Christoffer *@
+    public partial class ListingList
     {
-        private object _viewModel;
-
-        [Inject]
-        private ListingService ListingService { get; set; }
-
-        protected override async Task OnInitializedAsync()
-        { 
-            _viewModel = await ListingService.GetPaginatedListingsAsync();
-        }
-
+        [Parameter] public List<ListingListDto> Listings { get; set; }
     }
 }
