@@ -1,4 +1,6 @@
 ﻿using AlphaHemClient.Model.DTO;
+using AlphaHemClient.Model.ViewModel;
+using AutoMapper;
 using System.Net.Http.Json;
 
 namespace AlphaHemClient.Services
@@ -7,13 +9,15 @@ namespace AlphaHemClient.Services
     public class ListingService
     {
         private readonly HttpClient _http;
+        private readonly IMapper _mapper;
 
-        public ListingService(HttpClient http)
+        public ListingService(HttpClient http, IMapper mapper)
         {
             _http = http;
+            _mapper = mapper;
         }
 
-        public async Task<PagedListingListDto> GetPaginatedListings(int pageIndex = 1, int pageSize = 10, string? municipality = null, string? sortBy = null)
+        public async Task<ListingPageViewModel> GetPaginatedListings(int pageIndex = 1, int pageSize = 10, string? municipality = null, string? sortBy = null)
         {
             try
             {
@@ -42,8 +46,9 @@ namespace AlphaHemClient.Services
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var listings = await response.Content.ReadFromJsonAsync<PagedListingListDto>();
-                    return listings ?? new PagedListingListDto();
+                    var dto = await response.Content.ReadFromJsonAsync<PagedListingListDto>();
+                    var viewModel = _mapper.Map<ListingPageViewModel>(dto);
+                    return viewModel;
                 }
                 else
                 {
@@ -57,7 +62,7 @@ namespace AlphaHemClient.Services
             catch (Exception ex)
             {
                 Console.WriteLine($"Error fetching listings: {ex.Message}");
-                return new PagedListingListDto();
+                return new ListingPageViewModel();
             }
         }
     }
