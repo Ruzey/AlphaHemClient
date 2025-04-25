@@ -1,7 +1,20 @@
 ﻿@* Author: Christoffer *@
+@page "/Home"
 
-<h3>ListingList</h3>
-
-@code {
-
+@if (Listings is null || !Listings.Any())
+{
+    <p>Det finns inga bostäder till salu</p>
+};
+else
+{
+    <ul>
+        @foreach (var listing in Listings)
+        {
+            <li>Adress: @listing.Address</li>
+            <li>Pris: @listing.Price kr</li>
+            <li>Kategori: @listing.Category</li>
+            <li>Mäklare: @listing.RealtorFullName</li>
+        }
+    </ul>
 }
+
