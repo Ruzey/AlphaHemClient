@@ -2,7 +2,7 @@
 
 <div class="mb-3">
     <label for="municipalitySelect" class="form-label">Välj kommun:</label>
-    <select id:"municipalitySelect" class="form-select" onchange="OnMunicipalityChange">
+    <select id="municipalitySelect" class="form-select" @onchange="OnMunicipalityChanged">
         <option value="">Alla kommuner  </option>
 
         @foreach (var municipality in Municipalities)
