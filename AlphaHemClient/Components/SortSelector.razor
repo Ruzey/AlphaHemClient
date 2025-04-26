@@ -1,0 +1,11 @@
+﻿@* Author: Christoffer *@
+
+<h3>Sorteringsalternativ</h3>
+
+<select @onchange="OnSortChanged">
+    @foreach (var option in SortOptions)
+    {
+        <option value="@option.Value">@option.Label</option>
+    }
+</select>
+
