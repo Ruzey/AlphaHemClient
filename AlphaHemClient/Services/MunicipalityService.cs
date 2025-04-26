@@ -1,6 +1,8 @@
-﻿using AlphaHemAPI.Data.DTO;
+﻿using AlphaHemClient.Model.DTO;
+using AutoMapper;
 using System.Net.Http.Json;
 using static System.Net.WebRequestMethods;
+using AlphaHemClient.Model.ViewModel;
 
 namespace AlphaHemClient.Services
 {
@@ -8,23 +10,31 @@ namespace AlphaHemClient.Services
     public class MunicipalityService
     {
         private readonly HttpClient _http;
+        private readonly IMapper _mapper;
 
-        public MunicipalityService(HttpClient http)
+        public MunicipalityService(HttpClient http, IMapper mapper)
         {
             _http = http;
+            _mapper = mapper;
         }
 
-        public async Task<List<MunicipalityListDto>> GetMunicipalitiesAsync()
+        public async Task<List<MunicipalityViewModel>> GetMunicipalitiesAsync()
         {
             try
             {
-                var result = await _http.GetFromJsonAsync<List<MunicipalityListDto>>("api/Municipality");
-                return result ?? new List<MunicipalityListDto>();
+                var dtoList = await _http.GetFromJsonAsync<List<MunicipalityListDto>>("api/Municipality");
+
+                if (dtoList == null)
+                    return new List<MunicipalityViewModel>();
+
+                var vmList = _mapper.Map<List<MunicipalityViewModel>>(dtoList);
+
+                return vmList;
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Error fetching municipalities: " + ex.Message);
-                return new List<MunicipalityListDto>();
+                return new List<MunicipalityViewModel>();
             }
 
         }
