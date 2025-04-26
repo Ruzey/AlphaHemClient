@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace AlphaHemClient.Components
 {
-    @* Author: Christoffer *@
+    // Author: Christoffer   
     public partial class ListingList
     {
         [Parameter] public List<ListingListDto> Listings { get; set; }
