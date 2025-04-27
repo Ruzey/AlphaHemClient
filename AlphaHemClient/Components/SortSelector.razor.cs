@@ -6,7 +6,7 @@ namespace AlphaHemClient.Components
     // Author: Christoffer
     public partial class SortSelector
     {
-        [Parameter] public List<SortOption> SortOptions { get; set; }
+        [Parameter] public List<SortOption> SortOptions { get; set; } = new List<SortOption>();
         [Parameter] public EventCallback<string> OnSortSelected { get; set; }
 
         private async Task OnSortChanged(ChangeEventArgs e)
