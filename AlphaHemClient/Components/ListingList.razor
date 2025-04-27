@@ -11,6 +11,9 @@ else
     <ul>
         @foreach (var listing in Listings)
         {
+        <NavLink class="listing-link" href="@($"/listings/{listing.Id}")">
+            Adress: @listing.Address
+        </NavLink>
             <li>Adress: @listing.Address</li>
             <li>Pris: @listing.Price kr</li>
             <li>Kategori: @listing.Category</li>
