@@ -1,0 +1,56 @@
+﻿@*    //Author: Mattias*@
+
+<form>
+    <div class="row g-3">
+        <div class="col-sm-6">
+            <div class="mb-3">
+                <label for="reg-firstname" class="form-label">Förnamn</label>
+                <input type="text" class="form-control" id="reg-firstname" required>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="mb-3">
+                <label for="reg-lastname" class="form-label">Efternamn</label>
+                <input type="text" class="form-control" id="reg-lastname" required>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="mb-3">
+                <label for="reg-email" class="form-label">E-post</label>
+                <input type="email" class="form-control" id="reg-email" required>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="mb-3">
+                <label for="reg-password" class="form-label">Lösenord</label>
+                <input type="password" class="form-control" id="reg-password" required>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="mb-3">
+                <label for="reg-confirm-password" class="form-label">Bekräfta lösenord</label>
+                <input type="password" class="form-control" id="reg-confirm-password" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="agency">Välj en mäklarbyrå</label>
+            <select id="agency" class="form-control" required>
+                <option value="" disabled selected>Välj en mäklarbyrå</option>
+                @foreach (var agency in Agencies)
+                {
+                    <option value="@agency.Id">@agency.Name</option>
+                }
+            </select>
+        </div>
+
+        <div class="col-12">
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary btn-lg">Skapa konto</button>
+            </div>
+        </div>
+    </div>
+</form>

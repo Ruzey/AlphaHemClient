@@ -13,13 +13,13 @@ namespace AlphaHemClient.Services
             this._http = http;
         }
 
-        public async Task<List<AgencNamesViewModel>> GetAllAgencyNames()
+        public async Task<List<AgencyNamesViewModel>> GetAllAgencyNames()
         {
             try
             {
-                var response = await _http.GetFromJsonAsync<List<AgencNamesViewModel>>("api/agency");
+                var response = await _http.GetFromJsonAsync<List<AgencyNamesViewModel>>("api/agency");
 
-                return response ?? new List<AgencNamesViewModel>();
+                return response ?? new List<AgencyNamesViewModel>();
 
             }
             catch (Exception ex)

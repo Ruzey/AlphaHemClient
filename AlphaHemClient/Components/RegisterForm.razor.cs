@@ -2,13 +2,12 @@
 using AlphaHemClient.Services;
 using Microsoft.AspNetCore.Components;
 
-
-namespace AlphaHemClient.Pages
+namespace AlphaHemClient.Components
 {
     //Author: Mattias
-    public partial class Login
+    public partial class RegisterForm
     {
-        private List<AgencNamesViewModel> Agencies = new();
+        private List<AgencyNamesViewModel> Agencies = new();
 
         [Inject]
         public AgencyService AgencyService { get; set; }

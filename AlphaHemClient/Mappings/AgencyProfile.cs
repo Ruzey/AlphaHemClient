@@ -7,6 +7,6 @@ public class AgencyProfile : Profile
     //Author: Mattias
     public AgencyProfile()
     {
-        CreateMap<AgencyWithRealtorsDto, AgencNamesViewModel>();
+        CreateMap<AgencyWithRealtorsDto, AgencyNamesViewModel>();
     }
 }
