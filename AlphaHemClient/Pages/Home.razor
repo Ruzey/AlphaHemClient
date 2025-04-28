@@ -20,23 +20,11 @@ OnSortSelected="OnSortChanged" />
 
 @if (viewModel.Listings != null && viewModel.Listings.Any())
 {
-    <ul>
-        @foreach (var listingpage in viewModel.Listings)
-        {
-
-            <li>@listingpage.Address</li>
-            <li>@listingpage.Price</li>
-            <li>@listingpage.Category</li>
-            <li>@listingpage.Municipality</li>
-            <li>@listingpage.RealtorFullName</li>
-        }
-
-        }
-    </ul>
+            <ListingList Listings="viewModel.Listings" />
 }
 else
 {
-    <p>Inga bostäder att visa.</p>
+    <p>Inga bostäder till salu.</p>
 }
 
 <Pagination 
@@ -55,8 +43,7 @@ OnPageSelected="OnPageChanged" />
     private string? selectedSortOption = null;
     private int currentPage = 1;
     private int totalPages = 1;
-    private int pageSize = 10;
-    private int totalListingsCount;
+    private int pageSize = 9;
 
     protected override async Task OnInitializedAsync()
     {
@@ -87,8 +74,6 @@ OnPageSelected="OnPageChanged" />
 
     private async Task LoadListings(int pageIndex, int pageSize)
     {
-        
-        
         var response = await ListingService.GetPaginatedListings(pageIndex, pageSize, selectedMunicipality, selectedSortOption);
 
         viewModel.Listings = response.Listings;
