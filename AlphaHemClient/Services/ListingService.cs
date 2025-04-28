@@ -83,7 +83,7 @@ namespace AlphaHemClient.Services
         //Author : Dominika
         public async Task CreateListingAsync(ListingCreateDto listing)
         {
-            var response = await _http.PostAsJsonAsync("/api/listings", listing);
+            var response = await _http.PostAsJsonAsync("/api/Listing", listing);
             response.EnsureSuccessStatusCode();
         }
 

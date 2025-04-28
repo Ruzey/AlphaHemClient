@@ -4,6 +4,7 @@ using AlphaHemAPI.Data.Models;
 namespace AlphaHemAPI.Data.DTO
 {
     // Author: Conny
+    // Co-Author: Dominika
     public class ListingCreateDto
     {
         [Required(ErrorMessage = "Antal rum är obligatoriskt.")]
