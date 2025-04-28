@@ -87,7 +87,6 @@ namespace AlphaHemClient.Services
                 return new List<MyListingViewModel>();
 
             var listingsVM = _mapper.Map<List<MyListingViewModel>>(response);
-            Console.WriteLine("calling service method...");
             return listingsVM;
         }
 
