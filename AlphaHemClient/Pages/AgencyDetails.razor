@@ -1,0 +1,48 @@
+﻿@page "/agency/{id:int}"
+@*Author: Mattias*@
+@if (Agency == null)
+{
+    <p><em>Laddar byråinformation...</em></p>
+}
+else
+{
+    <section class="about section">
+        <div class="container">
+
+            <div class="row gy-4">
+
+                <div class="col-lg-6 about-images" data-aos="fade-up" data-aos-delay="200">
+                    <img src="@(!string.IsNullOrEmpty(Agency.Logo) ? Agency.Logo : "https://i.imgur.com/g3aix21.png")" class="img-fluid" alt="@Agency.Name">
+                </div>
+
+                <div class="col-lg-6 content" data-aos="fade-up" data-aos-delay="100">
+                    <p class="who-we-are">Våran byrå</p>
+                    <h3>@Agency?.Name</h3>
+                    <p class="fst-italic">@Agency?.Presentation</p>
+
+                    @*
+                       Någon kontroll i for-loopen om aktiva realtors senare?
+                    *@
+                        <h5 class="mt-4">Våra mäklare</h5>
+                        <ul>
+                            @foreach (var realtor in Agency.Realtors)
+                            {
+                                <li class="list-group-item d-flex align-items-center">
+                                    <img src="@realtor.ProfilePicture" alt="No Img" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover; margin-right: 15px;" />
+                                    <div>
+                                        <strong>@realtor.FullName</strong>
+                                        <br />
+                                        <span>@realtor.PhoneNumber</span>
+                                        <br />
+                                        <span>@realtor.Email</span>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+}

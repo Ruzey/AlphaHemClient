@@ -1,0 +1,45 @@
+﻿@page "/realtor-profile"
+@using AlphaHemClient.Model.ViewModel
+
+<h3>Enter Realtor ID</h3>
+
+<div>
+    <label for="realtorId">Realtor ID:</label>
+    <input type="number" id="realtorId" @bind="enteredId" placeholder="Enter realtor ID" />
+    <button @onclick="FetchRealtorProfile">Get Profile</button>
+</div>
+
+@* Display loading or error messages, or the profile itself *@
+@if (realtorProfile == null && !isLoading)
+{
+    <p>Enter an ID and click "Get Profile" to fetch the realtor's details.</p>
+}
+else if (isLoading)
+{
+    <p>Loading...</p>
+}
+else if (isError)
+{
+    <p>Error fetching the profile. Please try again.</p>
+}
+else
+{
+    <h3>Realtor Profile</h3>
+    <div>
+        <h4>@realtorProfile.FullName</h4>
+        <p><strong>Email:</strong> @realtorProfile.Email</p>
+        <p><strong>Phone:</strong> @realtorProfile.PhoneNumber</p>
+
+        @* Display profile picture if available *@
+        @if (!string.IsNullOrEmpty(realtorProfile.ProfilePicture))
+        {
+            <img src="@realtorProfile.ProfilePicture" alt="@realtorProfile.FullName" style="max-width: 200px;" />
+        }
+        else
+        {
+            <p>No profile picture available.</p>
+        }
+
+        <p><strong>Agency:</strong> @realtorProfile.AgencyName</p>
+    </div>
+}
