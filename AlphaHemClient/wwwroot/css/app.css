@@ -1874,3 +1874,14 @@ section,
 code {
     color: #c02d76;
 }
+
+/* MyListings component */
+
+.table-mylistings tr:nth-child(odd) {
+    
+}
+.table-mylistings .icon {
+    text-decoration: none;
+    cursor: pointer;
+    color: var(--accent-color);
+}

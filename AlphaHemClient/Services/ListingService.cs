@@ -1,6 +1,7 @@
 ﻿using AlphaHemClient.Model.DTO;
 using AlphaHemClient.Model.ViewModel;
 using AutoMapper;
+using System.Net.Http.Json;
 using System.Text.Json;
 
 namespace AlphaHemClient.Services
@@ -75,6 +76,18 @@ namespace AlphaHemClient.Services
                 Console.WriteLine($"Error fetching listings: {ex.Message}");
                 return new ListingPageViewModel();
             }
+        }
+
+        // Author: Conny
+        public async Task<List<MyListingViewModel>> GetMyListingsAsync(int id)
+        {
+            var response = await _http.GetFromJsonAsync<List<ListingListDto>>($"api/listing/realtor/{id}");
+            if (response == null)
+                return new List<MyListingViewModel>();
+
+            var listingsVM = _mapper.Map<List<MyListingViewModel>>(response);
+            Console.WriteLine("calling service method...");
+            return listingsVM;
         }
     }
 }
