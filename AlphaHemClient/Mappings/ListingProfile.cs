@@ -10,6 +10,7 @@ namespace AlphaHemClient.Mappings
         public ListingProfile()
         {
             CreateMap<PagedListingListDto, ListingPageViewModel>();
+            CreateMap<ListingListDto, MyListingViewModel>();
         }
     }
 }

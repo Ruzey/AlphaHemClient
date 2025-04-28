@@ -1909,3 +1909,11 @@ section,
 code {
     color: #c02d76;
 }
+
+/* MyListings component */
+
+.table-mylistings .icon {
+    text-decoration: none;
+    cursor: pointer;
+    color: var(--accent-color);
+}
