@@ -1,8 +1,9 @@
 ﻿@page "/realtor/{id:int}"
+@using AlphaHemClient.Components
 @using AlphaHemClient.Model.ViewModel
 
 @* Author : Smilla *@
-
+@*Co-Author: Dominika*@
 @if (isLoading)
 {
     <p class="text-center">Loading...</p>
@@ -25,15 +26,8 @@ else
         <div class="container" data-aos="fade-up" data-aos-delay="100">
             <div class="row align-items-center gx-3">
                 <div class="col-lg-5 col-md-5 position-relative" data-aos="fade-right" data-aos-delay="200">
-                    <div class="about-image">
-                        @if (!string.IsNullOrEmpty(realtorProfile.ProfilePicture))
-                        {
-                            <img src="@realtorProfile.ProfilePicture" alt="@realtorProfile.FullName" class="img-fluid rounded-4">
-                        }
-                        else
-                        {
-                            <img src="https://via.placeholder.com/150" alt="Placeholder" class="img-fluid rounded-4">
-                        }
+                    <div class="about-image">                       
+                            <RealtorImage ImageUrl="@realtorProfile.ProfilePicture" class="img-fluid rounded-4"/>                    
                     </div>
                 </div>
 
