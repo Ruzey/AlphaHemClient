@@ -4,11 +4,6 @@
 @*Author : Dominika*@
 
 
-@if (!string.IsNullOrEmpty(errorMessage))
-{
-    <div class="alert alert-danger">@errorMessage</div>
-}
-
 <EditForm Model="@listing" OnValidSubmit="HandleValidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
@@ -109,3 +104,8 @@
     </div>
 
 </EditForm>
+<br />
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger">@errorMessage</div>
+}
