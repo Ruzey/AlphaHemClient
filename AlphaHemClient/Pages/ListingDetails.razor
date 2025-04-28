@@ -1,5 +1,6 @@
 ﻿@page "/listings/{id:int}"
 @using AlphaHemAPI.Data.DTO
+@using AlphaHemClient.Components
 @* Author: Niklas 
    Co-author: Smilla
 *@
@@ -17,7 +18,7 @@ else
         <div class="card shadow-sm p-4">
             <div class="row g-4">
                 <div class="col-md-6">
-                    <h1 class="fw-bold">@listing.Address</h1>
+                    <h1 class="fw-bold">@listing.Address<EditPen ListingId="@listing.Id" class="ms-3"/></h1>
                     <h5 class="text-muted">@listing.Category - @listing.MunicipalityName</h5>
                     <h2 class="text-primary mt-3" style="color: #9B2EC9 !important">@FormatCurrency(listing.Price)</h2>
 
