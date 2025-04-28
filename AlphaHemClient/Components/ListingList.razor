@@ -16,7 +16,7 @@ else
             {
                             <div class="col-xl-4 col-md-6" data-aos="fade-up" data-aos-delay="600">
                     <NavLink class="card" href="@($"/listings/{listing.Id}")"> @* Author: Niklas *@
-              
+                            <img src=@listing.FirstImage alt="" class="img-fluid">
               <div class="card-body">
                             <span class="sale-rent">Till salu | @listing.Price kr</span>
                             <h3><a href="property-single.html" class="stretched-link">@listing.Address</a></h3>
