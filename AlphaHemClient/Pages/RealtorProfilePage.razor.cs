@@ -14,19 +14,22 @@ namespace AlphaHemClient.Pages
         private bool isLoading = false;
         private bool isError = false;
 
+        [Parameter]
+        public int Id { get; set; }
+
         [Inject]
         private RealtorService RealtorService { get; set; }  // Inject RealtorService
 
-        private async Task FetchRealtorProfile()
+        protected override async Task OnInitializedAsync()
         {
             isLoading = true;
             isError = false;
             try
             {
-                realtorProfile = await RealtorService.GetRealtorByIdAsync(enteredId);
+                realtorProfile = await RealtorService.GetRealtorByIdAsync(Id);
                 if (realtorProfile == null)
                 {
-                    isError = true; // Handle case where realtor is not found
+                    isError = true;
                 }
             }
             catch (Exception ex)
