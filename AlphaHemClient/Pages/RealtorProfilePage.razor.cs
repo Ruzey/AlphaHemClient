@@ -18,7 +18,7 @@ namespace AlphaHemClient.Pages
         public int Id { get; set; }
 
         [Inject]
-        private RealtorService RealtorService { get; set; }  // Inject RealtorService
+        private RealtorService RealtorService { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
