@@ -44,6 +44,7 @@ namespace AlphaHemClient.Pages
             }
         }
 
+        private string errorMessage;
         private async Task HandleValidSubmit()
         {
             try
@@ -55,7 +56,8 @@ namespace AlphaHemClient.Pages
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Fel uppstod vid skapandet av bostad: {ex.Message}");
+                errorMessage = "Kunde inte spara bostaden. Försök igen.";
+                Console.WriteLine($"Fel: {ex.Message}");
             }
         }
 

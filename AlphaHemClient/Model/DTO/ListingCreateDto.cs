@@ -6,35 +6,35 @@ namespace AlphaHemAPI.Data.DTO
     // Author: Conny
     public class ListingCreateDto
     {
-        [Required]
+        [Required(ErrorMessage = "Antal rum är obligatoriskt.")]
         public int? Rooms { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Byggår är obligatoriskt.")]
         public int? YearBuilt { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Pris är obligatoriskt.")]
         public decimal? Price { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Månadsavgift är obligatoriskt.")]
         public decimal? MonthlyFee { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Årsavgift är obligatoriskt.")]
         public decimal? YearlyOperatingCost { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Boarea är obligatoriskt.")]
         public decimal? LivingArea { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Biarea är obligatoriskt.")]
         public decimal? SecondaryArea { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Tomtarea är obligatoriskt.")]
         public decimal? LotArea { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Adress är obligatoriskt.")]
         public string Address { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Beskrivning är obligatoriskt.")]
         public string Description { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Bilder är obligatoriskt.")]
         public List<string> Images { get; set; }
 
         // Enum
-        [Required]
+        [Required(ErrorMessage = "Kategori är obligatoriskt.")]
         public Category Category { get; set; }
 
         // Relations. Entities are fetched from these IDs to minimize data transfer
-        [Required]
+        [Required(ErrorMessage = "Kommun är obligatoriskt.")]
         public int MunicipalityId { get; set; } = 0;
         [Required]
         public int RealtorId { get; set; }
