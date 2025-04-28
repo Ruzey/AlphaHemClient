@@ -7,9 +7,9 @@ using AlphaHemClient.Services;
 
 namespace AlphaHemClient.Pages
 {
+    //Author : Smilla
     public partial class RealtorProfilePage : ComponentBase
     {
-        private int enteredId;
         private RealtorProfileViewModel? realtorProfile;
         private bool isLoading = false;
         private bool isError = false;
