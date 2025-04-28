@@ -1877,9 +1877,6 @@ code {
 
 /* MyListings component */
 
-.table-mylistings tr:nth-child(odd) {
-    
-}
 .table-mylistings .icon {
     text-decoration: none;
     cursor: pointer;
