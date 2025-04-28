@@ -1,0 +1,35 @@
+﻿  @page "/realtor/{id:int}"
+@using AlphaHemClient.Model.ViewModel
+
+@if (isLoading)
+{
+    <p>Loading...</p>
+}
+else if (isError)
+{
+    <p>Error fetching the profile. Please try again.</p>
+}
+else if (realtorProfile == null)
+{
+    <p>No profile found for the specified ID.</p>
+}
+else
+{
+    <h3>Realtor Profile</h3>
+    <div>
+        <h4>@realtorProfile.FullName</h4>
+        <p><strong>Email:</strong> @realtorProfile.Email</p>
+        <p><strong>Phone:</strong> @realtorProfile.PhoneNumber</p>
+
+        @if (!string.IsNullOrEmpty(realtorProfile.ProfilePicture))
+        {
+            <img src="@realtorProfile.ProfilePicture" alt="@realtorProfile.FullName" style="max-width: 200px;" />
+        }
+        else
+        {
+            <p>No profile picture available.</p>
+        }
+
+        <p><strong>Agency:</strong> @realtorProfile.AgencyName</p>
+    </div>
+}

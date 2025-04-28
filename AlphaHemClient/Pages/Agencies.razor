@@ -1,0 +1,27 @@
+﻿@page "/agencies"
+@using AlphaHemClient.Components
+@using Microsoft.AspNetCore.Components.Routing
+@*Author: MAttias*@
+
+<main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title" data-aos="fade">
+        <div class="heading">
+            <div class="container">
+                <div class="row d-flex justify-content-center text-center">
+                    <div class="col-lg-8">
+                        <h1>Mäklarbyråer</h1>
+                        <p class="mb-0">Här kan du hitta våra registrerade Mäklarbyråer.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Page Title -->
+
+    <section id="agencies" class="agencies section">
+        <AgenciesList></AgenciesList>
+    </section>
+
+</main>

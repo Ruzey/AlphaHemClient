@@ -1,0 +1,111 @@
+﻿@page "/createListing"
+@using AlphaHemAPI.Data.DTO
+@using AlphaHemAPI.Data.Models
+@*Author : Dominika*@
+
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger">@errorMessage</div>
+}
+
+<EditForm Model="@listing" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <h3 contenteditable="true" spellcheck="false">Skapa ny bostad</h3>
+    <p contenteditable="true" spellcheck="false">Fyll i nödvändiga fält och tryck sedan på spara.</p>
+
+    <div class="row gy-4">
+
+        <div class="col-md-6">
+            <InputNumber @bind-Value="listing.Rooms" class="form-control" placeholder="Antal rum" />
+        </div>
+
+        <div class="col-md-6">
+            <InputNumber @bind-Value="listing.YearBuilt" class="form-control" placeholder="Byggår" />
+        </div>
+
+        <div class="col-md-6">
+            <InputNumber @bind-Value="listing.LivingArea" class="form-control" placeholder="Boarea" />
+        </div>
+
+        <div class="col-md-6">
+            <InputNumber @bind-Value="listing.Price" class="form-control" placeholder="Pris" />
+        </div>
+
+        <div class="col-md-6">
+            <InputNumber @bind-Value="listing.SecondaryArea" class="form-control" placeholder="Biarea" />
+        </div>
+
+        <div class="col-md-6">
+            <InputNumber @bind-Value="listing.MonthlyFee" class="form-control" placeholder="Månadsavgift" />
+        </div>
+
+        <div class="col-md-6">
+            <InputNumber @bind-Value="listing.LotArea" class="form-control" placeholder="Tomtarea" />
+        </div>
+
+        <div class="col-md-6">
+            <InputNumber @bind-Value="listing.YearlyOperatingCost" class="form-control" placeholder="Årsavgift" />
+        </div>
+
+        <div class="col-12">
+            <label>Typ av bostad</label>
+            <InputSelect @bind-Value="listing.Category" class="form-control">
+                @foreach (var category in Enum.GetValues(typeof(Category)))
+                {
+                    <option value="@category">@category</option>
+                }
+            </InputSelect>
+        </div>
+
+            <div class="col-12 mb-3">
+                <label for="municipalitySelect" class="form-label">Välj kommun:</label>
+                <select id="municipalitySelect" class="form-select" @bind="listing.MunicipalityId">
+                    <option value="">Alla kommuner</option>
+                    @foreach (var municipality in municipalities)
+                    {
+                        <option value="@municipality.Id">@municipality.Name</option>
+                    }
+                </select>
+            </div>
+
+
+        <div class="col-12">
+            <InputText @bind-Value="listing.Address" class="form-control" placeholder="Adress" />
+        </div>
+
+        <div class="col-12">
+            <InputTextArea @bind-Value="listing.Description" class="form-control" placeholder="Beskrivning" rows="6" />
+        </div>
+
+            <div class="col-12">
+                <InputText @bind-Value="imageUrl" class="form-control" placeholder="Bildens URL" />
+                <button type="button" class="btn btn-secondary mt-2" @onclick="AddImage">Lägg till bild</button>
+
+                @if (listing.Images.Any())
+                {
+                    <div class="mt-3">
+                        <h5>@listing.Images.Count bild(er) tillagda:</h5>
+                        <ul class="list-group">
+                            @foreach (var image in listing.Images)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>@image</span>
+                                    <button type="button" class="btn btn-danger btn-sm" @onclick="() => RemoveImage(image)">Ta bort</button>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                }
+            </div>
+
+
+        <div class="col-12 text-center">
+            <button class="btn btn-secondary mt-2" type="submit">Spara bostad</button>
+        </div>
+
+    </div>
+
+</EditForm>

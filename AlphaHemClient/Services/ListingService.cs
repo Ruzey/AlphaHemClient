@@ -1,6 +1,8 @@
-﻿using AlphaHemClient.Model.DTO;
+﻿using AlphaHemAPI.Data.DTO;
+using AlphaHemClient.Model.DTO;
 using AlphaHemClient.Model.ViewModel;
 using AutoMapper;
+using System.Net.Http.Json;
 using System.Text.Json;
 
 namespace AlphaHemClient.Services
@@ -76,5 +78,15 @@ namespace AlphaHemClient.Services
                 return new ListingPageViewModel();
             }
         }
+
+
+        //Author : Dominika
+        public async Task CreateListingAsync(ListingCreateDto listing)
+        {
+            var response = await _http.PostAsJsonAsync("/api/listings", listing);
+            response.EnsureSuccessStatusCode();
+        }
+
+
     }
 }

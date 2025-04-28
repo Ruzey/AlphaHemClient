@@ -8,5 +8,7 @@ public class AgencyProfile : Profile
     public AgencyProfile()
     {
         CreateMap<AgencyWithRealtorsDto, AgencyNamesViewModel>();
+
+        CreateMap<AgencyWithRealtorsDto, AgencyVM>();
     }
 }
