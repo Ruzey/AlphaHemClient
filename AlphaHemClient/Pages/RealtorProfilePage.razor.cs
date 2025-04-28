@@ -7,9 +7,9 @@ using AlphaHemClient.Services;
 
 namespace AlphaHemClient.Pages
 {
+    //Author : Smilla
     public partial class RealtorProfilePage : ComponentBase
     {
-        private int enteredId;
         private RealtorProfileViewModel? realtorProfile;
         private bool isLoading = false;
         private bool isError = false;
@@ -18,7 +18,7 @@ namespace AlphaHemClient.Pages
         public int Id { get; set; }
 
         [Inject]
-        private RealtorService RealtorService { get; set; }  // Inject RealtorService
+        private RealtorService RealtorService { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
