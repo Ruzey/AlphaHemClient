@@ -23,5 +23,18 @@ namespace AlphaHemClient.Components
             }
 
         }
+
+        private async Task OnMunicipalityChanged(string municipalityName)
+        {
+            if (string.IsNullOrWhiteSpace(municipalityName))
+            {
+                await OnMunicipalitySelected.InvokeAsync(null);
+            }
+            else
+            {
+                await OnMunicipalitySelected.InvokeAsync(municipalityName);
+            }
+            
+        }
     }
 }
