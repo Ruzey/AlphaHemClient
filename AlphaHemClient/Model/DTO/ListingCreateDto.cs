@@ -7,21 +7,21 @@ namespace AlphaHemAPI.Data.DTO
     public class ListingCreateDto
     {
         [Required]
-        public int Rooms { get; set; }
+        public int? Rooms { get; set; }
         [Required]
-        public int YearBuilt { get; set; }
+        public int? YearBuilt { get; set; }
         [Required]
-        public decimal Price { get; set; }
+        public decimal? Price { get; set; }
         [Required]
-        public decimal MonthlyFee { get; set; }
+        public decimal? MonthlyFee { get; set; }
         [Required]
-        public decimal YearlyOperatingCost { get; set; }
+        public decimal? YearlyOperatingCost { get; set; }
         [Required]
-        public decimal LivingArea { get; set; }
+        public decimal? LivingArea { get; set; }
         [Required]
-        public decimal SecondaryArea { get; set; }
+        public decimal? SecondaryArea { get; set; }
         [Required]
-        public decimal LotArea { get; set; }
+        public decimal? LotArea { get; set; }
         [Required]
         public string Address { get; set; }
         [Required]
@@ -35,7 +35,7 @@ namespace AlphaHemAPI.Data.DTO
 
         // Relations. Entities are fetched from these IDs to minimize data transfer
         [Required]
-        public int MunicipalityId { get; set; }
+        public int MunicipalityId { get; set; } = 0;
         [Required]
         public int RealtorId { get; set; }
     }
