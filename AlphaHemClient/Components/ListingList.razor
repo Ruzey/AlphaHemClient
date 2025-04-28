@@ -1,5 +1,6 @@
 ﻿@* Author: Christoffer *@
 
+
 @if (Listings is null || !Listings.Any())
 {
     <p>Det finns inga bostäder till salu</p>
@@ -27,7 +28,7 @@ else
                   </div>
                   <div class="row">
                                     <div class="col">@listing.Municipality</div>
-                                    <div class="col">@listing.Category</div>
+                                        <div class="col">@FormatCategory(listing.Category)</div>
                                     <div class="col">@listing.RealtorFullName</div>
                   </div>
                 </div>
@@ -41,3 +42,5 @@ else
 
     </section><!-- /Real Estate Section -->
     }
+
+    
