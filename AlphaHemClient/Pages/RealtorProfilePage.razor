@@ -1,35 +1,82 @@
-﻿  @page "/realtor/{id:int}"
+﻿@page "/realtor/{id:int}"
 @using AlphaHemClient.Model.ViewModel
+
+@* Author : Smilla *@
 
 @if (isLoading)
 {
-    <p>Loading...</p>
+    <p class="text-center">Loading...</p>
 }
 else if (isError)
 {
-    <p>Error fetching the profile. Please try again.</p>
+    <p class="text-danger text-center">Någonting gick fel. Vänligen försök igen.</p>
 }
 else if (realtorProfile == null)
 {
-    <p>No profile found for the specified ID.</p>
+    <p class="text-center">Ingen profil hittad.</p>
 }
 else
 {
-    <h3>Realtor Profile</h3>
-    <div>
-        <h4>@realtorProfile.FullName</h4>
-        <p><strong>Email:</strong> @realtorProfile.Email</p>
-        <p><strong>Phone:</strong> @realtorProfile.PhoneNumber</p>
+    <section id="about-me" class="about-me section">
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Om mig</h2>
+        </div>
 
-        @if (!string.IsNullOrEmpty(realtorProfile.ProfilePicture))
-        {
-            <img src="@realtorProfile.ProfilePicture" alt="@realtorProfile.FullName" style="max-width: 200px;" />
-        }
-        else
-        {
-            <p>No profile picture available.</p>
-        }
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+            <div class="row align-items-center gx-3">
+                <div class="col-lg-5 col-md-5 position-relative" data-aos="fade-right" data-aos-delay="200">
+                    <div class="about-image">
+                        @if (!string.IsNullOrEmpty(realtorProfile.ProfilePicture))
+                        {
+                            <img src="@realtorProfile.ProfilePicture" alt="@realtorProfile.FullName" class="img-fluid rounded-4">
+                        }
+                        else
+                        {
+                            <img src="https://via.placeholder.com/150" alt="Placeholder" class="img-fluid rounded-4">
+                        }
+                    </div>
+                </div>
 
-        <p><strong>Agency:</strong> @realtorProfile.AgencyName</p>
-    </div>
+                <div class="col-lg-7 col-md-7" data-aos="fade-left" data-aos-delay="300">
+                    <div class="info-container shadow-sm p-4 rounded">
+                        <div class="about-content">
+                            <h2>@realtorProfile.FullName</h2>
+                            <div class="personal-info">
+                                <div class="row g-3">
+                                    <div class="col-6">
+                                        <div class="info-item">
+                                            <i class="bi bi-person label-icon"></i>
+                                            <span class="value">@realtorProfile.FullName</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <div class="info-item">
+                                            <i class="bi bi-telephone label-icon"></i>
+                                            <span class="value">@realtorProfile.PhoneNumber</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <div class="info-item">
+                                            <i class="bi bi-envelope label-icon"></i>
+                                            <span class="value">@realtorProfile.Email</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <div class="info-item">
+                                            <i class="bi bi-house-door label-icon"></i>
+                                            <span class="value">@realtorProfile.AgencyName</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 }
