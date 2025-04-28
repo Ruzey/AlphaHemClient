@@ -17,9 +17,9 @@ namespace AlphaHemClient.Model.ViewModel
 
         public List<SortOption> SortOptions { get; set; } = new List<SortOption>
         {
-            new SortOption { Value = "price_asc", Label = "Pris (Lägst först)" },
+            new SortOption { Value = "price", Label = "Pris (Lägst först)" },
             new SortOption { Value = "price_desc", Label = "Pris (Högst först)" },
-            new SortOption { Value = "category_asc", Label = "Kategori (A-Ö)" },
+            new SortOption { Value = "category", Label = "Kategori (A-Ö)" },
             new SortOption { Value = "category_desc", Label = "Kategori (Ö-A)" },
         };
 

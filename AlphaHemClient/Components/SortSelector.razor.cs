@@ -16,6 +16,10 @@ namespace AlphaHemClient.Components
             {
                 await OnSortSelected.InvokeAsync(selectedSort);
             }
+            else
+            { 
+                await OnSortSelected.InvokeAsync(string.Empty);
+            }
         }
     }
 }

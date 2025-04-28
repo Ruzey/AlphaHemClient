@@ -28,18 +28,53 @@ html, body {
 }
 :root {
     font-family: "Roboto", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --default-font: "Roboto", sans-serif;
+    --heading-font: "Raleway", sans-serif;
+    --nav-font: "Poppins", sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: "Raleway", sans-serif;
+    font-family: "Raleway", sans-serif !important;
 }
 
 .nav-link {
-    font-family: "Poppins", sans-serif;
-    color: #9B2EC9;
+    color: var(--accent-color);
 }
 .nav-link:hover {
     color: #ae59d2;
+}
+
+.about-me .about-image {
+    max-width: 500px;
+    max-height: 500px;
+}
+.about-me .about-content h2 {
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+.about-me .about-content h2 {
+    margin-bottom: 20px;
+}
+
+.info-container {
+    background-color: var(--surface-color);
+    border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.info-container:hover {
+     transform: translateY(-5px);
+     box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.label-icon {
+    font-size: 1.2rem;
+    color: var(--default-color);
+    padding-right: 5px;
 }
 
 .btn {

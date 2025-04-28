@@ -20,23 +20,11 @@ OnSortSelected="OnSortChanged" />
 
 @if (viewModel.Listings != null && viewModel.Listings.Any())
 {
-    <ul>
-        @foreach (var listingpage in viewModel.Listings)
-        {
-
-            <li>@listingpage.Address</li>
-            <li>@listingpage.Price</li>
-            <li>@listingpage.Category</li>
-            <li>@listingpage.Municipality</li>
-            <li>@listingpage.RealtorFullName</li>
-        }
-
-        }
-    </ul>
+            <ListingList Listings="viewModel.Listings" />
 }
 else
 {
-    <p>Inga bostäder att visa.</p>
+    <p>Inga bostäder till salu.</p>
 }
 
 <Pagination 
@@ -47,53 +35,3 @@ OnPageSelected="OnPageChanged" />
 <p class="text-center mt-2">
     Sida @currentPage av @totalPages
 </p>
-
-@code {
-    private ListingPageViewModel viewModel = new ListingPageViewModel();
-    private List<MunicipalityViewModel> municipalities = new List<MunicipalityViewModel>();
-    private string? selectedMunicipality = null;
-    private string? selectedSortOption = null;
-    private int currentPage = 1;
-    private int totalPages = 1;
-    private int pageSize = 10;
-    private int totalListingsCount;
-
-    protected override async Task OnInitializedAsync()
-    {
-        municipalities = await MunicipalityService.GetMunicipalitiesAsync();
-
-        await LoadListings(currentPage, pageSize);
-    }
-
-    private async Task OnMunicipalityChanged(string? municipality)
-    {
-        selectedMunicipality = municipality;
-        currentPage = 1;
-        await LoadListings(currentPage, pageSize);
-    }
-
-    private async Task OnSortChanged(string sortOption)
-    {
-        selectedSortOption = sortOption;
-        currentPage = 1;
-        await LoadListings(currentPage, pageSize);
-    }
-
-    private async Task OnPageChanged(int page)
-    {
-        currentPage = page;
-        await LoadListings(currentPage, pageSize);
-    }
-
-    private async Task LoadListings(int pageIndex, int pageSize)
-    {
-        
-        
-        var response = await ListingService.GetPaginatedListings(pageIndex, pageSize, selectedMunicipality, selectedSortOption);
-
-        viewModel.Listings = response.Listings;
-        viewModel.TotalCount = response.TotalCount; ;
-        totalPages = (int)Math.Ceiling((double)viewModel.TotalCount / pageSize);
-        viewModel.CurrentPage = pageIndex;
-    }
-}

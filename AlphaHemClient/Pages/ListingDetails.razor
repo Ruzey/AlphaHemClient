@@ -1,6 +1,8 @@
 ﻿@page "/listings/{id:int}"
 @using AlphaHemAPI.Data.DTO
-@* Author: Niklas *@
+@* Author: Niklas 
+   Co-author: Smilla
+*@
 @if (listing == null)
 {
     <div class="d-flex justify-content-center align-items-center" style="height: 80vh;">
@@ -17,7 +19,7 @@ else
                 <div class="col-md-6">
                     <h1 class="fw-bold">@listing.Address</h1>
                     <h5 class="text-muted">@listing.Category - @listing.MunicipalityName</h5>
-                    <h2 class="text-primary mt-3">@FormatCurrency(listing.Price)</h2>
+                    <h2 class="text-primary mt-3" style="color: #9B2EC9 !important">@FormatCurrency(listing.Price)</h2>
 
                     <ul class="list-group list-group-flush my-4">
                         <li class="list-group-item"><strong>Antal rum:</strong> @listing.Rooms</li>
@@ -34,6 +36,7 @@ else
                     <p><i class="bi bi-telephone-fill"></i> @listing.Realtor.PhoneNumber</p>
                     <p><i class="bi bi-envelope-fill"></i> @listing.Realtor.Email</p>
                     <p><i class="bi bi-building"></i> @listing.Realtor.AgencyName</p>
+                    <a href="/realtor/@listing.Realtor.Id" style="color: #9B2EC9">Se profil</a>
                 </div>
 
                 <div class="col-md-6">

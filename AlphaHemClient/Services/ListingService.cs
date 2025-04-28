@@ -1,4 +1,5 @@
-﻿using AlphaHemClient.Model.DTO;
+﻿using AlphaHemAPI.Data.DTO;
+using AlphaHemClient.Model.DTO;
 using AlphaHemClient.Model.ViewModel;
 using AutoMapper;
 using System.Net.Http.Json;
@@ -89,5 +90,44 @@ namespace AlphaHemClient.Services
             Console.WriteLine("calling service method...");
             return listingsVM;
         }
+
+        //Author : Dominika
+        public async Task CreateListingAsync(ListingCreateDto listing)
+        {
+            var response = await _http.PostAsJsonAsync("/api/Listing", listing);
+            response.EnsureSuccessStatusCode();
+        }
+
+        //Author: Dominika
+        public async Task UpdateListingAsync(string id, ListingUpdateDto listing)
+        {
+            var response = await _http.PutAsJsonAsync($"/api/Listing/{id}", listing);
+
+            if (response.IsSuccessStatusCode)
+            {
+                if (response.Content.Headers.ContentLength > 0)
+                {
+                    await response.Content.ReadFromJsonAsync<ListingDetailsDto>();
+                }
+                else
+                {
+                    Console.WriteLine("Uppdateringen lyckades, men inget innehåll returnerades.");
+                }
+            }
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Fel vid uppdatering av bostad: {error}");
+            }
+        }
+
+        //Author: Dominika
+        public async Task<ListingUpdateDto> GetListingByIdAsync(string id)
+        {
+            var response = await _http.GetFromJsonAsync<ListingUpdateDto>($"/api/Listing/{id}");
+            return response;
+        }
+
+
     }
 }
