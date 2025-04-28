@@ -27,5 +27,31 @@ namespace AlphaHemClient.Services
                 throw new Exception("An error occurred while fetching agencies", ex);
             }
         }
+
+        public async Task<List<AgencyVM>> GetAllAgencies()
+        {
+            try
+            {
+                var response = await _http.GetFromJsonAsync<List<AgencyVM>>("api/agency");
+                return response ?? new List<AgencyVM>();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while fetching agencies", ex);
+            }
+        }
+
+        public async Task<AgencyVM> GetAgencyById(int id)
+        {
+            try
+            {
+                var response = await _http.GetFromJsonAsync<AgencyVM>($"api/agency/{id}");
+                return response ?? new AgencyVM();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while fetching the agency", ex);
+            }
+        }
     }
 }
