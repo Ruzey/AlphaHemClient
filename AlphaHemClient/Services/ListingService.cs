@@ -79,6 +79,17 @@ namespace AlphaHemClient.Services
             }
         }
 
+        // Author: Conny
+        public async Task<List<MyListingViewModel>> GetMyListingsAsync(int id)
+        {
+            var response = await _http.GetFromJsonAsync<List<ListingListDto>>($"api/listing/realtor/{id}");
+            if (response == null)
+                return new List<MyListingViewModel>();
+
+            var listingsVM = _mapper.Map<List<MyListingViewModel>>(response);
+            Console.WriteLine("calling service method...");
+            return listingsVM;
+        }
 
         //Author : Dominika
         public async Task CreateListingAsync(ListingCreateDto listing)
@@ -107,7 +118,7 @@ namespace AlphaHemClient.Services
             {
                 var error = await response.Content.ReadAsStringAsync();
                 throw new Exception($"Fel vid uppdatering av bostad: {error}");
-            }              
+            }
         }
 
         //Author: Dominika
