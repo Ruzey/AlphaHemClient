@@ -26,6 +26,9 @@ namespace AlphaHemClient
             builder.Services.AddScoped<MunicipalityService>();
             builder.Services.AddScoped<JsLoggingService>();
 
+            // Author: Smilla
+            builder.Services.AddScoped<RealtorService>();
+
             await builder.Build().RunAsync();
         }
     }
