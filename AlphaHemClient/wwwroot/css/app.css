@@ -1917,3 +1917,35 @@ code {
     cursor: pointer;
     color: var(--accent-color);
 }
+
+/* Author: Christoffer*/
+/*Select dropdown*/
+
+.simple-purple-text {
+    color: var(--accent-color);
+    max-height: 200px; /* Justera höjden för att passa omkring 10 alternativ */
+    overflow-y: auto; /* Gör dropdownen rullbar om det finns fler än 10 alternativ */
+    width: 100%; /* Säkerställer att dropdownen inte blir för smal */
+}
+
+    /* Styling för optioner */
+    .simple-purple-text option {
+        color: var(--accent-color); /* Standard textfärg för optioner */
+    }
+
+        /* För hover på optioner (möjligt i vissa webbläsare) */
+        .simple-purple-text option:hover {
+            color: white; /* Textfärg för option vid hover */
+            background-color: var(--nav-dropdown-hover-color); /* Bakgrundsfärg på option vid hover */
+        }
+
+        /* För "Alla kommuner"-alternativet */
+        .simple-purple-text option[value=""] {
+            color: var(--accent-color); /* Standardfärg för "Alla kommuner" */
+        }
+
+            /* För hover på "Alla kommuner"-alternativet */
+            .simple-purple-text option[value=""]:hover {
+                background-color: var(--nav-dropdown-hover-color); /* Bakgrundsfärg vid hover */
+                color: white; /* Textfärg vid hover */
+            }

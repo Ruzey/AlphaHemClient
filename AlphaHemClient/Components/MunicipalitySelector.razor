@@ -1,45 +1,12 @@
 ﻿@*Author: Christoffer*@
 
 <div class="mb-3">
-    <label for="municipalitySelect" class="form-label">Välj kommun:</label>
-    <select id="municipalitySelect" class="form-select" @onchange="OnMunicipalityChanged">
+    <select id="municipalitySelect" class="form-select simple-purple-text" style="width: 200px;" @onchange ="OnMunicipalityChanged">
         <option value="">Alla kommuner  </option>
 
         @foreach (var municipality in Municipalities)
         {
-            <option value="@municipality.Name">@municipality.Name</option>
+            <option class="simple-purple-text" value="@municipality.Name">@municipality.Name</option>
         }
     </select>
-</div>
-
-<div class="mb-3">
-    <label for="municipalitySelect" class="form-label">Välj kommun:</label>
-    <select id="municipalitySelect" class="dropdown" @onchange="OnMunicipalityChanged">
-        <option value="">Alla kommuner  </option>
-
-        @foreach (var municipality in Municipalities)
-        {
-            <option value="@municipality.Name">@municipality.Name</option>
-        }
-    </select>
-</div>
-
-
-<div class="mb-3">
-    <label for="municipalitySelect" class="form-label">Välj kommun:</label>
-    <div class="dropdown">
-        <a href="#" class="dropdown-toggle" id="municipalityDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-            Välj kommun <i class="bi bi-chevron-down toggle-dropdown"></i>
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="municipalityDropdown">
-            <!-- Alla kommuner alternativ -->
-            <li><a class="dropdown-item" href="#" @onclick="() => OnMunicipalityChanged(string.Empty)">Alla kommuner</a></li>
-
-            <!-- Dynamiska kommunalternativ -->
-            @foreach (var municipality in Municipalities)
-            {
-                <li><a class="dropdown-item" href="#" @onclick="() => OnMunicipalityChanged(municipality.Name)">@municipality.Name</a></li>
-            }
-        </ul>
-    </div>
 </div>

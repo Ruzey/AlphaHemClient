@@ -16,32 +16,32 @@ namespace AlphaHemClient.Pages
         {
             municipalities = await MunicipalityService.GetMunicipalitiesAsync();
 
-            await LoadListings(currentPage, pageSize);
+            await LoadListingsAsync(currentPage, pageSize);
         }
 
         private async Task OnMunicipalityChanged(string? municipality)
         {
             selectedMunicipality = municipality;
             currentPage = 1;
-            await LoadListings(currentPage, pageSize);
+            await LoadListingsAsync(currentPage, pageSize);
         }
 
         private async Task OnSortChanged(string sortOption)
         {
             selectedSortOption = sortOption;
             currentPage = 1;
-            await LoadListings(currentPage, pageSize);
+            await LoadListingsAsync(currentPage, pageSize);
         }
 
         private async Task OnPageChanged(int page)
         {
             currentPage = page;
-            await LoadListings(currentPage, pageSize);
+            await LoadListingsAsync(currentPage, pageSize);
         }
 
-        private async Task LoadListings(int pageIndex, int pageSize)
+        private async Task LoadListingsAsync(int pageIndex, int pageSize)
         {
-            var response = await ListingService.GetPaginatedListings(pageIndex, pageSize, selectedMunicipality, selectedSortOption);
+            var response = await ListingService.GetPaginatedListingsAsync(pageIndex, pageSize, selectedMunicipality, selectedSortOption);
 
             viewModel.Listings = response.Listings;
             viewModel.TotalCount = response.TotalCount; ;
