@@ -1,15 +1,22 @@
-﻿namespace AlphaHemAPI.Data.DTO
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AlphaHemClient.Model.ViewModel
 {
-    public class RealtorDto
+    // Author: Conny
+    public class RealtorEditViewModel
     {
-        //Author: Mattias
-        //Co-author: Dominika, Conny
         public int Id { get; set; }
+        [Required]
         public string FirstName { get; set; }
+        [Required]
         public string LastName { get; set; }
+        [Required]
+        [EmailAddress]
         public string Email { get; set; }
+        [Required]
+        [Phone]
         public string PhoneNumber { get; set; }
+        [Required]
         public string ProfilePicture { get; set; }
-        public string Agency { get; set; }
     }
 }
