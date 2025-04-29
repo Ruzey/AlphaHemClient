@@ -127,6 +127,19 @@ namespace AlphaHemClient.Services
             return response;
         }
 
-
+        //Author: Niklas
+        public async Task<bool> DeleteListingAsync(int id)
+        {
+            try
+            {
+                var response = await _http.DeleteAsync($"/api/listing/{id}");
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                await _jsLoggingService.LogToConsole($"Fel vid borttagning av listing {id}: {ex.Message}");
+                return false;
+            }
+        }
     }
 }
