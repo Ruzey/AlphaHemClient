@@ -11,6 +11,8 @@ namespace AlphaHemClient.Components
         [Parameter]
         public int TotalPages { get; set; }
         [Parameter]
+        public int TotalCount { get; set; }
+        [Parameter]
         public EventCallback<int> OnPageSelected { get; set; }
 
         private async Task SelectPage(int page)

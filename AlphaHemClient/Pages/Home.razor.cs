@@ -37,6 +37,7 @@ namespace AlphaHemClient.Pages
         {
             currentPage = page;
             await LoadListingsAsync(currentPage, pageSize);
+            await InvokeAsync(StateHasChanged);
         }
 
         private async Task LoadListingsAsync(int pageIndex, int pageSize)
