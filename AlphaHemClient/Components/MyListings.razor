@@ -28,13 +28,15 @@
                 <tbody>
                     @foreach (var listing in listingsVM)
                     {
-                    <tr>
+                        <tr>
                             <td>@listing.Address</td>
                             <td>@listing.Municipality</td>
                             <td>@listing.Category</td>
                             <td>@listing.Price.ToString("C", priceFormat)</td>
-                            <td><i class="icon bi bi-pencil-square fs-5"></i> <i class="icon bi bi-trash-fill fs-5"></i> <a href="/listings/@listing.Id"><i class="icon bi bi-link fs-5 font-weight-bold"></i></a></td>
-                    </tr>
+                            <td>
+                                <a href="/editListing/@listing.Id"><i class="icon bi bi-pencil-square fs-5"></i></a> | <a href=""><i class="icon bi bi-trash-fill fs-5"></i></a> | <a href="/listings/@listing.Id"><i class="icon bi bi-link fs-5 font-weight-bold"></i></a>
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table>

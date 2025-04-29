@@ -19,6 +19,8 @@ namespace AlphaHemClient.Pages
 
         [Inject]
         private RealtorService RealtorService { get; set; }
+        [Inject]
+        private NavigationManager navigationManager { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -41,6 +43,12 @@ namespace AlphaHemClient.Pages
             {
                 isLoading = false;
             }
+        }
+
+        // Author: Conny
+        private void EditProfile()
+        {
+            navigationManager.NavigateTo($"/editProfile/{Id}");
         }
     }
 }
