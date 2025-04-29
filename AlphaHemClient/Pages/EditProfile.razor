@@ -1,0 +1,50 @@
+﻿@page "/editProfile/{Id:int}"
+@using AlphaHemAPI.Data.DTO
+@using AlphaHemClient.Services
+
+@*Author: Conny*@
+
+<EditForm Model="@realtorEditVM" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <h3>Redigera profil</h3>
+
+    <div class="row gy-4">
+        <div class="col-md-6">
+            <label>Förnamn</label>
+            <InputText @bind-Value="realtorEditVM.FirstName" class="form-control" placeholder="Förnamn" />
+        </div>
+
+        <div class="col-md-6">
+            <label>Efternamn</label>
+            <InputText @bind-Value="realtorEditVM.LastName" class="form-control" placeholder="Efternamn" />
+        </div>
+
+        <div class="col-md-6">
+            <label>E-postadress</label>
+            <InputText @bind-Value="realtorEditVM.Email" class="form-control" placeholder="E-post" />
+        </div>
+
+        <div class="col-6">
+            <label>Telefonnummer</label>
+            <InputText @bind-Value="realtorEditVM.PhoneNumber" class="form-control" placeholder="Telefon" />
+        </div>
+
+        <div class="col-12">
+            <label>Profilbild</label>
+            <InputText @bind-Value="realtorEditVM.ProfilePicture" class="form-control" placeholder="Profilbild" />
+        </div>
+
+        <div class="col-12 text-center">
+            <button class="btn btn-secondary mt-2" type="submit">Uppdatera profil</button>
+        </div>
+    </div>
+    <ValidationSummary />
+</EditForm>
+
+<br />
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger">
+        @errorMessage
+    </div>
+}
