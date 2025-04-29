@@ -1,12 +1,10 @@
 ﻿@* Author: Christoffer *@
 
-<h3>Sorteringsalternativ</h3>
-
-<select @onchange="OnSortChanged">
+<select class="form-select simple-purple-text" style="width: 200px;" @onchange="OnSortChanged">
     <option value="">Sorteringsalternativ </option>
     @foreach (var option in SortOptions)
     {
-        <option value="@option.Value">@option.Label</option>
+        <option class="simple-purple-text" value="@option.Value">@option.Label</option>
     }
 </select>
 
