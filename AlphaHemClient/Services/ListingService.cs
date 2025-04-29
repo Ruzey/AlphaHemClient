@@ -21,7 +21,7 @@ namespace AlphaHemClient.Services
             _jsLoggingService = jsLoggingService;
         }
 
-        public async Task<ListingPageViewModel> GetPaginatedListings(int pageIndex = 1, int pageSize = 10, string? municipality = null, string? sortBy = null)
+        public async Task<ListingPageViewModel> GetPaginatedListingsAsync(int pageIndex = 1, int pageSize = 10, string? municipality = null, string? sortBy = null)
         {
             try
             {
