@@ -1949,3 +1949,22 @@ code {
                 background-color: var(--nav-dropdown-hover-color); /* Bakgrundsfärg vid hover */
                 color: white; /* Textfärg vid hover */
             }
+
+/*Author: Christoffer*/
+/*Pagination*/
+
+.pagination-button {
+    color: var(--accent-color);
+    background-color: transparent;
+    border: none;
+}
+
+    .pagination-button:hover {
+        color: #ae59d2;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    .pagination-button.active-page {
+        font-weight: bold;
+    }
