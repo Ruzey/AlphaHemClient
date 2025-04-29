@@ -1,5 +1,6 @@
 ﻿
 @* Author: Conny *@
+@* Co-Author: Niklas *@
 
 <div class="container py-2">
     <h4>Mina objekt</h4>
@@ -33,13 +34,44 @@
                             <td>@listing.Municipality</td>
                             <td>@listing.Category</td>
                             <td>@listing.Price.ToString("C", priceFormat)</td>
-                            <td><i class="icon bi bi-pencil-square fs-5"></i> <i class="icon bi bi-trash-fill fs-5"></i> <a href="/listings/@listing.Id"><i class="icon bi bi-link fs-5 font-weight-bold"></i></a></td>
+                            <td>
+                                @*Prep inför identity*@
+                                @*@if (listing.RealtorId == loggedInRealtorId)*@
+                                {
+                                    <i class="icon bi bi-trash-fill text-danger fs-5 me-2"
+                                       style="cursor: pointer;"
+                                       @onclick="() => AskForDeleteConfirmation(listing.Id)">
+                                    </i>
+                                }
+                                <a href="/listings/@listing.Id"><i class="icon bi bi-link fs-5 font-weight-bold"></i></a>
+                            </td>
                     </tr>
                     }
                 </tbody>
             </table>
         </div>
     }
-
+    @*Author: Niklas*@
+    @if (showConfirmModal)
+    {
+        <div class="modal-backdrop fade show"></div>
+        <div class="modal show d-block" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Bekräfta borttagning</h5>
+                        <button type="button" class="btn-close" @onclick="() => showConfirmModal = false"></button>
+                    </div>
+                    <div class="modal-body">
+                        Vill du verkligen ta bort denna bostad?
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" @onclick="() => showConfirmModal = false">Avbryt</button>
+                        <button class="btn btn-danger" @onclick="ConfirmDeleteAsync">Ta bort</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 </div>
 
