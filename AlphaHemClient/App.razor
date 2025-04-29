@@ -1,4 +1,7 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
+﻿@using Microsoft.AspNetCore.Components.Routing 
+@inject IJSRuntime JSRuntime 
+
+<Router AppAssembly="@typeof(App).Assembly" OnNavigateAsync="HandleNavigation"> @*Author: Christoffer*@
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
@@ -10,3 +13,12 @@
         </LayoutView>
     </NotFound>
 </Router>
+
+@*Author: Christoffer*@
+@code {
+    private async Task HandleNavigation(NavigationContext args)
+    {
+        await Task.Yield();
+        await JSRuntime.InvokeVoidAsync("scrollToTop");
+    }
+}

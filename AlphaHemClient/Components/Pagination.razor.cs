@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace AlphaHemClient.Components
 {
@@ -17,6 +18,7 @@ namespace AlphaHemClient.Components
             if (page >= 1 && page <= TotalPages)
             {
                 await OnPageSelected.InvokeAsync(page);
+                await JSRuntime.InvokeVoidAsync("scrollToTop");
             }
         }
     }

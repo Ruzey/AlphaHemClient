@@ -1,25 +1,31 @@
 ﻿@* Author: Christoffer *@
+@inject IJSRuntime JSRuntime
 
 <nav aria-label="Pagination">
-    <ul class="Pagination">
+    <ul class="pagination justify-content-center mt-4">
         <li class="page-item @(CurrentPage == 1 ? "disabled" : "")">
-            <button class="page-link" @onclick="()=> SelectPage(CurrentPage - 1)">Föregående</button>
+            <button class="page-link" @onclick="() => SelectPage(CurrentPage - 1)" aria-label="Föregående">
+                ◀
+            </button>
         </li>
 
         @for (int i = 1; i <= TotalPages; i++)
         {
-            <li class="page-item @(i == CurrentPage ? "active" : "")">
-                <button class="page-link" @onclick="()=> SelectPage(i)">@i</button>
-            </li>    
+            <li class="page-item @(CurrentPage == i ? "active" : "")">
+                <button class="page-link" @onclick="() => SelectPage(i)">
+                    @i
+                </button>
+            </li>
         }
 
         <li class="page-item @(CurrentPage == TotalPages ? "disabled" : "")">
-            <button class="page-link" @onclick="()=> SelectPage(CurrentPage + 1)">Nästa</button>
+            <button class="page-link" @onclick="() => SelectPage(CurrentPage + 1)" aria-label="Nästa">
+                ▶
+            </button>
         </li>
     </ul>
 </nav>
 
-<p class="text-center mt-2">
+<p class="text-center mt-2 text-muted small">
     Sida @CurrentPage av @TotalPages
 </p>
-
