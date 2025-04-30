@@ -11,9 +11,10 @@
 
         @for (int i = 1; i <= TotalPages; i++)
         {
+            var pageNumber = i;
             <li class="page-item @(CurrentPage == i ? "active" : "")">
-                <button class="pagination-button @(CurrentPage == i ? "active-page" : "")" @onclick="() => SelectPage(i)">
-                    @i
+                <button class="pagination-button @(CurrentPage == pageNumber ? "active-page" : "")" @onclick="() => SelectPage(pageNumber)">
+                    @pageNumber
                 </button>
             </li>
         }
