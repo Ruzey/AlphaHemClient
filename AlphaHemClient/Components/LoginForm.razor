@@ -1,17 +1,24 @@
 ﻿@* Author: Mattias*@
 
-<form>
+<EditForm Model="LoginModel" OnValidSubmit="HandleLogin">
+    <DataAnnotationValidator />
+    <ValidationSummary />
+
     <div class="mb-3">
-        <label for="login-email" class="form-label">E-post</label>
-        <input type="email" class="form-control" id="login-email" required>
+        <label for="login-email">E-post</label>
+        <InputText id="login-email" class="form-control" @bind-Value="LoginModel.Email" required />
+        <ValidationMessage For="@(() => LoginModel.Email)" />
     </div>
 
     <div class="mb-3">
-        <label for="login-password" class="form-label">Lösenord</label>
-        <input type="password" class="form-control" id="login-password" required>
+        <label for="login-password">Lösenord</label>
+        <InputText id="login-password" type="password" class="form-control" @bind-Value="LoginModel.Password" required />
+        <ValidationMessage For="@(() => LoginModel.Password)" />
     </div>
 
     <div class="d-grid">
         <button type="submit" class="btn btn-primary btn-lg">Logga in</button>
     </div>
-</form>
+</EditForm>
+
+

@@ -1,50 +1,62 @@
 ﻿@*    //Author: Mattias*@
 
-<form>
+<EditForm Model="RegisterModel" OnValidSubmit="HandleRegister">
+    <DataAnnotationValidator />
+    <ValidationSummary />
+
     <div class="row g-3">
         <div class="col-sm-6">
             <div class="mb-3">
                 <label for="reg-firstname" class="form-label">Förnamn</label>
-                <input type="text" class="form-control" id="reg-firstname" required>
+                <InputText id="reg-firstname" class="form-control" @bind-Value="RegisterModel.FirstName" required/>
+                <ValidationMessage For="@(() => RegisterModel.FirstName)" />
             </div>
         </div>
+
         <div class="col-sm-6">
             <div class="mb-3">
                 <label for="reg-lastname" class="form-label">Efternamn</label>
-                <input type="text" class="form-control" id="reg-lastname" required>
+                <InputText id="reg-lastname" class="form-control" @bind-Value="RegisterModel.LastName" required />
+                <ValidationMessage For="@(() => RegisterModel.LastName)" />
             </div>
         </div>
 
         <div class="col-12">
             <div class="mb-3">
                 <label for="reg-email" class="form-label">E-post</label>
-                <input type="email" class="form-control" id="reg-email" required>
+                <InputText id="reg-email" type="email" class="form-control" @bind-Value="RegisterModel.Email" required />
+                <ValidationMessage For="@(() => RegisterModel.Email)" />
             </div>
         </div>
 
         <div class="col-12">
             <div class="mb-3">
                 <label for="reg-password" class="form-label">Lösenord</label>
-                <input type="password" class="form-control" id="reg-password" required>
+                <InputText id="reg-password" type="password" class="form-control" @bind-Value="RegisterModel.Password" required />
+                <ValidationMessage For="@(() => RegisterModel.Password)" />
             </div>
         </div>
+@* Ska vi ha confirm-password?
+         <div class="col-12">
+            <div class="mb-3">
+                <label for="reg-confirm-password" class="form-label">Bekräfta lösenord</label>
+                <InputText id="reg-confirm-password" type="password" class="form-control" @bind-Value="RegisterModel.ConfirmPassword" />
+                <ValidationMessage For="@(() => RegisterModel.ConfirmPassword)" />
+            </div>
+        </div> *@
 
         <div class="col-12">
             <div class="mb-3">
-                <label for="reg-confirm-password" class="form-label">Bekräfta lösenord</label>
-                <input type="password" class="form-control" id="reg-confirm-password" required>
+                <label for="agency" class="form-label">Välj en mäklarbyrå</label>
+                <InputSelect id="agency" class="form-control" @bind-Value="RegisterModel.AgencyId" required>
+                    <option value="">Välj en mäklarbyrå</option>
+                    @foreach (var agency in Agencies)
+                    {
+                        <option value="@agency.Id">@agency.Name</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => RegisterModel.AgencyId)" />
             </div>
-        </div>
-
-        <div class="form-group">
-            <label for="agency">Välj en mäklarbyrå</label>
-            <select id="agency" class="form-control" required>
-                <option value="" disabled selected>Välj en mäklarbyrå</option>
-                @foreach (var agency in Agencies)
-                {
-                    <option value="@agency.Id">@agency.Name</option>
-                }
-            </select>
         </div>
 
         <div class="col-12">
@@ -53,4 +65,4 @@
             </div>
         </div>
     </div>
-</form>
+</EditForm>
