@@ -1,4 +1,5 @@
-﻿using AlphaHemClient.Model.ViewModel;
+﻿using AlphaHemAPI.Data.DTO;
+using AlphaHemClient.Model.ViewModel;
 using AlphaHemClient.Services;
 using Microsoft.AspNetCore.Components;
 
@@ -7,6 +8,8 @@ namespace AlphaHemClient.Components
     //Author: Mattias
     public partial class RegisterForm
     {
+        private RealtorRegisterDto RegisterModel = new();
+
         private List<AgencyNamesViewModel> Agencies = new();
 
         [Inject]
@@ -14,6 +17,11 @@ namespace AlphaHemClient.Components
         protected override async Task OnInitializedAsync()
         {
             Agencies = await AgencyService.GetAllAgencyNames();
+        }
+
+        public async Task HandleRegister()
+        {
+
         }
     }
 }
