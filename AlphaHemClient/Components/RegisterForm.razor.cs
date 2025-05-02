@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Components;
 namespace AlphaHemClient.Components
 {
     //Author: Mattias
+    // Co-Author: All
+
     public partial class RegisterForm
     {
         private RealtorRegisterDto RegisterModel = new();
