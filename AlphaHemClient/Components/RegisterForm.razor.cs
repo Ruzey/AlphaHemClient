@@ -2,6 +2,7 @@
 using AlphaHemClient.Model.ViewModel;
 using AlphaHemClient.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Routing;
 
 namespace AlphaHemClient.Components
 {
@@ -10,12 +11,16 @@ namespace AlphaHemClient.Components
 
     public partial class RegisterForm
     {
-        private RealtorRegisterDto RegisterModel = new();
-
+        private RealtorRegisterVM RegisterModel = new RealtorRegisterVM();
+        string message = string.Empty;
         private List<AgencyNamesViewModel> Agencies = new();
 
         [Inject]
         public AgencyService AgencyService { get; set; }
+        [Inject]
+        public AuthService AuthService { get; set; }
+        [Inject] 
+        private NavigationManager navigationManager { get; set; }
         protected override async Task OnInitializedAsync()
         {
             Agencies = await AgencyService.GetAllAgencyNames();
@@ -23,7 +28,7 @@ namespace AlphaHemClient.Components
 
         public async Task HandleRegister()
         {
-
+                message = await AuthService.RegisterAsync(RegisterModel);
         }
     }
 }

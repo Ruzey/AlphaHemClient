@@ -10,7 +10,7 @@
         <div class="col-sm-6">
             <div class="mb-3">
                 <label for="reg-firstname" class="form-label">Förnamn</label>
-                <InputText id="reg-firstname" class="form-control" @bind-Value="RegisterModel.FirstName" required/>
+                <InputText id="reg-firstname" class="form-control" @bind-Value="RegisterModel.FirstName"/>
                 <ValidationMessage For="@(() => RegisterModel.FirstName)" />
             </div>
         </div>
@@ -18,15 +18,23 @@
         <div class="col-sm-6">
             <div class="mb-3">
                 <label for="reg-lastname" class="form-label">Efternamn</label>
-                <InputText id="reg-lastname" class="form-control" @bind-Value="RegisterModel.LastName" required />
+                <InputText id="reg-lastname" class="form-control" @bind-Value="RegisterModel.LastName" />
                 <ValidationMessage For="@(() => RegisterModel.LastName)" />
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="mb-3">
+                <label for="reg-lastname" class="form-label">Telefon Nummer</label>
+                <InputText id="reg-lastname" class="form-control" @bind-Value="RegisterModel.PhoneNumber" />
+                <ValidationMessage For="@(() => RegisterModel.PhoneNumber)" />
             </div>
         </div>
 
         <div class="col-12">
             <div class="mb-3">
                 <label for="reg-email" class="form-label">E-post</label>
-                <InputText id="reg-email" type="email" class="form-control" @bind-Value="RegisterModel.Email" required />
+                <InputText id="reg-email" type="email" class="form-control" @bind-Value="RegisterModel.Email" />
                 <ValidationMessage For="@(() => RegisterModel.Email)" />
             </div>
         </div>
@@ -34,23 +42,24 @@
         <div class="col-12">
             <div class="mb-3">
                 <label for="reg-password" class="form-label">Lösenord</label>
-                <InputText id="reg-password" type="password" class="form-control" @bind-Value="RegisterModel.Password" required />
+                <InputText id="reg-password" type="password" class="form-control" @bind-Value="RegisterModel.Password" />
                 <ValidationMessage For="@(() => RegisterModel.Password)" />
             </div>
         </div>
-@* Ska vi ha confirm-password?
-         <div class="col-12">
+
+@*      Confirmed PAssword kanske sätts in senare ifall vi löser det.
+    <div class="col-12">
             <div class="mb-3">
                 <label for="reg-confirm-password" class="form-label">Bekräfta lösenord</label>
                 <InputText id="reg-confirm-password" type="password" class="form-control" @bind-Value="RegisterModel.ConfirmPassword" />
                 <ValidationMessage For="@(() => RegisterModel.ConfirmPassword)" />
             </div>
-        </div> *@
+        </div>  *@
 
         <div class="col-12">
             <div class="mb-3">
                 <label for="agency" class="form-label">Välj en mäklarbyrå</label>
-                <InputSelect id="agency" class="form-control" @bind-Value="RegisterModel.AgencyId" required>
+                <InputSelect id="agency" class="form-control" @bind-Value="RegisterModel.AgencyId" >
                     <option value="">Välj en mäklarbyrå</option>
                     @foreach (var agency in Agencies)
                     {
@@ -66,5 +75,12 @@
                 <button type="submit" class="btn btn-primary btn-lg">Skapa konto</button>
             </div>
         </div>
+
+        @if(!string.IsNullOrEmpty(message))
+        {
+            <div>
+                @message
+			</div>
+        }
     </div>
 </EditForm>
