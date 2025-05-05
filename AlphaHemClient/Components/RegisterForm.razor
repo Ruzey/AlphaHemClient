@@ -2,9 +2,8 @@
       //Co-Author: All
 *@
 
-<EditForm Model="RegisterModel" OnValidSubmit="HandleRegister">
-    <DataAnnotationValidator />
-    <ValidationSummary />
+<EditForm Model="RegisterModel" OnValidSubmit="HandleRegister" OnInvalidSubmit="ErrorRegister">
+    <DataAnnotationsValidator />
 
     <div class="row g-3">
         <div class="col-sm-6">
@@ -47,14 +46,14 @@
             </div>
         </div>
 
-@*      Confirmed PAssword kanske sätts in senare ifall vi löser det.
+
     <div class="col-12">
             <div class="mb-3">
                 <label for="reg-confirm-password" class="form-label">Bekräfta lösenord</label>
                 <InputText id="reg-confirm-password" type="password" class="form-control" @bind-Value="RegisterModel.ConfirmPassword" />
                 <ValidationMessage For="@(() => RegisterModel.ConfirmPassword)" />
             </div>
-        </div>  *@
+        </div> 
 
         <div class="col-12">
             <div class="mb-3">
@@ -78,9 +77,9 @@
 
         @if(!string.IsNullOrEmpty(message))
         {
-            <div>
+            <div class="@messageName">
                 @message
-			</div>
+            </div> 
         }
     </div>
 </EditForm>

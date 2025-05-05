@@ -1,8 +1,9 @@
 ﻿@page "/createListing"
 @using AlphaHemAPI.Data.DTO
 @using AlphaHemAPI.Data.Models
+@using Microsoft.AspNetCore.Authorization
 @*Author : Dominika*@
-
+@attribute [Authorize(Roles = "RealtorAdmin")]
 
 <EditForm Model="@listing" OnValidSubmit="HandleValidSubmit">
     <DataAnnotationsValidator />

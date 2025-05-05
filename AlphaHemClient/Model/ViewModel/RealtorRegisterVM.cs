@@ -14,8 +14,8 @@ namespace AlphaHemClient.Model.ViewModel
                     "\nLösenordet måste innehålla minst en gemen ('a'-'z')." +
                     "\nLösenordet måste innehålla minst en versal ('A'-'Z').")]
         public string Password { get; set; }
-        //[Required, Compare("Password", ErrorMessage = "Dina lösenord matchar inte")]
-        //public string ConfirmPassword { get; set; }
+        [Required, Compare("Password", ErrorMessage = "Dina lösenord matchar inte")]
+        public string ConfirmPassword { get; set; }
         [Required]
         public string FirstName { get; set; }
         [Required]

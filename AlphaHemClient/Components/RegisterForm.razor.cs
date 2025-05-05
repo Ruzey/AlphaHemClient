@@ -13,6 +13,7 @@ namespace AlphaHemClient.Components
     {
         private RealtorRegisterVM RegisterModel = new RealtorRegisterVM();
         string message = string.Empty;
+        string messageName = string.Empty;
         private List<AgencyNamesViewModel> Agencies = new();
 
         [Inject]
@@ -26,9 +27,18 @@ namespace AlphaHemClient.Components
             Agencies = await AgencyService.GetAllAgencyNames();
         }
 
+        public async Task ErrorRegister()
+        {
+            // TODO: Byt färg på error texten, fungrar inte med alert alert-danger
+            //var messageName = "alert alert-danger";
+            message = "Ett fel inträffade vid registrering. Försök igen.";
+        }
         public async Task HandleRegister()
         {
                 message = await AuthService.RegisterAsync(RegisterModel);
+                StateHasChanged();
+                await Task.Delay(3000);
+                navigationManager.NavigateTo("/");
         }
     }
 }
