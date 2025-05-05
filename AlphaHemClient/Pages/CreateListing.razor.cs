@@ -1,47 +1,42 @@
 ﻿using AlphaHemAPI.Data.DTO;
 using AlphaHemClient.Model.DTO;
+using AlphaHemClient.Model.ViewModel;
 using AlphaHemClient.Services;
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using System.Net.Http.Json;
 
 namespace AlphaHemClient.Pages
 {
     //Author : Dominika
+    // Co-author: Christoffer, Mattias, Conny
     public partial class CreateListing
     {
-        private ListingCreateDto listing = new ListingCreateDto
+        private ListingCreateViewModel listing = new ListingCreateViewModel
         {
             Images = new List<string>(),
             MunicipalityId = 0
         };
 
-        private string imageUrl {  get; set; } = string.Empty;
-        private List<MunicipalityListDto> municipalities = new();
+        private string imageUrl { get; set; } = string.Empty;
+        private List<MunicipalityViewModel> municipalities = new();
 
-        [Inject] private HttpClient Http {  get; set; }
+        [Inject] private HttpClient Http { get; set; }
         [Inject] private NavigationManager navigationManager { get; set; }
         [Inject] private ListingService listingService { get; set; }
+        [Inject] private MunicipalityService municipalityService { get; set; }
+        [Inject] private ILocalStorageService localStorage { get; set; }
 
 
         protected override async Task OnInitializedAsync()
         {
             await LoadMunicipalities();
+            listing.RealtorId = await localStorage.GetItemAsync<string>("userId");
         }
 
         private async Task LoadMunicipalities()
         {
-            try
-            {
-                var response = await Http.GetFromJsonAsync<List<MunicipalityListDto>>("/api/municipality");
-                if (response != null)
-                {
-                    municipalities = response;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Fel vid hämtning av kommuner: {ex.Message}");
-            }
+            municipalities = await municipalityService.GetMunicipalitiesAsync();
         }
 
         private string errorMessage;
@@ -49,10 +44,8 @@ namespace AlphaHemClient.Pages
         {
             try
             {
-                listing.RealtorId = 1; //Detta är bara exempel och byts ut när vi fixar identity
-
                 await listingService.CreateListingAsync(listing);
-                navigationManager.NavigateTo("/minaobjekt");
+                navigationManager.NavigateTo($"/realtor/{listing.RealtorId}");
             }
             catch (Exception ex)
             {

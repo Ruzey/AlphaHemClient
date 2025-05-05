@@ -67,6 +67,8 @@ namespace AlphaHemClient.Services
 
                 var data = JsonSerializer.Deserialize<UserData>(content);
                 await localStorage.SetItemAsync("accessToken", data.Token);
+                await localStorage.SetItemAsync("email", data.Email);
+                await localStorage.SetItemAsync("userId", data.UserId);
 
                 await alphaApiAuthenticationStateProvider.LoggedIn();
                 return data.Token;

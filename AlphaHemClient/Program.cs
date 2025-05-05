@@ -22,8 +22,8 @@ namespace AlphaHemClient
                 BaseAddress = new Uri("https://localhost:7109/") 
             });
 
-            builder.Services.AddBlazoredLocalStorage();
-            builder.Services.AddScoped<AgencyService>(); //Author: Mattias
+            builder.Services.AddBlazoredLocalStorage(); // Author: ALL
+            builder.Services.AddScoped<AgencyService>(); // Author: Mattias
 
             // Author: Christoffer
             builder.Services.AddScoped<ListingService>();

@@ -62,6 +62,8 @@ namespace AlphaHemClient.Providers
         public async Task LoggedOut()
         {
             await localStorage.RemoveItemAsync("accessToken");
+            await localStorage.RemoveItemAsync("userId");
+            await localStorage.RemoveItemAsync("email");
             var nobody = new ClaimsPrincipal(new ClaimsIdentity());
             var authState = Task.FromResult(new AuthenticationState(nobody));
             NotifyAuthenticationStateChanged(authState);

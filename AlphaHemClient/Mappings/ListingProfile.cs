@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AlphaHemClient.Model.DTO;
 using AlphaHemClient.Model.ViewModel;
+using AlphaHemAPI.Data.DTO;
 
 namespace AlphaHemClient.Mappings
 {
@@ -11,6 +12,7 @@ namespace AlphaHemClient.Mappings
         {
             CreateMap<PagedListingListDto, ListingPageViewModel>();
             CreateMap<ListingListDto, MyListingViewModel>();
+            CreateMap<ListingCreateViewModel, ListingCreateDto>();
         }
     }
 }
