@@ -1,4 +1,6 @@
-﻿@* Author: Smilla *@
+﻿@using AlphaHemClient.Services
+@using Microsoft.AspNetCore.Components.Authorization
+@* Author: Smilla *@
 <header id="header" class="header d-flex align-items-center fixed-top">
     <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
 
@@ -21,9 +23,19 @@
                 <li class="separator">
                     <NavLink href="realtor-profile">Min profil</NavLink>
                 </li>
-                <li class ="login-link">
-                    <NavLink href="login">Logga in</NavLink>
-                </li>
+                <AuthorizeView>
+                    <Authorized>
+                        <li class="login-link">
+                            <NavLink @onclick="() => authService.LogoutAsync()">Logga ut</NavLink>
+                        </li>
+                    </Authorized>
+                    <NotAuthorized>
+                        <li class ="login-link">
+                            <NavLink href="login">Logga in</NavLink>
+                        </li>
+                    </NotAuthorized>
+                </AuthorizeView>
+
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list" @onclick="ToggleNavMenu"></i>
         </nav>
@@ -33,6 +45,9 @@
 
 @code {
     private bool collapseNavMenu = true;
+
+    [Inject]
+    public AuthService authService { get; set; }
 
     private string? NavMenuCssClass => collapseNavMenu ? "mobile-nav-active" : null;
 

@@ -11,6 +11,8 @@ namespace AlphaHemClient.Mappings
         {
             CreateMap<RealtorDto, RealtorEditViewModel>();
             CreateMap<RealtorEditViewModel, RealtorUpdateDto>();
+            CreateMap<RealtorRegisterVM, RealtorRegisterDto>();
+            CreateMap<RealtorLoginVM, RealtorLoginDto>();
         }
     }
 }

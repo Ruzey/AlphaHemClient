@@ -14,7 +14,7 @@ namespace AlphaHemClient.Components
 
         private List<MyListingViewModel> listingsVM = new List<MyListingViewModel>();
         [Parameter]
-        public int RealtorId { get; set; }
+        public string RealtorId { get; set; }
         private CultureInfo priceFormat;
         private int loggedInRealtorId;
 

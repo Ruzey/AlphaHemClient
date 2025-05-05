@@ -1,21 +1,39 @@
-﻿@using Microsoft.AspNetCore.Components.Routing 
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Routing 
+
 @inject IJSRuntime JSRuntime 
 
-<Router AppAssembly="@typeof(App).Assembly" OnNavigateAsync="HandleNavigation"> @*Author: Christoffer*@
+<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+            <NotAuthorized>
+                @if(context.User.Identity?.IsAuthenticated == false)
+                {
+						navigationManager.NavigateTo("/login");
+                }
+                else
+                {
+                    <div class="alert alert-warning">
+                        <p>Du har inte behörighet att nå denna resurs.</p>
+                    </div>
+                }
+                </NotAuthorized>
+        </AuthorizeRouteView>
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
     </Found>
     <NotFound>
-        <PageTitle>Not found</PageTitle>
+            <PageTitle>Tyvärr</PageTitle>
         <LayoutView Layout="@typeof(MainLayout)">
-            <p role="alert">Sorry, there's nothing at this address.</p>
+            <p role="alert">Tyvärr, det finns inget på denna adress!.</p>
         </LayoutView>
     </NotFound>
 </Router>
+</CascadingAuthenticationState>
 
 @*Author: Christoffer*@
 @code {
+	[Inject] private NavigationManager navigationManager { get; set; }
     private async Task HandleNavigation(NavigationContext args)
     {
         await Task.Yield();

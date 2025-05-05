@@ -15,7 +15,7 @@ namespace AlphaHemClient.Pages
         private bool isError = false;
 
         [Parameter]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [Inject]
         private RealtorService RealtorService { get; set; }

@@ -80,7 +80,7 @@ namespace AlphaHemClient.Services
         }
 
         // Author: Conny
-        public async Task<List<MyListingViewModel>> GetMyListingsAsync(int id)
+        public async Task<List<MyListingViewModel>> GetMyListingsAsync(string id)
         {
             var response = await _http.GetFromJsonAsync<List<ListingListDto>>($"api/listing/realtor/{id}");
             if (response == null)
@@ -91,9 +91,11 @@ namespace AlphaHemClient.Services
         }
 
         //Author : Dominika
-        public async Task CreateListingAsync(ListingCreateDto listing)
+        // Co-author: Christoffer, Mattias, Conny
+        public async Task CreateListingAsync(ListingCreateViewModel listingVM)
         {
-            var response = await _http.PostAsJsonAsync("/api/Listing", listing);
+            var listingDto = _mapper.Map<ListingCreateDto>(listingVM);
+            var response = await _http.PostAsJsonAsync("/api/Listing", listingDto);
             response.EnsureSuccessStatusCode();
         }
 

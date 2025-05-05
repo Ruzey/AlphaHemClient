@@ -17,7 +17,7 @@ namespace AlphaHemClient.Services
             this.mapper = mapper;
         }
 
-        public async Task<RealtorProfileViewModel> GetRealtorByIdAsync(int id)
+        public async Task<RealtorProfileViewModel> GetRealtorByIdAsync(string id)
         {
             try
             {

@@ -1,4 +1,7 @@
+using AlphaHemClient.Providers;
 using AlphaHemClient.Services;
+using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
@@ -19,13 +22,18 @@ namespace AlphaHemClient
                 BaseAddress = new Uri("https://localhost:7109/") 
             });
 
-            builder.Services.AddScoped<AgencyService>(); //Author: Mattias
+            builder.Services.AddBlazoredLocalStorage(); // Author: ALL
+            builder.Services.AddScoped<AgencyService>(); // Author: Mattias
 
             // Author: Christoffer
             builder.Services.AddScoped<ListingService>();
             builder.Services.AddScoped<MunicipalityService>();
             builder.Services.AddScoped<JsLoggingService>();
 
+            builder.Services.AddScoped<AuthService>(); // Author: ALL
+            builder.Services.AddScoped<AlphaApiAuthenticationStateProvider>(); // Author: ALL
+            builder.Services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<AlphaApiAuthenticationStateProvider>()); // Author: ALL
+            builder.Services.AddAuthorizationCore();
             // Author: Smilla
             builder.Services.AddScoped<RealtorService>();
 

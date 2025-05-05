@@ -1,4 +1,4 @@
-﻿@page "/realtor/{id:int}"
+﻿@page "/realtor/{id}"
 @using AlphaHemClient.Components
 @using AlphaHemClient.Model.ViewModel
 
@@ -80,7 +80,8 @@ else
                     </div>
                 </div>
                 @* Visa endast om en inloggad mäklare visar sin egen profil *@
-                <MyListings RealtorId="realtorProfile.Id"></MyListings>
+                <MyListings RealtorId="@realtorProfile.Id"></MyListings>
+
             </div>
         </div>
     </section>

@@ -1,15 +1,16 @@
 ﻿@page "/createListing"
 @using AlphaHemAPI.Data.DTO
 @using AlphaHemAPI.Data.Models
+@using Microsoft.AspNetCore.Authorization
 @*Author : Dominika*@
+@attribute [Authorize]
 
+<h3 contenteditable="true" spellcheck="false">Skapa ny bostad</h3>
+<p contenteditable="true" spellcheck="false">Fyll i nödvändiga fält och tryck sedan på spara.</p>
 
 <EditForm Model="@listing" OnValidSubmit="HandleValidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
-
-    <h3 contenteditable="true" spellcheck="false">Skapa ny bostad</h3>
-    <p contenteditable="true" spellcheck="false">Fyll i nödvändiga fält och tryck sedan på spara.</p>
 
     <div class="row gy-4">
 
