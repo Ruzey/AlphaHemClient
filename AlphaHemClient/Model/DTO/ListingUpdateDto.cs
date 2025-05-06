@@ -24,6 +24,6 @@ namespace AlphaHemAPI.Data.DTO
 
         // Relations. Entities are fetched from these IDs to minimize data transfer
         [Required]
-        public int RealtorId { get; set; }
+        public string RealtorId { get; set; }
     }
 }

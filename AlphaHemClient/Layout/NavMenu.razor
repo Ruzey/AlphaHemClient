@@ -17,20 +17,20 @@
                 <li>
                     <NavLink href="agencies">Mäklarbyråer</NavLink>
                 </li>
-                <li>
-                    <NavLink href="createListing">Ny bostad</NavLink>
-                </li>
-                <li class="separator">
-                    <NavLink href="realtor-profile">Min profil</NavLink>
-                </li>
                 <AuthorizeView>
                     <Authorized>
+                        <li>
+                            <NavLink href="createListing">Ny bostad</NavLink>
+                        </li>
+                        <li class="separator">
+                            <NavLink href="realtor-profile">Min profil</NavLink>
+                        </li>
                         <li class="login-link">
                             <NavLink @onclick="() => authService.LogoutAsync()">Logga ut</NavLink>
                         </li>
                     </Authorized>
                     <NotAuthorized>
-                        <li class ="login-link">
+                        <li class="login-link">
                             <NavLink href="login">Logga in</NavLink>
                         </li>
                     </NotAuthorized>
