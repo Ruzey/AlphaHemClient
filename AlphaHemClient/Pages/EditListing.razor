@@ -1,11 +1,13 @@
 ﻿@page "/editListing/{id}"
 @using AlphaHemAPI.Data.DTO
 @using AlphaHemClient.Services
+@using Microsoft.AspNetCore.Authorization
 @inject ListingService ListingService
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
-
+@attribute [Authorize]
 @*Author: Dominika*@
+@*Co-Author: ALL*@
 
 <EditForm Model="@listing" OnValidSubmit="HandleValidSubmit">
     <DataAnnotationsValidator />

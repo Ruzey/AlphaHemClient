@@ -1,5 +1,7 @@
 ﻿using AlphaHemAPI.Data.DTO;
+using AlphaHemClient.Model.ViewModel;
 using AlphaHemClient.Services;
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -11,12 +13,14 @@ namespace AlphaHemClient.Pages
     public partial class EditListing
     {
         [Parameter] public string Id { get; set; }
-        private ListingUpdateDto listing = new ListingUpdateDto { Images = new List<string>() };
+        private ListingUpdateViewModel listing = new ListingUpdateViewModel { Images = new List<string>() };
         private string imageUrl { get; set; } = string.Empty;
         private string errorMessage;
+        private string currentUser;
         [Inject] private ListingService listingService { get; set; }
         [Inject] private HttpClient Http { get; set; }
         [Inject] private NavigationManager navigationManager { get; set; }
+        [Inject] private ILocalStorageService localStorage { get; set; }
 
 
 
@@ -60,13 +64,13 @@ namespace AlphaHemClient.Pages
             listing.Images.Remove(image);
         }
 
+        // Co-author: ALL
         private async Task HandleValidSubmit()
         {
             try
             {
-                listing.RealtorId = 1; //Tillfälligt tills att vi fixar identity
-
-                await listingService.UpdateListingAsync(Id, listing);
+                var idToInt = Convert.ToInt32(Id);
+                await listingService.UpdateListingAsync(idToInt, listing);
                 await Task.Delay(1000);
 
                 navigationManager.NavigateTo($"/listings/{Id}");
@@ -77,9 +81,16 @@ namespace AlphaHemClient.Pages
             }
         }
 
+        // Co-author: ALL
         protected override async Task OnInitializedAsync()
         {
+            currentUser = await localStorage.GetItemAsync<string>("userId");
             await LoadListing();
+            if (!string.Equals(currentUser, listing.RealtorId))
+            {
+                navigationManager.NavigateTo("/login");
+            }
         }
+
     }
 }
