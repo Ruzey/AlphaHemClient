@@ -14,11 +14,11 @@ namespace AlphaHemClient.Pages
     {
         [Parameter] public string Id { get; set; }
         private ListingUpdateViewModel listing = new ListingUpdateViewModel { Images = new List<string>() };
+        private ListingUpdateViewModel tempListing = new ListingUpdateViewModel { Images = new List<string>() };
         private string imageUrl { get; set; } = string.Empty;
         private string errorMessage;
         private string currentUser;
         [Inject] private ListingService listingService { get; set; }
-        [Inject] private HttpClient Http { get; set; }
         [Inject] private NavigationManager navigationManager { get; set; }
         [Inject] private ILocalStorageService localStorage { get; set; }
 
@@ -37,7 +37,7 @@ namespace AlphaHemClient.Pages
                 var response = await listingService.GetListingByIdAsync(Id);
                 if (response != null)
                 {
-                    listing = response;
+                    tempListing = response;
                 }
                 else
                 {
@@ -86,9 +86,13 @@ namespace AlphaHemClient.Pages
         {
             currentUser = await localStorage.GetItemAsync<string>("userId");
             await LoadListing();
-            if (!string.Equals(currentUser, listing.RealtorId))
+            if (!string.Equals(currentUser, tempListing.RealtorId))
             {
                 navigationManager.NavigateTo("/login");
+            }
+            else
+            {
+                listing = tempListing;
             }
         }
 

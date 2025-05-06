@@ -9,59 +9,62 @@
 @*Author: Dominika*@
 @*Co-Author: ALL*@
 
-<EditForm Model="@listing" OnValidSubmit="HandleValidSubmit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+@if(!string.IsNullOrEmpty(listing.RealtorId))
+{
+    <EditForm Model="@listing" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
 
-    <h3>Redigera bostad</h3>
+        <h3>Redigera bostad</h3>
 
-    <div class="row gy-4">
-        <div class="col-md-6">
-            <label>Pris</label>
-            <InputNumber @bind-Value="listing.Price" class="form-control" placeholder="Pris" />
+        <div class="row gy-4">
+            <div class="col-md-6">
+                <label>Pris</label>
+                <InputNumber @bind-Value="listing.Price" class="form-control" placeholder="Pris" />
+            </div>
+
+            <div class="col-md-6">
+                <label>Månadsavgift</label>
+                <InputNumber @bind-Value="listing.MonthlyFee" class="form-control" placeholder="Månadsavgift" />
+            </div>
+
+            <div class="col-md-6">
+                <label>Årsavgift</label>
+                <InputNumber @bind-Value="listing.YearlyOperatingCost" class="form-control" placeholder="Årsavgift" />
+            </div>
+
+            <div class="col-12">
+                <label>Beskrivning</label>
+                <InputTextArea @bind-Value="listing.Description" class="form-control" placeholder="Beskrivning" rows="6" />
+            </div>
+
+            <div class="col-12">
+                <InputText @bind-Value="imageUrl" class="form-control" placeholder="Bildens URL" />
+                <button type="button" class="btn btn-secondary mt-2" @onclick="AddImage">Lägg till bild</button>
+
+                @if (listing.Images.Any())
+                {
+                    <div class="mt-3">
+                        <h5>@listing.Images.Count bild(er) tillagda:</h5>
+                        <ul class="list-group">
+                            @foreach (var image in listing.Images)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>@image</span>
+                                    <button type="button" class="btn btn-danger btn-sm" @onclick="() => RemoveImage(image)">Ta bort</button>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                }
+            </div>
+
+            <div class="col-12 text-center">
+                <button class="btn btn-secondary mt-2" type="submit">Uppdatera bostad</button>
+            </div>
         </div>
-
-        <div class="col-md-6">
-            <label>Månadsavgift</label>
-            <InputNumber @bind-Value="listing.MonthlyFee" class="form-control" placeholder="Månadsavgift" />
-        </div>
-
-        <div class="col-md-6">
-            <label>Årsavgift</label>
-            <InputNumber @bind-Value="listing.YearlyOperatingCost" class="form-control" placeholder="Årsavgift" />
-        </div>
-
-        <div class="col-12">
-            <label>Beskrivning</label>
-            <InputTextArea @bind-Value="listing.Description" class="form-control" placeholder="Beskrivning" rows="6" />
-        </div>
-
-        <div class="col-12">
-            <InputText @bind-Value="imageUrl" class="form-control" placeholder="Bildens URL" />
-            <button type="button" class="btn btn-secondary mt-2" @onclick="AddImage">Lägg till bild</button>
-
-            @if (listing.Images.Any())
-            {
-                <div class="mt-3">
-                    <h5>@listing.Images.Count bild(er) tillagda:</h5>
-                    <ul class="list-group">
-                        @foreach (var image in listing.Images)
-                        {
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span>@image</span>
-                                <button type="button" class="btn btn-danger btn-sm" @onclick="() => RemoveImage(image)">Ta bort</button>
-                            </li>
-                        }
-                    </ul>
-                </div>
-            }
-        </div>
-
-        <div class="col-12 text-center">
-            <button class="btn btn-secondary mt-2" type="submit">Uppdatera bostad</button>
-        </div>
-    </div>
-</EditForm>
+    </EditForm>
+}
 
 <br />
 @if (!string.IsNullOrEmpty(errorMessage))
