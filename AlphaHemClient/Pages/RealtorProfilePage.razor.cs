@@ -13,6 +13,7 @@ namespace AlphaHemClient.Pages
         private RealtorProfileViewModel? realtorProfile;
         private bool isLoading = false;
         private bool isError = false;
+        private bool isAuthorized = false;
 
         [Parameter]
         public string Id { get; set; }
@@ -21,6 +22,8 @@ namespace AlphaHemClient.Pages
         private RealtorService RealtorService { get; set; }
         [Inject]
         private NavigationManager navigationManager { get; set; }
+        [Inject]
+        private AuthService authService { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -28,6 +31,7 @@ namespace AlphaHemClient.Pages
             isError = false;
             try
             {
+                isAuthorized = await authService.AuthorizeUser(Id);
                 realtorProfile = await RealtorService.GetRealtorByIdAsync(Id);
                 if (realtorProfile == null)
                 {
