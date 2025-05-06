@@ -1,4 +1,5 @@
 ﻿@using AlphaHemClient.Services
+@using Blazored.LocalStorage
 @using Microsoft.AspNetCore.Components.Authorization
 @* Author: Smilla *@
 <header id="header" class="header d-flex align-items-center fixed-top">
@@ -23,7 +24,7 @@
                             <NavLink href="createListing">Ny bostad</NavLink>
                         </li>
                         <li class="separator">
-                            <NavLink href="realtor-profile">Min profil</NavLink>
+                            <NavLink href="@($"/realtor/{realtorId}")">Min profil</NavLink>
                         </li>
                         <li class="login-link">
                             <NavLink @onclick="() => authService.LogoutAsync()">Logga ut</NavLink>
@@ -42,17 +43,3 @@
 
     </div>
 </header>
-
-@code {
-    private bool collapseNavMenu = true;
-
-    [Inject]
-    public AuthService authService { get; set; }
-
-    private string? NavMenuCssClass => collapseNavMenu ? "mobile-nav-active" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-}

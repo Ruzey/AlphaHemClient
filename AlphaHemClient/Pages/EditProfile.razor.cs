@@ -10,18 +10,24 @@ namespace AlphaHemClient.Pages
     {
         [Inject] private RealtorService realtorService { get; set; }
         [Inject] private NavigationManager navigationManager { get; set; }
-        [Parameter] public int Id { get; set; }
+        [Inject] private AuthService authService { get; set; } // Author: ALL
+        [Parameter] public string Id { get; set; }
 
         private string errorMessage;
         private RealtorEditViewModel realtorEditVM = new RealtorEditViewModel();
 
-        protected override async Task OnInitializedAsync()
+        
+        protected override async Task OnInitializedAsync() // Author: ALL
         {
+            if (!await authService.AuthorizeUser(Id))
+            {
+                navigationManager.NavigateTo("/login");
+            }
             await LoadRealtor();
         }
         private async Task LoadRealtor()
         {
-            if (Id == 0)
+            if (string.IsNullOrEmpty(Id))
             {
                 errorMessage = "Ingen giltig ID angiven.";
                 return;

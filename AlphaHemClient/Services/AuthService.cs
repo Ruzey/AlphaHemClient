@@ -84,5 +84,11 @@ namespace AlphaHemClient.Services
         {
             await alphaApiAuthenticationStateProvider.LoggedOut();
         }
+
+        public async Task<bool> AuthorizeUser(string entityId)
+        {
+            var userId = await localStorage.GetItemAsync<string>("userId");
+            return userId == entityId;
+        }
     }
 }

@@ -17,10 +17,9 @@ namespace AlphaHemClient.Pages
         private ListingUpdateViewModel tempListing = new ListingUpdateViewModel { Images = new List<string>() };
         private string imageUrl { get; set; } = string.Empty;
         private string errorMessage;
-        private string currentUser;
         [Inject] private ListingService listingService { get; set; }
         [Inject] private NavigationManager navigationManager { get; set; }
-        [Inject] private ILocalStorageService localStorage { get; set; }
+        [Inject] private AuthService authService { get; set; }
 
 
 
@@ -84,9 +83,8 @@ namespace AlphaHemClient.Pages
         // Co-author: ALL
         protected override async Task OnInitializedAsync()
         {
-            currentUser = await localStorage.GetItemAsync<string>("userId");
             await LoadListing();
-            if (!string.Equals(currentUser, tempListing.RealtorId))
+            if (!await authService.AuthorizeUser(tempListing.RealtorId))
             {
                 navigationManager.NavigateTo("/login");
             }
@@ -95,6 +93,5 @@ namespace AlphaHemClient.Pages
                 listing = tempListing;
             }
         }
-
     }
 }

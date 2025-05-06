@@ -45,7 +45,7 @@ namespace AlphaHemClient.Services
         }
 
         // Author: Conny
-        public async Task<RealtorEditViewModel> GetRealtorForEditAsync(int id)
+        public async Task<RealtorEditViewModel> GetRealtorForEditAsync(string id)
         {
             try
             {

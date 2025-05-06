@@ -1,6 +1,7 @@
 ﻿@page "/realtor/{id}"
 @using AlphaHemClient.Components
 @using AlphaHemClient.Model.ViewModel
+@using Microsoft.AspNetCore.Components.Authorization
 
 @* Author : Smilla *@
 @*Co-Author: Dominika, Conny*@
@@ -26,8 +27,8 @@ else
         <div class="container" data-aos="fade-up" data-aos-delay="100">
             <div class="row align-items-center gx-3">
                 <div class="col-lg-5 col-md-5 position-relative" data-aos="fade-right" data-aos-delay="200">
-                    <div class="about-image">                       
-                            <RealtorImage ImageUrl="@realtorProfile.ProfilePicture" class="img-fluid rounded-4"/>                    
+                    <div class="about-image">
+                        <RealtorImage ImageUrl="@realtorProfile.ProfilePicture" class="img-fluid rounded-4" />
                     </div>
                 </div>
 
@@ -65,14 +66,15 @@ else
                                         </div>
                                     </div>
                                 </div>
-                                @*Kolla om användare är inloggad som denna mäklare.
-                                    Visa isf knappen nedan.
-                                *@
-                                <div class="row mt-2">
-                                    <div class="col-12 col-sm-6 col-lg-4">
-                                        <button @onclick="EditProfile" class="btn btn-primary">Redigera profil</button>
+
+                                @if (isAuthorized)
+                                {
+                                    <div class="row mt-2">
+                                        <div class="col-12 col-sm-6 col-lg-4">
+                                            <button @onclick="EditProfile" class="btn btn-primary">Redigera profil</button>
+                                        </div>
                                     </div>
-                                </div>
+                                }
 
                             </div>
 

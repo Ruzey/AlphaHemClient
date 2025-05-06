@@ -5,7 +5,7 @@ namespace AlphaHemClient.Model.ViewModel
     // Author: Conny
     public class RealtorEditViewModel
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         [Required]
         public string FirstName { get; set; }
         [Required]
