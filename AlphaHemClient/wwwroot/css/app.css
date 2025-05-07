@@ -92,6 +92,10 @@ h1, h2, h3, h4, h5, h6 {
 .login-link {
     margin-left: 65px;
 }
+
+.login-link:hover {
+    cursor: pointer;
+}
     
 .body-content {
     margin-top: 95px;

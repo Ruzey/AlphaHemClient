@@ -19,14 +19,5 @@ namespace AlphaHemClient.Pages
         {
             listing = await Http.GetFromJsonAsync<ListingDetailsDto>($"/api/listing/{id}");
         }
-
-        private string FormatCurrency(decimal value)
-        {
-            if (value == 0)
-            {
-                return "Ingen avgift";
-            }
-            return value.ToString("N0").Replace(",", " ") + " kr";
-        }
     }
 }

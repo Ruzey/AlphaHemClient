@@ -11,5 +11,6 @@
         public string PhoneNumber { get; set; }
         public string ProfilePicture { get; set; }
         public string Agency { get; set; }
+        public bool EmailConfirmed { get; set; }
     }
 }
