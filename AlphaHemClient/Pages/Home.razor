@@ -22,14 +22,14 @@ OnSortSelected="OnSortChanged" />
 @if (viewModel.Listings != null && viewModel.Listings.Any())
 {
             <ListingList Listings="viewModel.Listings" />
+    <Pagination CurrentPage="@currentPage"
+                TotalPages="@totalPages"
+                TotalCount="@viewModel.TotalCount"
+                OnPageSelected="OnPageChanged" />
 }
 else
 {
     <p>Inga bostäder till salu.</p>
 }
 
-<Pagination 
-CurrentPage="@currentPage" 
-TotalPages="@totalPages" 
-TotalCount="@viewModel.TotalCount"
-OnPageSelected="OnPageChanged" />
+

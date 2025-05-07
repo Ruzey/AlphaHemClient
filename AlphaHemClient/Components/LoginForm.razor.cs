@@ -10,8 +10,9 @@ namespace AlphaHemClient.Components
     public partial class LoginForm
     {
         RealtorLoginVM LoginModel = new RealtorLoginVM();
-        string LoginMessage = string.Empty;
-
+        string realtorId = string.Empty;
+        string loginMessage = string.Empty;
+        bool loginState = false;
         [Inject]
         public AuthService AuthService { get; set; }
         [Inject]
@@ -19,10 +20,16 @@ namespace AlphaHemClient.Components
 
         public async Task HandleLogin()
         {
-            LoginMessage = await AuthService.LoginAsync(LoginModel);
-            StateHasChanged();
-            //await Task.Delay(3000);
-            //navigationManager.NavigateTo("/");
+            loginState = await AuthService.LoginAsync(LoginModel);
+            if (loginState)
+            {
+                realtorId = await AuthService.GetLoggedInUserId();
+                navigationManager.NavigateTo($"/realtor/{realtorId}");
+            }
+            else
+            {
+                loginMessage = "Inloggning misslyckades, kontrollera dina inloggningsuppgifter";
+            }
         }
     }
 }

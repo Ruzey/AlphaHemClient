@@ -6,32 +6,26 @@ using System.Globalization;
 namespace AlphaHemClient.Components
 {
     // Author: Conny
-    // Co-Author: Niklas
+    // Co-Author: ALL
     public partial class MyListings
     {
         [Inject]
         private ListingService listingService { get; set; }
+        [Inject]
+        private AuthService authService { get; set; }
+        private bool IsAuthorized;
 
         private List<MyListingViewModel> listingsVM = new List<MyListingViewModel>();
         [Parameter]
         public string RealtorId { get; set; }
-        private CultureInfo priceFormat;
-        private int loggedInRealtorId;
 
 
         private bool showConfirmModal = false;
         private int listingIdToDelete;
         protected override async Task OnInitializedAsync()
         {
-            //Prep inför identity
-            //loggedInRealtorId = WHATEVER;
+            IsAuthorized = await authService.AuthorizeUser(RealtorId);
             listingsVM = await listingService.GetMyListingsAsync(RealtorId);
-
-            // Format the price to Swedish format
-            priceFormat = new CultureInfo("sv-SE");
-            priceFormat.NumberFormat.NumberGroupSeparator = " ";
-            priceFormat.NumberFormat.NumberDecimalSeparator = ",";
-            priceFormat.NumberFormat.CurrencyPositivePattern = 3;
         }
         private void AskForDeleteConfirmation(int id)
         {

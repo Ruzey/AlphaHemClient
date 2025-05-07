@@ -1,4 +1,5 @@
-﻿
+﻿@using AlphaHemClient.HelperClasses
+
 @* Author: Conny *@
 @* Co-Author: Niklas *@
 
@@ -33,17 +34,17 @@
                             <td>@listing.Address</td>
                             <td>@listing.Municipality</td>
                             <td>@listing.Category</td>
-                            <td>@listing.Price.ToString("C", priceFormat)</td>
+                            <td>@listing.Price.ToPriceString()</td>
                             <td>
                                 @*Prep inför identity*@
-                                @*@if (listing.RealtorId == loggedInRealtorId)*@
-                                @* { *@
+                                @if (IsAuthorized)
+                                {
                                     <i class="icon bi bi-trash-fill text-danger fs-5 me-2"
                                        style="cursor: pointer;"
                                        @onclick="() => AskForDeleteConfirmation(listing.Id)">
                                     </i>
-                                @* } *@
-                                <a href="/editListing/@listing.Id"><i class="icon bi bi-pencil-square fs-5"></i></a>
+                                    <a href="/editListing/@listing.Id"><i class="icon bi bi-pencil-square fs-5"></i></a>
+                                } 
                                 <a href="/listings/@listing.Id"><i class="icon bi bi-link fs-5 font-weight-bold"></i></a>
                             </td>
                     </tr>

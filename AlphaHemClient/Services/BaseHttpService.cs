@@ -3,6 +3,7 @@ using System.Net.Http.Headers;
 
 namespace AlphaHemClient.Services
 {
+    //Author: ALL
     public class BaseHttpService
     {
         private readonly HttpClient client;

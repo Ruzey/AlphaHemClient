@@ -1,6 +1,7 @@
 ﻿@page "/listings/{id:int}"
 @using AlphaHemAPI.Data.DTO
 @using AlphaHemClient.Components
+@using AlphaHemClient.HelperClasses
 @* Author: Niklas 
    Co-author: Smilla
 *@
@@ -20,7 +21,7 @@ else
                 <div class="col-md-6">
                     <h1 class="fw-bold">@listing.Address<EditPen ListingId="@listing.Id" class="ms-3"/></h1>
                     <h5 class="text-muted">@listing.Category - @listing.MunicipalityName</h5>
-                    <h2 class="text-primary mt-3" style="color: #9B2EC9 !important">@FormatCurrency(listing.Price)</h2>
+                    <h2 class="text-primary mt-3" style="color: #9B2EC9 !important">@listing.Price.ToPriceString()</h2>
 
                     <ul class="list-group list-group-flush my-4">
                         <li class="list-group-item"><strong>Antal rum:</strong> @listing.Rooms</li>
@@ -28,8 +29,8 @@ else
                         <li class="list-group-item"><strong>Boarea:</strong> @listing.LivingArea m²</li>
                         <li class="list-group-item"><strong>Biarea:</strong> @listing.SecondaryArea m²</li>
                         <li class="list-group-item"><strong>Tomtarea:</strong> @listing.LotArea m²</li>
-                        <li class="list-group-item"><strong>Månadsavgift:</strong> @FormatCurrency(listing.MonthlyFee)</li>
-                        <li class="list-group-item"><strong>Årlig driftkostnad:</strong> @FormatCurrency(listing.YearlyOperatingCost)</li>
+                        <li class="list-group-item"><strong>Månadsavgift:</strong> @listing.MonthlyFee.ToPriceString()</li>
+                        <li class="list-group-item"><strong>Årlig driftkostnad:</strong> @listing.YearlyOperatingCost.ToPriceString()</li>
                     </ul>
 
                     <h4 class="mt-4">Kontaktinformation</h4>

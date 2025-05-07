@@ -1,17 +1,18 @@
 ﻿using AlphaHemAPI.Data.DTO;
 using AlphaHemClient.Model.ViewModel;
 using AutoMapper;
+using Blazored.LocalStorage;
 using System.Net.Http.Json;
 
 namespace AlphaHemClient.Services
 {
     // Author : Smilla
-    public class RealtorService
+    public class RealtorService : BaseHttpService
     {
         private readonly HttpClient httpClient;
         private readonly IMapper mapper;
 
-        public RealtorService(HttpClient httpClient, IMapper mapper)
+        public RealtorService(HttpClient httpClient, IMapper mapper, ILocalStorageService localStorage) : base(httpClient, localStorage)
         {
             this.httpClient = httpClient;
             this.mapper = mapper;
@@ -87,6 +88,26 @@ namespace AlphaHemClient.Services
                 Console.WriteLine($"Ett oväntat fel uppstod vid uppdatering av mäklare: {ex.Message}");
                 return false;
             }
+        }
+
+        //Author: ALL
+        public async Task<bool> ApproveRealtor(string id)
+        {
+            await GetBearerToken();
+            try
+            {
+                var response = await httpClient.PutAsync($"api/Realtor/ApproveRealtor/{id}", null);
+                if (!response.IsSuccessStatusCode)
+                {
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
         }
     }
 }

@@ -50,19 +50,17 @@ namespace AlphaHemClient.Services
             }
         }
 
-        public async Task<string> LoginAsync(RealtorLoginVM loginUser)
+        public async Task<bool> LoginAsync(RealtorLoginVM loginUser)
         {
             try
             {
                 var realtor = map.Map<RealtorLoginDto>(loginUser);
                 var response = await http.PostAsJsonAsync("api/Auth/login", realtor);
-
                 var content = await response.Content.ReadAsStringAsync();
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    string errorMessage = ($"Inloggning misslyckades: " + content);
-                    return errorMessage;
+                    return false;
                 }
 
                 var data = JsonSerializer.Deserialize<UserData>(content);
@@ -71,15 +69,21 @@ namespace AlphaHemClient.Services
                 await localStorage.SetItemAsync("userId", data.UserId);
 
                 await alphaApiAuthenticationStateProvider.LoggedIn();
-                return data.Token;
+
+                return true;
 
             }
             catch (Exception ex)
             {
-                return $"Inloggning misslyckades: {ex.Message}";
+                return false;
             }
         }
 
+        public async Task<string> GetLoggedInUserId()
+        {
+            var userId = await localStorage.GetItemAsync<string>("userId");
+            return userId;
+        }
         public async Task LogoutAsync()
         {
             await alphaApiAuthenticationStateProvider.LoggedOut();
