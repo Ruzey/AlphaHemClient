@@ -22,7 +22,12 @@ namespace AlphaHemClient.Services
             _jsLoggingService = jsLoggingService;
         }
 
-        public async Task<ListingPageViewModel> GetPaginatedListingsAsync(int pageIndex = 1, int pageSize = 10, string? municipality = null, string? sortBy = null)
+        public async Task<ListingPageViewModel> GetPaginatedListingsAsync(
+            int pageIndex = 1,
+            int pageSize = 9,
+            string? municipality = null,
+            string? category = null,
+            string? sortBy = null)
         {
             try
             {
@@ -67,7 +72,6 @@ namespace AlphaHemClient.Services
                 {
                     var error = await response.Content.ReadAsStringAsync();
                     await _jsLoggingService.LogToConsole($"Fel vid API-anrop, status: {response.StatusCode}, error: {error}");
-                    Console.WriteLine($"Tekniskt fel: {error}");
                     throw new Exception("Kunde inte hämta bostadsdata.");
                 }
             }
@@ -75,7 +79,6 @@ namespace AlphaHemClient.Services
             {
                 // Logga och skriv ut fel
                 await _jsLoggingService.LogToConsole($"Error fetching listings: {ex.Message}");
-                Console.WriteLine($"Error fetching listings: {ex.Message}");
                 return new ListingPageViewModel();
             }
         }

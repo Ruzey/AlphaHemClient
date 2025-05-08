@@ -11,11 +11,13 @@ namespace AlphaHemClient.Services
     {
         private readonly HttpClient _http;
         private readonly IMapper _mapper;
+        private readonly JsLoggingService _jsLoggingService;
 
-        public MunicipalityService(HttpClient http, IMapper mapper)
+        public MunicipalityService(HttpClient http, IMapper mapper, JsLoggingService jsLoggingService)
         {
             _http = http;
             _mapper = mapper;
+            _jsLoggingService = jsLoggingService;
         }
 
         public async Task<List<MunicipalityViewModel>> GetMunicipalitiesAsync()
@@ -25,7 +27,10 @@ namespace AlphaHemClient.Services
                 var dtoList = await _http.GetFromJsonAsync<List<MunicipalityListDto>>("api/Municipality");
 
                 if (dtoList == null)
+                {
+                    await _jsLoggingService.LogToConsole($"Error fetching municipalities");
                     return new List<MunicipalityViewModel>();
+                }
 
                 var vmList = _mapper.Map<List<MunicipalityViewModel>>(dtoList);
 
@@ -33,7 +38,7 @@ namespace AlphaHemClient.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error fetching municipalities: " + ex.Message);
+                await _jsLoggingService.LogToConsole($"Error fetching municipalities: {ex.Message}");
                 return new List<MunicipalityViewModel>();
             }
 
