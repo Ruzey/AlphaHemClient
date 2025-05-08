@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using AlphaHemAPI.Data.DTO;
 using AlphaHemClient.Model.DTO;
 using AlphaHemClient.Model.ViewModel;
 using AlphaHemClient.Services;
@@ -57,19 +56,19 @@ namespace AlphaHemClient.Pages
             switch (response.StatusCode)
             {
                 case HttpStatusCode.BadRequest:
-                    navigationManager.NavigateTo("/400BadRequest");
+                    navigationManager.NavigateTo("/400-BadRequest");
                     break;
 
                 case HttpStatusCode.Unauthorized:
-                    navigationManager.NavigateTo("/401Unauthorized");
+                    navigationManager.NavigateTo("/401-Unauthorized");
                     break;
 
                 case HttpStatusCode.NotFound:
-                    navigationManager.NavigateTo("/404NotFound");
+                    navigationManager.NavigateTo("/404-NotFound");
                     break;
 
                 case HttpStatusCode.InternalServerError:
-                    navigationManager.NavigateTo("/500InternalServerError");
+                    navigationManager.NavigateTo("/500-InternalServerError");
                     break;
 
                 default: // 204 NoContent
