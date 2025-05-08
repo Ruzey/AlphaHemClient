@@ -1,5 +1,4 @@
-﻿using AlphaHemClient.Model.ViewModel;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 
 namespace AlphaHemClient.Components
 {

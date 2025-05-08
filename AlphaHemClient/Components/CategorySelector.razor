@@ -7,7 +7,7 @@
 
         @foreach (var category in Enum.GetValues(typeof(Category)).Cast<Category>())
         {
-            <option class="simple-purple-text" value="@category">@category</option>
+            <option class="simple-purple-text" value="@category.ToString()">@category</option>
         }
     </select>
 </div>

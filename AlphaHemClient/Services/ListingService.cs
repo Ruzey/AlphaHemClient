@@ -41,6 +41,11 @@ namespace AlphaHemClient.Services
                     queryParams.Add($"municipality={municipality}");
                 }
 
+                if (!string.IsNullOrEmpty(category))
+                {
+                    queryParams.Add($"category={category}");
+                }
+
                 if (!string.IsNullOrEmpty(sortBy))
                 {
                     queryParams.Add($"sortBy={sortBy}");

@@ -14,8 +14,6 @@ namespace AlphaHemClient.Model.ViewModel
         {
             new SortOption { Value = "price", Label = "Pris (Lägst först)" },
             new SortOption { Value = "price_desc", Label = "Pris (Högst först)" },
-            new SortOption { Value = "category", Label = "Kategori (A-Ö)" },
-            new SortOption { Value = "category_desc", Label = "Kategori (Ö-A)" },
         };
 
     }
