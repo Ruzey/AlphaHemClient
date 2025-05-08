@@ -1,0 +1,13 @@
+﻿@using AlphaHemAPI.Data.Models
+@*Author: Christoffer*@
+
+<div class="mb-3">
+    <select id="categorySelect" class="form-select simple-purple-text" style="width: 200px;" @onchange="OnCategoryChanged">
+        <option value="">Alla bostadstyper  </option>
+
+        @foreach (var category in Enum.GetValues(typeof(Category)).Cast<Category>())
+        {
+            <option class="simple-purple-text" value="@category">@category</option>
+        }
+    </select>
+</div>
