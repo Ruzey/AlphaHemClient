@@ -22,10 +22,13 @@ OnSortSelected="OnSortChanged" />
 @if (viewModel.Listings != null && viewModel.Listings.Any())
 {
             <ListingList Listings="viewModel.Listings" />
-    <Pagination CurrentPage="@currentPage"
+            @if (totalPages > 1)
+            {
+                <Pagination CurrentPage="@currentPage"
                 TotalPages="@totalPages"
                 TotalCount="@viewModel.TotalCount"
                 OnPageSelected="OnPageChanged" />
+            }
 }
 else
 {
