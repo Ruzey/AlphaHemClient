@@ -3,7 +3,7 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @*Author: Mattias*@
 @*Co-Author: ALL*@
-@if (Agency == null)
+@if (agency == null)
 {
     <p><em>Laddar byråinformation...</em></p>
 }
@@ -15,17 +15,17 @@ else
             <div class="row gy-4">
 
                 <div class="col-lg-6 about-images" data-aos="fade-up" data-aos-delay="200">
-                    <img src="@(!string.IsNullOrEmpty(Agency.Logo) ? Agency.Logo : "https://i.imgur.com/g3aix21.png")" class="img-fluid" alt="@Agency.Name">
+                    <img src="@(!string.IsNullOrEmpty(agency.Logo) ? agency.Logo : "https://i.imgur.com/g3aix21.png")" class="img-fluid" alt="@agency.Name">
                 </div>
 
                 <div class="col-lg-6 content" data-aos="fade-up" data-aos-delay="100">
                     <p class="who-we-are">Våran byrå</p>
-                    <h3>@Agency?.Name</h3>
-                    <p class="fst-italic">@Agency?.Presentation</p>
+                    <h3>@agency?.Name</h3>
+                    <p class="fst-italic">@agency?.Presentation</p>
 
                         <h5 class="mt-4">Våra mäklare</h5>
                         <ul>
-                            @foreach (var realtor in Agency.Realtors)
+                            @foreach (var realtor in agency.Realtors)
                             {
                                 @if(realtor.EmailConfirmed)
                                 {
@@ -52,11 +52,11 @@ else
                         {
                             <AuthorizeView Roles="RealtorAdmin">
                                 <Authorized>
-								@if (Agency.Realtors.Any(r => !r.EmailConfirmed))
+								@if (agency.Realtors.Any(r => !r.EmailConfirmed))
                                 {
                                   <h5 class="mt-4">Väntar på konto confirmed</h5>
                                     <ul>
-                                        @foreach (var realtor in Agency.Realtors)
+                                        @foreach (var realtor in agency.Realtors)
                                         {
                                             @if (!realtor.EmailConfirmed)
                                             {
