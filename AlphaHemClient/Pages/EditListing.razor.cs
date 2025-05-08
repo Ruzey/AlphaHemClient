@@ -12,7 +12,7 @@ namespace AlphaHemClient.Pages
     //Author: Dominika
     public partial class EditListing
     {
-        [Parameter] public string Id { get; set; }
+        [Parameter] public int Id { get; set; }
         private ListingUpdateViewModel listing = new ListingUpdateViewModel { Images = new List<string>() };
         private ListingUpdateViewModel tempListing = new ListingUpdateViewModel { Images = new List<string>() };
         private string imageUrl { get; set; } = string.Empty;
@@ -27,12 +27,6 @@ namespace AlphaHemClient.Pages
         {
             try
             {
-                if(string.IsNullOrEmpty(Id))
-                {
-                    errorMessage = "Ingen giltig ID angiven.";
-                    return;
-                }
-
                 var response = await listingService.GetListingByIdAsync(Id);
                 if (response != null)
                 {
@@ -68,8 +62,7 @@ namespace AlphaHemClient.Pages
         {
             try
             {
-                var idToInt = Convert.ToInt32(Id);
-                await listingService.UpdateListingAsync(idToInt, listing);
+                await listingService.UpdateListingAsync(Id, listing);
                 await Task.Delay(1000);
 
                 navigationManager.NavigateTo($"/listings/{Id}");

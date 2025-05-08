@@ -128,7 +128,7 @@ namespace AlphaHemClient.Services
         }
 
         //Author: Dominika
-        public async Task<ListingUpdateViewModel> GetListingByIdAsync(string id)
+        public async Task<ListingUpdateViewModel> GetListingByIdAsync(int id)
         {
             var response = await _http.GetFromJsonAsync<ListingDetailsDto>($"/api/Listing/{id}");
             if (response != null)
