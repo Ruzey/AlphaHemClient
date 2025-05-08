@@ -25,7 +25,14 @@ namespace AlphaHemClient.Pages
         [Inject]
         private AuthService authService { get; set; }
 
-        protected override async Task OnInitializedAsync()
+        // Author: Conny
+        private void EditProfile()
+        {
+            navigationManager.NavigateTo($"/editProfile/{Id}");
+        }
+
+        //Author: Smilla
+        protected override async Task OnParametersSetAsync()
         {
             isLoading = true;
             isError = false;
@@ -47,12 +54,6 @@ namespace AlphaHemClient.Pages
             {
                 isLoading = false;
             }
-        }
-
-        // Author: Conny
-        private void EditProfile()
-        {
-            navigationManager.NavigateTo($"/editProfile/{Id}");
         }
     }
 }

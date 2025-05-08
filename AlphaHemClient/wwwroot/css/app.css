@@ -94,7 +94,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .login-link:hover {
-    cursor: pointer;
+    cursor: pointer !important;
 }
     
 .body-content {
