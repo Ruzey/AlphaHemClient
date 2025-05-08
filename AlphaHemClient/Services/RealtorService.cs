@@ -1,8 +1,12 @@
 ﻿using AlphaHemAPI.Data.DTO;
+using AlphaHemClient.Model.DTO;
 using AlphaHemClient.Model.ViewModel;
 using AutoMapper;
 using Blazored.LocalStorage;
+using System.Linq.Expressions;
+using System.Net;
 using System.Net.Http.Json;
+using System.Runtime.InteropServices;
 
 namespace AlphaHemClient.Services
 {
@@ -96,8 +100,8 @@ namespace AlphaHemClient.Services
             await GetBearerToken();
             try
             {
-                var response = await httpClient.PutAsync($"api/Realtor/ApproveRealtor/{id}", null);
-                if (!response.IsSuccessStatusCode)
+                var httpResponse = await httpClient.PutAsync($"api/Realtor/ApproveRealtor/{id}", null);
+                if (!httpResponse.IsSuccessStatusCode)
                 {
                     return false;
                 }
@@ -108,6 +112,63 @@ namespace AlphaHemClient.Services
                 return false;
             }
 
+        }
+
+        // Author: Conny
+        public async Task<Response> DeclineRealtorAsync(string id)
+        {
+            await GetBearerToken();
+
+            try
+            {
+                var httpResponse = await httpClient.DeleteAsync($"api/Realtor/{id}");
+                if (!httpResponse.IsSuccessStatusCode)
+                {
+                    var httpResponseContent = await httpResponse.Content.ReadAsStringAsync();
+
+                    // Hantera HTTP returkoder om inte 200-299
+                    switch (httpResponse.StatusCode)
+                    {
+                        case HttpStatusCode.NotFound: // 404
+                            return new Response
+                            {
+                                Message = "Mäklaren kunde inte hittas.",
+                                Errors = new List<string> { httpResponseContent },
+                                StatusCode = httpResponse.StatusCode
+                            };
+                        case HttpStatusCode.BadRequest: // 400
+                            return new Response
+                            {
+                                Message = "Fel vid förfrågan om att uppdatera mäklarlistan.",
+                                Errors = new List<string> { httpResponseContent },
+                                StatusCode = httpResponse.StatusCode
+                            };
+                        case HttpStatusCode.Unauthorized: // 401
+                            return new Response
+                            {
+                                Message = "Du har inte behörighet att genomföra denna åtgärd.",
+                                Errors = new List<string> { httpResponseContent },
+                                StatusCode = httpResponse.StatusCode
+                            };
+                    }
+                }
+
+                // Skicka tillbaka HTTP returkod om allt går bra
+                return new Response
+                {
+                    Success = true,
+                    StatusCode = httpResponse.StatusCode // 204
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response
+                {
+                    Message = "Ett oväntat fel har uppstått.",
+                    Errors = new List<string> { $"Felmeddelande: {ex.Message}" },
+                    StatusCode = HttpStatusCode.InternalServerError // 500
+                };
+            }
         }
     }
 }

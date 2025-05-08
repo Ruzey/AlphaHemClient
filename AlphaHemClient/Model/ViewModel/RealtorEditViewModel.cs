@@ -16,7 +16,6 @@ namespace AlphaHemClient.Model.ViewModel
         [Required]
         [Phone]
         public string PhoneNumber { get; set; }
-        [Required]
-        public string ProfilePicture { get; set; }
+        public string? ProfilePicture { get; set; }
     }
 }
