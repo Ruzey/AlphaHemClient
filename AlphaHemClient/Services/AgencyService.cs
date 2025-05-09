@@ -1,5 +1,11 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net;
+using System.Net.Http.Json;
+using System.Text.Json;
+using AlphaHemAPI.Data.DTO;
+using AlphaHemClient.Model.DTO;
 using AlphaHemClient.Model.ViewModel;
+using AutoMapper;
+using Microsoft.Extensions.Options;
 
 namespace AlphaHemClient.Services
 {
@@ -7,10 +13,12 @@ namespace AlphaHemClient.Services
     public class AgencyService
     {
         private readonly HttpClient _http;
+        private readonly IMapper _mapper;
 
-        public AgencyService(HttpClient http)
+        public AgencyService(HttpClient http, IMapper mapper)
         {
             this._http = http;
+            this._mapper = mapper;
         }
 
         public async Task<List<AgencyNamesViewModel>> GetAllAgencyNames()
@@ -41,16 +49,50 @@ namespace AlphaHemClient.Services
             }
         }
 
-        public async Task<AgencyVM> GetAgencyById(int id)
+        public async Task<Response<AgencyVM>> GetAgencyById(int id)
         {
             try
             {
-                var response = await _http.GetFromJsonAsync<AgencyVM>($"api/agency/{id}");
-                return response ?? new AgencyVM();
+                // var response = await _http.GetFromJsonAsync<AgencyVM>($"api/agency/{id}");
+                var httpResponse = await _http.GetAsync($"api/agency/{id}");
+                var content = await httpResponse.Content.ReadAsStringAsync();
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    var agencyDto = JsonSerializer.Deserialize<AgencyWithRealtorsDto>(content, options);
+
+                    var agencyVM = _mapper.Map<AgencyVM>(agencyDto);
+
+                    return new Response<AgencyVM>
+                    {
+                        Data = agencyVM,
+                        StatusCode = HttpStatusCode.OK
+                    };
+                }
+                else
+                {
+                    var responseAgencyDto = JsonSerializer.Deserialize<Response<AgencyWithRealtorsDto>>(content, options);
+                    return new Response<AgencyVM>
+                    {
+                        Data = null,
+                        StatusCode = responseAgencyDto.StatusCode,
+                        Message = responseAgencyDto.Message,
+                        Errors = responseAgencyDto.Errors
+                    };
+                }
             }
             catch (Exception ex)
             {
-                throw new Exception("An error occurred while fetching the agency", ex);
+                return new Response<AgencyVM>
+                {
+                    Data = null,
+                    StatusCode = HttpStatusCode.ServiceUnavailable,
+                    Message = "Ett oväntat fel har uppstått.",
+                    Errors = new List<string> { $"Felmeddelande: {ex.Message}." }
+                };
             }
         }
     }

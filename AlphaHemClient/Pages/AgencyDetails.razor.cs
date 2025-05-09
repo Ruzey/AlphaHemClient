@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using AlphaHemClient.HelperClasses;
 using AlphaHemClient.Model.DTO;
 using AlphaHemClient.Model.ViewModel;
 using AlphaHemClient.Services;
@@ -24,9 +25,38 @@ namespace AlphaHemClient.Pages
         public RealtorService realtorService { get; set; }
         private AgencyVM? agency { get; set; }
 
+        // Co-author: ALL
         protected override async Task OnInitializedAsync()
         {
-            agency = await agencyService.GetAgencyById(id);
+            /*
+                Slutade här i fredags. Vi började på att skapa en helper klass för hantering av http returkoder.
+                Denna helpermetod ska returnera en null string när statuskod är mellan 200 och 299, annars 
+                returnerar den en string som motsvarar korrekt error-sida som ska användas med navigation manager.
+                Poängen är att få bort så många switch-statements som möjligt från våra code-behinds (och eventuellt
+                från controllers i API:t).
+
+                Vid mån av tid ska vi fixa så att error-sidorna kan ta emot felmeddelanden som kan visas upp så
+                att användaren tydligt ser vad som blev fel.
+            */
+            
+            var response = await agencyService.GetAgencyById(id);
+            var page = StatusCodeHandler.Handler(response.StatusCode);
+            switch (response.StatusCode)
+            {
+                case HttpStatusCode.OK:
+                    agency = response.Data;
+                    break;
+                case HttpStatusCode.NotFound:
+                    navigationManager.NavigateTo(page);
+                    return;
+                case HttpStatusCode.InternalServerError:
+                    navigationManager.NavigateTo("/500-InternalServerError");
+                    return;
+                case HttpStatusCode.ServiceUnavailable:
+                    navigationManager.NavigateTo("/503-ServiceUnavailable");
+                    return;
+            }
+
             loggedInUserId = await authService.GetLoggedInUserId();
             var realtor = await realtorService.GetRealtorByIdAsync(loggedInUserId);
             if (realtor == null)
@@ -36,7 +66,6 @@ namespace AlphaHemClient.Pages
 
             if (agency.Name == realtor.AgencyName)
                 sameAgency = true;
-
         }
 
         public async Task ApproveRealtor(string id)
@@ -47,7 +76,6 @@ namespace AlphaHemClient.Pages
                 agency.Realtors.FirstOrDefault(r => r.Id == id).EmailConfirmed = true;
             }
         }
-        // Radera mäklare om vi inte vill ha kvar dem på våran byrå
 
         // Author: Conny
         public async Task DeclineRealtor(string id)
