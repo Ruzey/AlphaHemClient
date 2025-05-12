@@ -7,9 +7,7 @@ namespace AlphaHemClient.Model.ViewModel
     public class ListingPageViewModel
     {
         public int TotalCount { get; set; }
-    
         public List<ListingListDto> Listings { get; set; } = new List<ListingListDto>();
-
         public List<SortOption> SortOptions { get; set; } = new List<SortOption>
         {
             new SortOption { Value = "price", Label = "Pris (Lägst först)" },
