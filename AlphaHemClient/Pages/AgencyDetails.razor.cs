@@ -28,34 +28,16 @@ namespace AlphaHemClient.Pages
         // Co-author: ALL
         protected override async Task OnInitializedAsync()
         {
-            /*
-                Slutade här i fredags. Vi började på att skapa en helper klass för hantering av http returkoder.
-                Denna helpermetod ska returnera en null string när statuskod är mellan 200 och 299, annars 
-                returnerar den en string som motsvarar korrekt error-sida som ska användas med navigation manager.
-                Poängen är att få bort så många switch-statements som möjligt från våra code-behinds (och eventuellt
-                från controllers i API:t).
-
-                Vid mån av tid ska vi fixa så att error-sidorna kan ta emot felmeddelanden som kan visas upp så
-                att användaren tydligt ser vad som blev fel.
-            */
-            
             var response = await agencyService.GetAgencyById(id);
-            var page = StatusCodeHandler.Handler(response.StatusCode);
-            switch (response.StatusCode)
+
+            var page = NavHandler.Handler(response.StatusCode);
+            if (page != null)
             {
-                case HttpStatusCode.OK:
-                    agency = response.Data;
-                    break;
-                case HttpStatusCode.NotFound:
-                    navigationManager.NavigateTo(page);
-                    return;
-                case HttpStatusCode.InternalServerError:
-                    navigationManager.NavigateTo("/500-InternalServerError");
-                    return;
-                case HttpStatusCode.ServiceUnavailable:
-                    navigationManager.NavigateTo("/503-ServiceUnavailable");
-                    return;
+                navigationManager.NavigateTo(page);
+                return;
             }
+
+            agency = response.Data;
 
             loggedInUserId = await authService.GetLoggedInUserId();
             var realtor = await realtorService.GetRealtorByIdAsync(loggedInUserId);
@@ -81,30 +63,17 @@ namespace AlphaHemClient.Pages
         public async Task DeclineRealtor(string id)
         {
             Response response = await realtorService.DeclineRealtorAsync(id);
-            switch (response.StatusCode)
+
+            var page = NavHandler.Handler(response.StatusCode);
+            if (page != null)
             {
-                case HttpStatusCode.BadRequest:
-                    navigationManager.NavigateTo("/400-BadRequest");
-                    break;
-
-                case HttpStatusCode.Unauthorized:
-                    navigationManager.NavigateTo("/401-Unauthorized");
-                    break;
-
-                case HttpStatusCode.NotFound:
-                    navigationManager.NavigateTo("/404-NotFound");
-                    break;
-
-                case HttpStatusCode.InternalServerError:
-                    navigationManager.NavigateTo("/500-InternalServerError");
-                    break;
-
-                default: // 204 NoContent
-                    var realtor = agency?.Realtors.FirstOrDefault(r => r.Id == id);
-                    if (realtor != null)
-                        agency?.Realtors.Remove(realtor);
-                    break;
+                navigationManager.NavigateTo(page);
+                return;
             }
+
+            var realtor = agency?.Realtors.FirstOrDefault(r => r.Id == id);
+            if (realtor != null)
+                agency?.Realtors.Remove(realtor);
         }
     }
 }

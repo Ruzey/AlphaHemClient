@@ -13,6 +13,10 @@ namespace AlphaHemClient.Mappings
             CreateMap<RealtorEditViewModel, RealtorUpdateDto>();
             CreateMap<RealtorRegisterVM, RealtorRegisterDto>();
             CreateMap<RealtorLoginVM, RealtorLoginDto>();
+            CreateMap<RealtorDto, RealtorProfileViewModel>()
+                .ForMember(dest => dest.FullName, from => from.MapFrom(src => $"{src.FirstName} {src.LastName}"));
+
+                
         }
     }
 }

@@ -14,7 +14,6 @@ namespace AlphaHemClient.Model.DTO
     // Use this if you want to return a response without an object
     public class Response
     {
-        public bool Success { get; set; } = false;
         public string? Message { get; set; }
         public List<string> Errors { get; set; } = [];
         public HttpStatusCode StatusCode { get; set; }

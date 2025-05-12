@@ -12,20 +12,20 @@ namespace AlphaHemClient.Services
     //Author: Mattias
     public class AgencyService
     {
-        private readonly HttpClient _http;
-        private readonly IMapper _mapper;
+        private readonly HttpClient http;
+        private readonly IMapper mapper;
 
         public AgencyService(HttpClient http, IMapper mapper)
         {
-            this._http = http;
-            this._mapper = mapper;
+            this.http = http;
+            this.mapper = mapper;
         }
 
         public async Task<List<AgencyNamesViewModel>> GetAllAgencyNames()
         {
             try
             {
-                var response = await _http.GetFromJsonAsync<List<AgencyNamesViewModel>>("api/agency");
+                var response = await http.GetFromJsonAsync<List<AgencyNamesViewModel>>("api/agency");
 
                 return response ?? new List<AgencyNamesViewModel>();
 
@@ -40,7 +40,7 @@ namespace AlphaHemClient.Services
         {
             try
             {
-                var response = await _http.GetFromJsonAsync<List<AgencyVM>>("api/agency");
+                var response = await http.GetFromJsonAsync<List<AgencyVM>>("api/agency");
                 return response ?? new List<AgencyVM>();
             }
             catch (Exception ex)
@@ -54,7 +54,7 @@ namespace AlphaHemClient.Services
             try
             {
                 // var response = await _http.GetFromJsonAsync<AgencyVM>($"api/agency/{id}");
-                var httpResponse = await _http.GetAsync($"api/agency/{id}");
+                var httpResponse = await http.GetAsync($"api/agency/{id}");
                 var content = await httpResponse.Content.ReadAsStringAsync();
                 var options = new JsonSerializerOptions
                 {
@@ -64,7 +64,7 @@ namespace AlphaHemClient.Services
                 {
                     var agencyDto = JsonSerializer.Deserialize<AgencyWithRealtorsDto>(content, options);
 
-                    var agencyVM = _mapper.Map<AgencyVM>(agencyDto);
+                    var agencyVM = mapper.Map<AgencyVM>(agencyDto);
 
                     return new Response<AgencyVM>
                     {
@@ -77,7 +77,6 @@ namespace AlphaHemClient.Services
                     var responseAgencyDto = JsonSerializer.Deserialize<Response<AgencyWithRealtorsDto>>(content, options);
                     return new Response<AgencyVM>
                     {
-                        Data = null,
                         StatusCode = responseAgencyDto.StatusCode,
                         Message = responseAgencyDto.Message,
                         Errors = responseAgencyDto.Errors
@@ -88,7 +87,6 @@ namespace AlphaHemClient.Services
             {
                 return new Response<AgencyVM>
                 {
-                    Data = null,
                     StatusCode = HttpStatusCode.ServiceUnavailable,
                     Message = "Ett oväntat fel har uppstått.",
                     Errors = new List<string> { $"Felmeddelande: {ex.Message}." }

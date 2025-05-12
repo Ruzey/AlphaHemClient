@@ -7,54 +7,75 @@ using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http.Json;
 using System.Runtime.InteropServices;
+using System.Text.Json;
 
 namespace AlphaHemClient.Services
 {
     // Author : Smilla
     public class RealtorService : BaseHttpService
     {
-        private readonly HttpClient httpClient;
+        private readonly HttpClient http;
         private readonly IMapper mapper;
 
-        public RealtorService(HttpClient httpClient, IMapper mapper, ILocalStorageService localStorage) : base(httpClient, localStorage)
+        public RealtorService(HttpClient http, IMapper mapper, ILocalStorageService localStorage) : base(http, localStorage)
         {
-            this.httpClient = httpClient;
+            this.http = http;
             this.mapper = mapper;
         }
 
-        public async Task<RealtorProfileViewModel> GetRealtorByIdAsync(string id)
+        // Author: Smilla
+        // Co-author: ALL
+        public async Task<Response<RealtorProfileViewModel>> GetRealtorByIdAsync(string id)
         {
             try
             {
-                var response = await httpClient.GetFromJsonAsync<RealtorDto>($"api/realtor/{id}");
-                if (response == null)
+                var httpResponse = await http.GetAsync($"api/realtor/{id}");
+                var content = await httpResponse.Content.ReadAsStringAsync();
+                var options = new JsonSerializerOptions
                 {
-                    return null;
-                }
-                var profileViewModel = new RealtorProfileViewModel
-                {
-                    Id = response.Id,
-                    FullName = $"{response.FirstName} {response.LastName}",
-                    PhoneNumber = response.PhoneNumber,
-                    Email = response.Email,
-                    AgencyName = response.Agency,
-                    ProfilePicture = response.ProfilePicture
+                    PropertyNameCaseInsensitive = true
                 };
-                return profileViewModel;
+
+                var responseDto = JsonSerializer.Deserialize<Response<RealtorDto>>(content, options);
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    var realtorVM = mapper.Map<RealtorProfileViewModel>(responseDto);
+
+                    return new Response<RealtorProfileViewModel>
+                    {
+                        Data = realtorVM,
+                        StatusCode = httpResponse.StatusCode
+                    };
+                }
+                else
+                {
+                    return new Response<RealtorProfileViewModel>
+                    {
+                        StatusCode = responseDto.StatusCode,
+                        Message = responseDto.Message,
+                        Errors = responseDto.Errors
+                    };
+                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error fetching realtor with ID {id}: {ex.Message}");
-                return null;
+                return new Response<RealtorProfileViewModel>
+                {
+                    StatusCode = HttpStatusCode.ServiceUnavailable,
+                    Message = "Ett oväntat fel har uppstått.",
+                    Errors = new List<string> { $"Felmeddelande: {ex.Message}." }
+                };
             }
         }
 
         // Author: Conny
+
+        // fortsätt här sen
         public async Task<RealtorEditViewModel> GetRealtorForEditAsync(string id)
         {
             try
             {
-                var response = await httpClient.GetFromJsonAsync<RealtorDto>($"api/realtor/{id}");
+                var response = await http.GetFromJsonAsync<RealtorDto>($"api/realtor/{id}");
                 if (response == null)
                     return null;
 
@@ -75,7 +96,7 @@ namespace AlphaHemClient.Services
 
             try
             {
-                var response = await httpClient.PutAsJsonAsync($"api/realtor/{realtorDto.Id}", realtorDto);
+                var response = await http.PutAsJsonAsync($"api/realtor/{realtorDto.Id}", realtorDto);
                 if (response.IsSuccessStatusCode)
                 {
                     return true;
@@ -100,7 +121,7 @@ namespace AlphaHemClient.Services
             await GetBearerToken();
             try
             {
-                var httpResponse = await httpClient.PutAsync($"api/Realtor/ApproveRealtor/{id}", null);
+                var httpResponse = await http.PutAsync($"api/Realtor/ApproveRealtor/{id}", null);
                 if (!httpResponse.IsSuccessStatusCode)
                 {
                     return false;
@@ -121,7 +142,7 @@ namespace AlphaHemClient.Services
 
             try
             {
-                var httpResponse = await httpClient.DeleteAsync($"api/Realtor/{id}");
+                var httpResponse = await http.DeleteAsync($"api/Realtor/{id}");
                 if (!httpResponse.IsSuccessStatusCode)
                 {
                     var httpResponseContent = await httpResponse.Content.ReadAsStringAsync();
@@ -156,7 +177,6 @@ namespace AlphaHemClient.Services
                 // Skicka tillbaka HTTP returkod om allt går bra
                 return new Response
                 {
-                    Success = true,
                     StatusCode = httpResponse.StatusCode // 204
                 };
             }
