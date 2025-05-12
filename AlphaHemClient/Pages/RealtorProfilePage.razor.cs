@@ -39,8 +39,12 @@ namespace AlphaHemClient.Pages
             try
             {
                 isAuthorized = await authService.AuthorizeUser(Id);
-                realtorProfile = await RealtorService.GetRealtorByIdAsync(Id);
-                if (realtorProfile == null)
+                var response = await RealtorService.GetRealtorByIdAsync(Id);
+                if (response != null && response.Data != null)
+                {
+                    realtorProfile = response.Data;
+                }
+                else
                 {
                     isError = true;
                 }

@@ -10,7 +10,8 @@
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public string ProfilePicture { get; set; }
-        public string Agency { get; set; }
+        public string AgencyName { get; set; }
+        public int AgencyId { get; set; }
         public bool EmailConfirmed { get; set; }
     }
 }
