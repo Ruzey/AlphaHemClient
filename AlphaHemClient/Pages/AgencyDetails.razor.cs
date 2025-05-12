@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using AlphaHemClient.HelperClasses;
 using AlphaHemClient.Model.DTO;
 using AlphaHemClient.Model.ViewModel;
 using AlphaHemClient.Services;
@@ -24,9 +25,20 @@ namespace AlphaHemClient.Pages
         public RealtorService realtorService { get; set; }
         private AgencyVM? agency { get; set; }
 
+        // Co-author: ALL
         protected override async Task OnInitializedAsync()
         {
-            agency = await agencyService.GetAgencyById(id);
+            var response = await agencyService.GetAgencyById(id);
+
+            var page = NavHandler.Handler(response.StatusCode);
+            if (page != null)
+            {
+                navigationManager.NavigateTo(page);
+                return;
+            }
+
+            agency = response.Data;
+
             loggedInUserId = await authService.GetLoggedInUserId();
             var realtor = await realtorService.GetRealtorByIdAsync(loggedInUserId);
             if (realtor == null)
@@ -36,7 +48,6 @@ namespace AlphaHemClient.Pages
 
             if (agency.Name == realtor.AgencyName)
                 sameAgency = true;
-
         }
 
         public async Task ApproveRealtor(string id)
@@ -47,36 +58,22 @@ namespace AlphaHemClient.Pages
                 agency.Realtors.FirstOrDefault(r => r.Id == id).EmailConfirmed = true;
             }
         }
-        // Radera mäklare om vi inte vill ha kvar dem på våran byrå
 
         // Author: Conny
         public async Task DeclineRealtor(string id)
         {
             Response response = await realtorService.DeclineRealtorAsync(id);
-            switch (response.StatusCode)
+
+            var page = NavHandler.Handler(response.StatusCode);
+            if (page != null)
             {
-                case HttpStatusCode.BadRequest:
-                    navigationManager.NavigateTo("/400-BadRequest");
-                    break;
-
-                case HttpStatusCode.Unauthorized:
-                    navigationManager.NavigateTo("/401-Unauthorized");
-                    break;
-
-                case HttpStatusCode.NotFound:
-                    navigationManager.NavigateTo("/404-NotFound");
-                    break;
-
-                case HttpStatusCode.InternalServerError:
-                    navigationManager.NavigateTo("/500-InternalServerError");
-                    break;
-
-                default: // 204 NoContent
-                    var realtor = agency?.Realtors.FirstOrDefault(r => r.Id == id);
-                    if (realtor != null)
-                        agency?.Realtors.Remove(realtor);
-                    break;
+                navigationManager.NavigateTo(page);
+                return;
             }
+
+            var realtor = agency?.Realtors.FirstOrDefault(r => r.Id == id);
+            if (realtor != null)
+                agency?.Realtors.Remove(realtor);
         }
     }
 }
