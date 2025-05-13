@@ -6,6 +6,7 @@ using AlphaHemAPI.Data.DTO;
 namespace AlphaHemClient.Mappings
 {
     //Author: Christoffer
+    // Co-Author : Niklas
     public class ListingProfile : Profile
     {
         public ListingProfile()
@@ -17,6 +18,9 @@ namespace AlphaHemClient.Mappings
             CreateMap<ListingDetailsDto, ListingDetailsViewModel>();
             CreateMap<ListingDetailsDto, ListingUpdateViewModel>()
                 .ForMember(dest => dest.RealtorId, from => from.MapFrom(src => src.Realtor.Id));
+            CreateMap<RealtorInListingDto, RealtorInListingViewModel>();
+            CreateMap<ListingDetailsDto, ListingDetailsViewModel>();
+
         }
     }
 }

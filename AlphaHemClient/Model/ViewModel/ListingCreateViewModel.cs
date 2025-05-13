@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using AlphaHemAPI.Data.Models;
 
-namespace AlphaHemAPI.Data.DTO
+namespace AlphaHemClient.Model.ViewModel
 {
     // Author: Conny, Mattias, Christoffer
     public class ListingCreateViewModel

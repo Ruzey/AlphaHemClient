@@ -1,9 +1,6 @@
-﻿using AlphaHemAPI.Data.DTO;
-using AlphaHemClient.HelperClasses;
-using AlphaHemClient.Model.DTO;
+﻿using AlphaHemClient.HelperClasses;
 using AlphaHemClient.Model.ViewModel;
 using AlphaHemClient.Services;
-using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using System.Net;
 using System.Net.Http.Json;
