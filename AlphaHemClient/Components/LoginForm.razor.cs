@@ -28,7 +28,7 @@ namespace AlphaHemClient.Components
             }
             else
             {
-                loginMessage = "Inloggning misslyckades, kontrollera dina inloggningsuppgifter";
+                loginMessage = "Inloggning misslyckades, kontrollera dina inloggningsuppgifter.";
             }
         }
     }

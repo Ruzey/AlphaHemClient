@@ -1,9 +1,11 @@
 ﻿using AlphaHemAPI.Data.DTO;
+using AlphaHemClient.HelperClasses;
 using AlphaHemClient.Model.DTO;
 using AlphaHemClient.Model.ViewModel;
 using AlphaHemClient.Services;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
+using System.Net;
 using System.Net.Http.Json;
 
 namespace AlphaHemClient.Pages
@@ -21,37 +23,40 @@ namespace AlphaHemClient.Pages
         private string imageUrl { get; set; } = string.Empty;
         private List<MunicipalityViewModel> municipalities = new();
 
-        [Inject] private HttpClient Http { get; set; }
         [Inject] private NavigationManager navigationManager { get; set; }
         [Inject] private ListingService listingService { get; set; }
         [Inject] private MunicipalityService municipalityService { get; set; }
-        [Inject] private ILocalStorageService localStorage { get; set; }
+        [Inject] private AuthService authService { get; set; }
+        private string errorMessage;
 
 
         protected override async Task OnInitializedAsync()
         {
             await LoadMunicipalities();
-            listing.RealtorId = await localStorage.GetItemAsync<string>("userId");
+            listing.RealtorId = await authService.GetLoggedInUserId();
         }
 
         private async Task LoadMunicipalities()
         {
-            municipalities = await municipalityService.GetMunicipalitiesAsync();
+            var response = await municipalityService.GetMunicipalitiesAsync();
+            var page = NavHandler.Handler(response.StatusCode);
+            if (page != null)
+            {
+                navigationManager.NavigateTo(page);
+                return;
+            }
+            municipalities = response.Data;
         }
-
-        private string errorMessage;
         private async Task HandleValidSubmit()
         {
-            try
+
+            var response = await listingService.CreateListingAsync(listing);
+            if (response.StatusCode == HttpStatusCode.Created)
             {
-                await listingService.CreateListingAsync(listing);
                 navigationManager.NavigateTo($"/realtor/{listing.RealtorId}");
+                return;
             }
-            catch (Exception ex)
-            {
-                errorMessage = "Kunde inte spara bostaden. Försök igen.";
-                Console.WriteLine($"Fel: {ex.Message}");
-            }
+            errorMessage = $"Kunde inte spara bostaden : {response.Errors.FirstOrDefault()}.";
         }
 
         private void AddImage()

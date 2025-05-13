@@ -1,23 +1,36 @@
 ﻿using AlphaHemAPI.Data.DTO;
+using AlphaHemClient.HelperClasses;
+using AlphaHemClient.Services;
 using Microsoft.AspNetCore.Components;
 using System.Globalization;
 using System.Net.Http.Json;
 namespace AlphaHemClient.Pages
 //Author : Niklas
+// Co-author: Conny
 {
     public partial class ListingDetails
     {
         [Parameter]
         public int id { get; set; }
 
-        private ListingDetailsDto? listing;
+        private ListingDetailsViewModel? listing;
 
         [Inject]
-        private HttpClient Http { get; set; }
+        private ListingService listingService { get; set; }
+        [Inject]
+        private NavigationManager navigationManager { get; set; }
+
 
         protected override async Task OnInitializedAsync()
         {
-            listing = await Http.GetFromJsonAsync<ListingDetailsDto>($"/api/listing/{id}");
+            var response = await listingService.GetListingByIdAsync(id);
+            var page = NavHandler.Handler(response.StatusCode);
+            if (page != null)
+            {
+                navigationManager.NavigateTo(page);
+                return;
+            }
+            listing = response.Data;
         }
     }
 }

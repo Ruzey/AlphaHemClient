@@ -5,34 +5,34 @@
 @attribute [Authorize] // Co-Author: ALL
 @*Author: Conny*@
 
-<EditForm Model="@realtorEditVM" OnValidSubmit="HandleValidSubmit">
+<EditForm Model="@realtorUpdateVM" OnValidSubmit="HandleValidSubmit">
     <DataAnnotationsValidator />
     <h3>Redigera profil</h3>
 
     <div class="row gy-4">
         <div class="col-md-6">
             <label>Förnamn</label>
-            <InputText @bind-Value="realtorEditVM.FirstName" class="form-control" placeholder="Förnamn" />
+            <InputText @bind-Value="realtorUpdateVM.FirstName" class="form-control" placeholder="Förnamn" />
         </div>
 
         <div class="col-md-6">
             <label>Efternamn</label>
-            <InputText @bind-Value="realtorEditVM.LastName" class="form-control" placeholder="Efternamn" />
+            <InputText @bind-Value="realtorUpdateVM.LastName" class="form-control" placeholder="Efternamn" />
         </div>
 
         <div class="col-md-6">
             <label>E-postadress (Får ej redigeras)</label>
-            <InputText @bind-Value="realtorEditVM.Email" class="form-control" placeholder="E-post" readonly/>
+            <InputText @bind-Value="realtorUpdateVM.Email" class="form-control" placeholder="E-post" readonly/>
         </div>
 
         <div class="col-6">
             <label>Telefonnummer</label>
-            <InputText @bind-Value="realtorEditVM.PhoneNumber" class="form-control" placeholder="Telefon" />
+            <InputText @bind-Value="realtorUpdateVM.PhoneNumber" class="form-control" placeholder="Telefon" />
         </div>
 
         <div class="col-12">
             <label>Profilbild</label>
-            <InputText @bind-Value="realtorEditVM.ProfilePicture" class="form-control" placeholder="Profilbild" />
+            <InputText @bind-Value="realtorUpdateVM.ProfilePicture" class="form-control" placeholder="Profilbild" />
         </div>
 
         <div class="col-12 text-center">

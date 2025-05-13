@@ -14,7 +14,7 @@ namespace AlphaHemClient.Mappings
             CreateMap<ListingListDto, MyListingViewModel>();
             CreateMap<ListingCreateViewModel, ListingCreateDto>();
             CreateMap<ListingUpdateViewModel, ListingUpdateDto>();
-
+            CreateMap<ListingDetailsDto, ListingDetailsViewModel>();
             CreateMap<ListingDetailsDto, ListingUpdateViewModel>()
                 .ForMember(dest => dest.RealtorId, from => from.MapFrom(src => src.Realtor.Id));
         }

@@ -10,10 +10,12 @@ using Microsoft.Extensions.Options;
 namespace AlphaHemClient.Services
 {
     //Author: Mattias
+    // Co-author: Conny
     public class AgencyService
     {
         private readonly HttpClient http;
         private readonly IMapper mapper;
+        JsonSerializerOptions options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true }; // Author: Conny
 
         public AgencyService(HttpClient http, IMapper mapper)
         {
@@ -21,49 +23,93 @@ namespace AlphaHemClient.Services
             this.mapper = mapper;
         }
 
-        public async Task<List<AgencyNamesViewModel>> GetAllAgencyNames()
+        public async Task<Response<List<AgencyNamesViewModel>>> GetAllAgencyNames()
         {
             try
             {
-                var response = await http.GetFromJsonAsync<List<AgencyNamesViewModel>>("api/agency");
+                var httpResponse = await http.GetAsync("api/agency");
+                var content = await httpResponse.Content.ReadAsStringAsync();
 
-                return response ?? new List<AgencyNamesViewModel>();
+                if (!httpResponse.IsSuccessStatusCode)
+                {
+                    var response = JsonSerializer.Deserialize<Response<List<AgencyWithRealtorsDto>>>(content, options);
+                    return new Response<List<AgencyNamesViewModel>>
+                    {
+                        StatusCode = response.StatusCode,
+                        Message = response.Message,
+                        Errors = response.Errors
+                    };
+                }
 
+                var agenciesDto = JsonSerializer.Deserialize<List<AgencyWithRealtorsDto>>(content, options);
+                var agenciesVM = mapper.Map<List<AgencyNamesViewModel>>(agenciesDto);
+
+                return new Response<List<AgencyNamesViewModel>>
+                {
+                    StatusCode = httpResponse.StatusCode,
+                    Data = agenciesVM
+                };
             }
             catch (Exception ex)
             {
-                throw new Exception("An error occurred while fetching agencies", ex);
+                return new Response<List<AgencyNamesViewModel>>
+                {
+                    StatusCode = HttpStatusCode.ServiceUnavailable,
+                    Message = "Ett oväntat fel har uppstått.",
+                    Errors = new List<string> { $"Felmeddelande: {ex.Message}." }
+                };
             }
         }
 
-        public async Task<List<AgencyVM>> GetAllAgencies()
+        public async Task<Response<List<AgencyVM>>> GetAllAgencies()
         {
             try
             {
-                var response = await http.GetFromJsonAsync<List<AgencyVM>>("api/agency");
-                return response ?? new List<AgencyVM>();
+                var httpResponse = await http.GetAsync("api/agency");
+                var content = await httpResponse.Content.ReadAsStringAsync();
+
+
+                if (!httpResponse.IsSuccessStatusCode)
+                {
+                    var response = JsonSerializer.Deserialize<Response<List<AgencyWithRealtorsDto>>>(content, options);
+                    return new Response<List<AgencyVM>>
+                    {
+                        StatusCode = response.StatusCode,
+                        Message = response.Message,
+                        Errors = response.Errors
+                    };
+                }
+
+                var agenciesDto = JsonSerializer.Deserialize<List<AgencyWithRealtorsDto>>(content, options);
+                var agenciesVM = mapper.Map<List<AgencyVM>>(agenciesDto);
+
+                return new Response<List<AgencyVM>>
+                {
+                    StatusCode = httpResponse.StatusCode,
+                    Data = agenciesVM
+                };
             }
             catch (Exception ex)
             {
-                throw new Exception("An error occurred while fetching agencies", ex);
+                return new Response<List<AgencyVM>>
+                {
+                    StatusCode = HttpStatusCode.ServiceUnavailable,
+                    Message = "Ett oväntat fel har uppstått.",
+                    Errors = new List<string> { $"Felmeddelande: {ex.Message}." }
+                };
             }
         }
-
+        // Co-author: Christoffer, Conny
         public async Task<Response<AgencyVM>> GetAgencyById(int id)
         {
             try
             {
-                // var response = await _http.GetFromJsonAsync<AgencyVM>($"api/agency/{id}");
                 var httpResponse = await http.GetAsync($"api/agency/{id}");
                 var content = await httpResponse.Content.ReadAsStringAsync();
-                var options = new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                };
+
                 if (httpResponse.IsSuccessStatusCode)
                 {
                     var agencyDto = JsonSerializer.Deserialize<AgencyWithRealtorsDto>(content, options);
-
                     var agencyVM = mapper.Map<AgencyVM>(agencyDto);
 
                     return new Response<AgencyVM>

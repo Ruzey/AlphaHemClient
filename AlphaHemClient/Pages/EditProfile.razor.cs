@@ -1,4 +1,5 @@
-﻿using AlphaHemClient.Model.ViewModel;
+﻿using AlphaHemClient.HelperClasses;
+using AlphaHemClient.Model.ViewModel;
 using AlphaHemClient.Services;
 using Microsoft.AspNetCore.Components;
 using System.Reflection;
@@ -12,53 +13,41 @@ namespace AlphaHemClient.Pages
         [Inject] private NavigationManager navigationManager { get; set; }
         [Inject] private AuthService authService { get; set; } // Author: ALL
         [Parameter] public string Id { get; set; }
+        private string errorMessage = "";
+        private RealtorUpdateViewModel realtorUpdateVM = new RealtorUpdateViewModel();
 
-        private string errorMessage;
-        private RealtorEditViewModel realtorEditVM = new RealtorEditViewModel();
 
-        
         protected override async Task OnInitializedAsync() // Author: ALL
         {
             if (!await authService.AuthorizeUser(Id))
             {
-                navigationManager.NavigateTo("/login");
+                navigationManager.NavigateTo("/403-Forbidden");
+                return;
             }
+
             await LoadRealtor();
         }
         private async Task LoadRealtor()
         {
-            if (string.IsNullOrEmpty(Id))
+            var response = await realtorService.GetRealtorForUpdateAsync(Id);
+            var page = NavHandler.Handler(response.StatusCode);
+            if (page != null)
             {
-                errorMessage = "Ingen giltig ID angiven.";
+                navigationManager.NavigateTo(page);
                 return;
             }
-            try
-            {
-                realtorEditVM = await realtorService.GetRealtorForEditAsync(Id);
-            }
-            catch (Exception ex)
-            {
-                errorMessage = $"Fel vid hämtning av mäklare: {ex.Message}";
-            }
+            realtorUpdateVM = response.Data;
         }
         private async Task HandleValidSubmit()
         {
-            try
+            var response = await realtorService.UpdateRealtorAsync(realtorUpdateVM);
+            var page = NavHandler.Handler(response.StatusCode);
+            if (page == null)
             {
-                var response = await realtorService.UpdateRealtorAsync(realtorEditVM);
-                if (!response)
-                {
-                    errorMessage = "Uppdateringen misslyckades.";
-                }
-                else
-                {
-                    navigationManager.NavigateTo($"/realtor/{realtorEditVM.Id}");
-                }
+                navigationManager.NavigateTo($"/listing/{realtorUpdateVM.Id}");
+                return;
             }
-            catch (Exception ex)
-            {
-                errorMessage = $"Fel vid uppdatering av mäklare: {ex.Message}";
-            }
+            errorMessage = $"Kunde inte uppdatera mäklare : {response.Errors.FirstOrDefault()}";
         }
     }
 }

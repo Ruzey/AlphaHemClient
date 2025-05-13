@@ -9,10 +9,6 @@
 {
     <p class="text-center">Loading...</p>
 }
-else if (isError)
-{
-    <p class="text-danger text-center">Någonting gick fel. Vänligen försök igen.</p>
-}
 else if (realtorProfile == null)
 {
     <p class="text-center">Ingen profil hittad.</p>
@@ -62,7 +58,7 @@ else
                                     <div class="col-6">
                                         <div class="info-item">
                                             <i class="bi bi-house-door label-icon"></i>
-                                            <span class="value">@realtorProfile.AgencyName</span>
+                                            <span class="value">@realtorProfile.Agency</span>
                                         </div>
                                     </div>
                                 </div>
