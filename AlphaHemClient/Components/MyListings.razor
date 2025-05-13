@@ -3,7 +3,7 @@
 @* Author: Conny *@
 @* Co-Author: Niklas *@
 
-<div class="container py-2">
+<div class="container py-2 mt-5">
     <h4>Mina objekt</h4>
 
     @if (listingsVM == null)
@@ -43,9 +43,9 @@
                                        style="cursor: pointer;"
                                        @onclick="() => AskForDeleteConfirmation(listing.Id)">
                                     </i>
-                                    <a href="/editListing/@listing.Id"><i class="icon bi bi-pencil-square fs-5"></i></a>
+                                    <a href="/editListing/@listing.Id"><i class="icon bi bi-pencil-square fs-5 me-2"></i></a>
                                 } 
-                                <a href="/listings/@listing.Id"><i class="icon bi bi-link fs-5 font-weight-bold"></i></a>
+                                <a href="/listings/@listing.Id"><i class="icon bi bi-link fs-5 me-2 font-weight-bold"></i></a>
                             </td>
                     </tr>
                     }

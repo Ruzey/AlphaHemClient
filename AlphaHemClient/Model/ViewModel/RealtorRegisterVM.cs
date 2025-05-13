@@ -16,13 +16,13 @@ namespace AlphaHemClient.Model.ViewModel
         public string Password { get; set; }
         [Required, Compare("Password", ErrorMessage = "Dina lösenord matchar inte")]
         public string ConfirmPassword { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Namn är obligatoriskt.")]
         public string FirstName { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Efternamn är obligatoriskt.")]
         public string LastName { get; set; }
-        [Required, Phone]
+        [Required, Phone(ErrorMessage = "Vänligen fyll i ett giltigt telefonnummer.")]
         public string PhoneNumber { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Mäklarbyrå är obligatoriskt.")]
         public int AgencyId { get; set; }
     }
 }

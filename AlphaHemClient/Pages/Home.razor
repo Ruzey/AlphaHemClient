@@ -10,17 +10,22 @@
 @using System.Text.Json;
 
 <PageTitle>Bostäder</PageTitle>
+<div class="alert alert-primary">
+    Testar om Bootstrap fungerar
+</div>
 
-<MunicipalitySelector 
-Municipalities="@municipalities" 
-OnMunicipalitySelected="OnMunicipalityChanged" />
+<div class="d-flex justify-content-center gap-3 my-4">
+    <MunicipalitySelector 
+    Municipalities="@municipalities" 
+    OnMunicipalitySelected="OnMunicipalityChanged" />
 
-<CategorySelector
-OnCategorySelected="OnCategoryChanged" />
+    <CategorySelector
+    OnCategorySelected="OnCategoryChanged" />
 
-<SortSelector
-SortOptions="@viewModel.SortOptions"    
-OnSortSelected="OnSortChanged" />
+    <SortSelector
+    SortOptions="@viewModel.SortOptions"    
+    OnSortSelected="OnSortChanged" />
+</div>
 
 @if (viewModel.Listings != null && viewModel.Listings.Any())
 {
