@@ -3,6 +3,7 @@
 namespace AlphaHemClient.Services
 {
     //Author: ALL
+    //Co-Author : Niklas
     public class BaseHttpService
     {
         private readonly HttpClient client;

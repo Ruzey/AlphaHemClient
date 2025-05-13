@@ -19,7 +19,7 @@ namespace AlphaHemClient.Services
         private readonly IMapper mapper;
         JsonSerializerOptions options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true }; // Author: Conny
 
-        public AgencyService(HttpClient http, IMapper mapper, AuthService authService) : base(http, authService)
+        public AgencyService(HttpClient http, IMapper mapper, AuthService authService) : base(http, authService) // Author : Niklas
         {
             this.http = http;
             this.mapper = mapper;

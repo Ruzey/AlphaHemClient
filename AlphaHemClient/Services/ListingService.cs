@@ -9,6 +9,7 @@ using System.Text.Json;
 namespace AlphaHemClient.Services
 {
     // Author: Christoffer
+    // Author : Niklas
     public class ListingService : BaseHttpService
     {
         private readonly HttpClient http;
@@ -16,7 +17,7 @@ namespace AlphaHemClient.Services
         private readonly JsLoggingService jsLoggingService;
         JsonSerializerOptions options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true }; // Author: Conny
 
-        public ListingService(HttpClient http, IMapper mapper, JsLoggingService jsLoggingService, AuthService authService) : base(http, authService)
+        public ListingService(HttpClient http, IMapper mapper, JsLoggingService jsLoggingService, AuthService authService) : base(http, authService) // Author : Niklas
         {
             this.http = http;
             this.mapper = mapper;

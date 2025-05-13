@@ -3,6 +3,7 @@
 namespace AlphaHemClient.Model.ViewModel
 {
     // Author : Conny
+    // Co-Author : Niklas
     public class ListingDetailsViewModel
     {
             public int Id { get; set; }
@@ -21,6 +22,6 @@ namespace AlphaHemClient.Model.ViewModel
             public string Category { get; set; }
 
             public string MunicipalityName { get; set; }
-            public RealtorProfileViewModel Realtor { get; set; }
+            public RealtorInListingViewModel Realtor { get; set; }
     }
 }
