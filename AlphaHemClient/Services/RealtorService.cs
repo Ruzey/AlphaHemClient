@@ -113,6 +113,8 @@ namespace AlphaHemClient.Services
         {
             try
             {
+                await GetBearerToken();
+
                 var realtorDto = mapper.Map<RealtorUpdateDto>(realtorVM);
                 var httpResponse = await http.PutAsJsonAsync($"api/realtor/{realtorDto.Id}", realtorDto);
 

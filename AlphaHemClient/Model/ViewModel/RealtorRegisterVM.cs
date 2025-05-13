@@ -23,6 +23,7 @@ namespace AlphaHemClient.Model.ViewModel
         [Required, Phone]
         public string PhoneNumber { get; set; }
         [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "Du måste välja en mäklarbyrå.")]
         public int AgencyId { get; set; }
     }
 }

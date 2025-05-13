@@ -44,7 +44,7 @@ namespace AlphaHemClient.Pages
             var page = NavHandler.Handler(response.StatusCode);
             if (page == null)
             {
-                navigationManager.NavigateTo($"/listing/{realtorUpdateVM.Id}");
+                navigationManager.NavigateTo($"/realtor/{realtorUpdateVM.Id}");
                 return;
             }
             errorMessage = $"Kunde inte uppdatera mäklare : {response.Errors.FirstOrDefault()}";

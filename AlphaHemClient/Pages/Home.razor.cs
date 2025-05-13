@@ -23,12 +23,6 @@ namespace AlphaHemClient.Pages
         {
             
             var response = await municipalityService.GetMunicipalitiesAsync();
-            var page = NavHandler.Handler(response.StatusCode);
-            if (page != null)
-            {
-                navigationManager.NavigateTo(page);
-                return;
-            }
             municipalities = response.Data;
 
             await LoadListingsAsync(currentPage, pageSize);

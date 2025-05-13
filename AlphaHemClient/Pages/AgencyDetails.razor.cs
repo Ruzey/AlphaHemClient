@@ -50,7 +50,7 @@ namespace AlphaHemClient.Pages
                 navigationManager.NavigateTo(page);
                 return;
             }
-            if (agency.Name == realtorResponse.Data.Agency)
+            if (agency.Name == realtorResponse.Data.AgencyName)
                 sameAgency = true;
         }
 

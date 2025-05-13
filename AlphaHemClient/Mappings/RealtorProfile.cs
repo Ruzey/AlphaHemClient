@@ -16,7 +16,6 @@ namespace AlphaHemClient.Mappings
             CreateMap<RealtorDto, RealtorProfileViewModel>()
                 .ForMember(dest => dest.FullName, from => from.MapFrom(src => $"{src.FirstName} {src.LastName}"));
 
-                
         }
     }
 }

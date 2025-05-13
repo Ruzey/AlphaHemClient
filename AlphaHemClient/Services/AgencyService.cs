@@ -5,6 +5,7 @@ using AlphaHemAPI.Data.DTO;
 using AlphaHemClient.Model.DTO;
 using AlphaHemClient.Model.ViewModel;
 using AutoMapper;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Options;
 
 namespace AlphaHemClient.Services
@@ -29,6 +30,7 @@ namespace AlphaHemClient.Services
             {
                 var httpResponse = await http.GetAsync("api/agency");
                 var content = await httpResponse.Content.ReadAsStringAsync();
+
 
                 if (!httpResponse.IsSuccessStatusCode)
                 {
