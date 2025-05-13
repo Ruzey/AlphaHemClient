@@ -17,7 +17,7 @@ namespace AlphaHemClient.Services
         protected async Task GetBearerToken()
         {
             var token = await authService.GetAccessTokenAsync();
-            if (string.IsNullOrWhiteSpace(token))
+            if (!string.IsNullOrWhiteSpace(token))
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }

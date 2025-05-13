@@ -1,6 +1,6 @@
 ﻿using AlphaHemAPI.Data.Models;
 
-namespace AlphaHemAPI.Data.DTO
+namespace AlphaHemClient.Model.ViewModel
 {
     // Author : Conny
     public class ListingDetailsViewModel
@@ -21,6 +21,6 @@ namespace AlphaHemAPI.Data.DTO
             public string Category { get; set; }
 
             public string MunicipalityName { get; set; }
-            public RealtorInListingDto Realtor { get; set; }
+            public RealtorProfileViewModel Realtor { get; set; }
     }
 }

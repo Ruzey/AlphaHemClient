@@ -2,7 +2,6 @@
 using AlphaHemClient.Model.DTO;
 using AlphaHemClient.Model.ViewModel;
 using AutoMapper;
-using Blazored.LocalStorage;
 using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http.Json;
@@ -19,7 +18,7 @@ namespace AlphaHemClient.Services
         JsonSerializerOptions options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true }; // Author: Conny
 
 
-        public RealtorService(HttpClient http, IMapper mapper, ILocalStorageService localStorage) : base(http, localStorage)
+        public RealtorService(HttpClient http, IMapper mapper, AuthService authService) : base(http, authService)
         {
             this.http = http;
             this.mapper = mapper;
