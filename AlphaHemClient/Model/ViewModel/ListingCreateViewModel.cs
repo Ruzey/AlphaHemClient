@@ -55,6 +55,7 @@ namespace AlphaHemAPI.Data.DTO
 
         // Relations
         [Required(ErrorMessage = "Kommun är obligatoriskt.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Du måste välja en kommun.")]
         public int MunicipalityId { get; set; } = 0;
 
         [Required]

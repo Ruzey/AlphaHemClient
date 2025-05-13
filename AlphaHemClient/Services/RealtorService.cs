@@ -16,6 +16,8 @@ namespace AlphaHemClient.Services
     {
         private readonly HttpClient http;
         private readonly IMapper mapper;
+        JsonSerializerOptions options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true }; // Author: Conny
+
 
         public RealtorService(HttpClient http, IMapper mapper, ILocalStorageService localStorage) : base(http, localStorage)
         {
@@ -31,15 +33,11 @@ namespace AlphaHemClient.Services
             {
                 var httpResponse = await http.GetAsync($"api/realtor/{id}");
                 var content = await httpResponse.Content.ReadAsStringAsync();
-                var options = new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                };
 
-                var responseDto = JsonSerializer.Deserialize<Response<RealtorDto>>(content, options);
                 if (httpResponse.IsSuccessStatusCode)
                 {
-                    var realtorVM = mapper.Map<RealtorProfileViewModel>(responseDto);
+                    var realtorDto = JsonSerializer.Deserialize<RealtorDto>(content, options);
+                    var realtorVM = mapper.Map<RealtorProfileViewModel>(realtorDto);
 
                     return new Response<RealtorProfileViewModel>
                     {
@@ -49,11 +47,12 @@ namespace AlphaHemClient.Services
                 }
                 else
                 {
+                    var responseRealtorDto = JsonSerializer.Deserialize<Response<RealtorProfileViewModel>>(content, options);
                     return new Response<RealtorProfileViewModel>
                     {
-                        StatusCode = responseDto.StatusCode,
-                        Message = responseDto.Message,
-                        Errors = responseDto.Errors
+                        StatusCode = responseRealtorDto.StatusCode,
+                        Message = responseRealtorDto.Message,
+                        Errors = responseRealtorDto.Errors
                     };
                 }
             }
@@ -69,73 +68,113 @@ namespace AlphaHemClient.Services
         }
 
         // Author: Conny
-
-        // fortsätt här sen
-        public async Task<RealtorEditViewModel> GetRealtorForEditAsync(string id)
+        public async Task<Response<RealtorUpdateViewModel>> GetRealtorForUpdateAsync(string id)
         {
             try
             {
-                var response = await http.GetFromJsonAsync<RealtorDto>($"api/realtor/{id}");
-                if (response == null)
-                    return null;
+                var httpResponse = await http.GetAsync($"api/realtor/{id}");
+                var content = await httpResponse.Content.ReadAsStringAsync();
 
-                var editRealtorVM = mapper.Map<RealtorEditViewModel>(response);
-                return editRealtorVM;
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    var realtorDto = JsonSerializer.Deserialize<RealtorDto>(content, options);
+                    var realtorVM = mapper.Map<RealtorUpdateViewModel>(realtorDto);
+
+                    return new Response<RealtorUpdateViewModel>
+                    {
+                        Data = realtorVM,
+                        StatusCode = httpResponse.StatusCode
+                    };
+                }
+                else
+                {
+                    var responseRealtorDto = JsonSerializer.Deserialize<Response<RealtorUpdateViewModel>>(content, options);
+                    return new Response<RealtorUpdateViewModel>
+                    {
+                        StatusCode = responseRealtorDto.StatusCode,
+                        Message = responseRealtorDto.Message,
+                        Errors = responseRealtorDto.Errors
+                    };
+                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error fetching realtor with ID {id}: {ex.Message}");
-                return null;
+                return new Response<RealtorUpdateViewModel>
+                {
+                    StatusCode = HttpStatusCode.ServiceUnavailable,
+                    Message = "Ett oväntat fel har uppstått.",
+                    Errors = new List<string> { $"Felmeddelande: {ex.Message}." }
+                };
             }
         }
 
         // Author: Conny
-        public async Task<bool> UpdateRealtorAsync(RealtorEditViewModel realtorVM)
+        public async Task<Response> UpdateRealtorAsync(RealtorUpdateViewModel realtorVM)
         {
-            var realtorDto = mapper.Map<RealtorUpdateDto>(realtorVM);
-
             try
             {
-                var response = await http.PutAsJsonAsync($"api/realtor/{realtorDto.Id}", realtorDto);
-                if (response.IsSuccessStatusCode)
+                await GetBearerToken();
+
+                var realtorDto = mapper.Map<RealtorUpdateDto>(realtorVM);
+                var httpResponse = await http.PutAsJsonAsync($"api/realtor/{realtorDto.Id}", realtorDto);
+
+                if (httpResponse.IsSuccessStatusCode)
+                    return new Response { StatusCode = httpResponse.StatusCode };
+
+                var content = await httpResponse.Content.ReadAsStringAsync();
+                var responseDto = JsonSerializer.Deserialize<Response>(content, options);
+                return new Response
                 {
-                    return true;
-                }
-                else
-                {
-                    var errorContent = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine($"Fel vid uppdatering av mäklare. Status: {(int)response.StatusCode} {response.ReasonPhrase}. Svar: {errorContent}");
-                    return false;
-                }
+                    StatusCode = responseDto.StatusCode,
+                    Message = responseDto.Message,
+                    Errors = responseDto.Errors
+                };
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Ett oväntat fel uppstod vid uppdatering av mäklare: {ex.Message}");
-                return false;
+                return new Response
+                {
+                    StatusCode = HttpStatusCode.ServiceUnavailable,
+                    Message = "Ett oväntat fel har uppstått.",
+                    Errors = new List<string> { $"Felmeddelande: {ex.Message}." }
+                };
             }
         }
 
         //Author: ALL
-        public async Task<bool> ApproveRealtor(string id)
+        public async Task<Response> ApproveRealtor(string id)
         {
             await GetBearerToken();
             try
             {
                 var httpResponse = await http.PutAsync($"api/Realtor/ApproveRealtor/{id}", null);
-                if (!httpResponse.IsSuccessStatusCode)
+
+                if (httpResponse.IsSuccessStatusCode)
+                    return new Response { StatusCode = httpResponse.StatusCode };
+
+                var content = await httpResponse.Content.ReadAsStringAsync();
+                var response = JsonSerializer.Deserialize<Response>(content, options);
+                return new Response
                 {
-                    return false;
-                }
-                return true;
+                    StatusCode = response.StatusCode,
+                    Message = response.Message,
+                    Errors = response.Errors
+                };
             }
             catch (Exception ex)
             {
-                return false;
+                return new Response
+                {
+                    StatusCode = HttpStatusCode.ServiceUnavailable,
+                    Message = "Ett oväntat fel har uppstått.",
+                    Errors = new List<string> { $"Felmeddelande: {ex.Message}." }
+                };
             }
 
         }
 
         // Author: Conny
+        // Co-author: Mattias, Christoffer
         public async Task<Response> DeclineRealtorAsync(string id)
         {
             await GetBearerToken();
@@ -143,41 +182,16 @@ namespace AlphaHemClient.Services
             try
             {
                 var httpResponse = await http.DeleteAsync($"api/Realtor/{id}");
-                if (!httpResponse.IsSuccessStatusCode)
-                {
-                    var httpResponseContent = await httpResponse.Content.ReadAsStringAsync();
+                if (httpResponse.IsSuccessStatusCode)
+                    return new Response { StatusCode = httpResponse.StatusCode };
 
-                    // Hantera HTTP returkoder om inte 200-299
-                    switch (httpResponse.StatusCode)
-                    {
-                        case HttpStatusCode.NotFound: // 404
-                            return new Response
-                            {
-                                Message = "Mäklaren kunde inte hittas.",
-                                Errors = new List<string> { httpResponseContent },
-                                StatusCode = httpResponse.StatusCode
-                            };
-                        case HttpStatusCode.BadRequest: // 400
-                            return new Response
-                            {
-                                Message = "Fel vid förfrågan om att uppdatera mäklarlistan.",
-                                Errors = new List<string> { httpResponseContent },
-                                StatusCode = httpResponse.StatusCode
-                            };
-                        case HttpStatusCode.Unauthorized: // 401
-                            return new Response
-                            {
-                                Message = "Du har inte behörighet att genomföra denna åtgärd.",
-                                Errors = new List<string> { httpResponseContent },
-                                StatusCode = httpResponse.StatusCode
-                            };
-                    }
-                }
-
-                // Skicka tillbaka HTTP returkod om allt går bra
+                var content = await httpResponse.Content.ReadAsStringAsync();
+                var response = JsonSerializer.Deserialize<Response>(content, options);
                 return new Response
                 {
-                    StatusCode = httpResponse.StatusCode // 204
+                    StatusCode = response.StatusCode,
+                    Message = response.Message,
+                    Errors = response.Errors
                 };
             }
             catch (Exception ex)
@@ -186,7 +200,7 @@ namespace AlphaHemClient.Services
                 {
                     Message = "Ett oväntat fel har uppstått.",
                     Errors = new List<string> { $"Felmeddelande: {ex.Message}" },
-                    StatusCode = HttpStatusCode.InternalServerError // 500
+                    StatusCode = HttpStatusCode.InternalServerError
                 };
             }
         }

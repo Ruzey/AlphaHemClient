@@ -3,43 +3,62 @@ using AutoMapper;
 using System.Net.Http.Json;
 using static System.Net.WebRequestMethods;
 using AlphaHemClient.Model.ViewModel;
+using System.Text.Json;
+using System.Net;
 
 namespace AlphaHemClient.Services
 {
     // Author: Christoffer
     public class MunicipalityService
     {
-        private readonly HttpClient _http;
-        private readonly IMapper _mapper;
-        private readonly JsLoggingService _jsLoggingService;
+        private readonly HttpClient http;
+        private readonly IMapper mapper;
 
-        public MunicipalityService(HttpClient http, IMapper mapper, JsLoggingService jsLoggingService)
+        public MunicipalityService(HttpClient http, IMapper mapper)
         {
-            _http = http;
-            _mapper = mapper;
-            _jsLoggingService = jsLoggingService;
+            this.http = http;
+            this.mapper = mapper;
         }
 
-        public async Task<List<MunicipalityViewModel>> GetMunicipalitiesAsync()
+        public async Task<Response<List<MunicipalityViewModel>>> GetMunicipalitiesAsync()
         {
             try
             {
-                var dtoList = await _http.GetFromJsonAsync<List<MunicipalityListDto>>("api/Municipality");
-
-                if (dtoList == null)
+                var httpResponse = await http.GetAsync("api/Municipality");
+                var content = await httpResponse.Content.ReadAsStringAsync();
+                var options = new JsonSerializerOptions
                 {
-                    await _jsLoggingService.LogToConsole($"Error fetching municipalities");
-                    return new List<MunicipalityViewModel>();
+                    PropertyNameCaseInsensitive = true
+                };
+
+                if (!httpResponse.IsSuccessStatusCode)
+                {
+                    var response = JsonSerializer.Deserialize<Response<List<MunicipalityListDto>>>(content, options);
+                    return new Response<List<MunicipalityViewModel>>
+                    {
+                        StatusCode = response.StatusCode,
+                        Message = response.Message,
+                        Errors = response.Errors
+                    };
                 }
 
-                var vmList = _mapper.Map<List<MunicipalityViewModel>>(dtoList);
+                var municipalitiesDto = JsonSerializer.Deserialize<List<MunicipalityListDto>>(content, options);
+                var municipalitiesVM = mapper.Map<List<MunicipalityViewModel>>(municipalitiesDto);
 
-                return vmList;
+                return new Response<List<MunicipalityViewModel>>
+                {
+                    StatusCode = httpResponse.StatusCode,
+                    Data = municipalitiesVM
+                };
             }
             catch (Exception ex)
             {
-                await _jsLoggingService.LogToConsole($"Error fetching municipalities: {ex.Message}");
-                return new List<MunicipalityViewModel>();
+                return new Response<List<MunicipalityViewModel>>
+                {
+                    StatusCode = HttpStatusCode.ServiceUnavailable,
+                    Message = "Ett oväntat fel har uppstått.",
+                    Errors = new List<string> { $"Felmeddelande: {ex.Message}." }
+                };
             }
 
         }
