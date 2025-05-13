@@ -86,5 +86,10 @@ namespace AlphaHemClient.Pages
             if (realtor != null)
                 agency?.Realtors.Remove(realtor);
         }
+
+        private void EditAgency()
+        {
+            navigationManager.NavigateTo($"/editAgency/{id}");
+        }
     }
 }

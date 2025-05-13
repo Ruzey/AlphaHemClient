@@ -22,7 +22,18 @@ else
                     <p class="who-we-are">Våran byrå</p>
                     <h3>@agency?.Name</h3>
                     <p class="fst-italic">@agency?.Presentation</p>
-
+                    @if (sameAgency)
+                    {
+                        <AuthorizeView Roles="RealtorAdmin">
+                            <Authorized>
+                                <div class="row mt-2">
+                                    <div class="col-12 col-sm-6 col-lg-4">
+                                        <button @onclick="EditAgency" class="btn btn-primary">Redigera byrå</button>
+                                    </div>
+                                </div>
+                            </Authorized>
+                        </AuthorizeView>
+                    }
                         <h5 class="mt-4">Våra mäklare</h5>
                         <ul>
                             @foreach (var realtor in agency.Realtors)
