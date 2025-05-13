@@ -26,6 +26,11 @@ namespace AlphaHemClient.Services
             this.localStorage = localStorage;
             this.alphaApiAuthenticationStateProvider = alphaApiAuthenticationStateProvider;
         }
+
+        public async Task<string?> GetAccessTokenAsync()
+        {
+            return await localStorage.GetItemAsync<string>("accessToken");
+        }
         public async Task<string> RegisterAsync(RealtorRegisterVM registerUser)
         {
             try

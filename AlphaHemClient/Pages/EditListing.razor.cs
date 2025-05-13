@@ -2,7 +2,6 @@
 using AlphaHemClient.HelperClasses;
 using AlphaHemClient.Model.ViewModel;
 using AlphaHemClient.Services;
-using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
