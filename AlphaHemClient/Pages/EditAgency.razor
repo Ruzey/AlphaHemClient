@@ -1,0 +1,39 @@
+﻿@page "/editAgency/{Id:int}"
+@using AlphaHemAPI.Data.DTO
+@using AlphaHemClient.Services
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize] 
+@*Author: Mattias*@
+
+@if(sameAgencyAndAdmin)
+{
+    <EditForm Model="@agencyUpdate" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <h3>Redigera @agencyUpdate.Name</h3>
+
+        <div class="row gy-4">
+            <div class="col-md-6">
+                <label>Presentation</label>
+                <InputText @bind-Value="agencyUpdate.Presentation" class="form-control" />
+            </div>
+
+            <div class="col-md-6">
+                <label>Logo</label>
+                <InputText @bind-Value="agencyUpdate.Logo" class="form-control" />
+            </div>
+
+            <div class="col-12 text-center">
+                <button class="btn btn-secondary mt-2" type="submit">Uppdatera byrå</button>
+            </div>
+        </div>
+        <ValidationSummary />
+    </EditForm>
+
+    <br />
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="alert alert-danger">
+            @errorMessage
+        </div>
+    }
+}
