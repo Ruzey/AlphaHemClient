@@ -10,13 +10,13 @@
             <h1 class="sitename">Alpha<span>Hem</span></h1>
         </a>
 
-        <nav id="navmenu" class="navmenu @NavMenuCssClass">
+        <nav id="navmenu" class=" @NavMenuCssClass">
             <ul>
                 <li>
-                    <NavLink href="home">Hem</NavLink>
+                    <NavLink href="home" @onclick="CloseNavMenu">Hem</NavLink>
                 </li>
                 <li>
-                    <NavLink href="agencies">Mäklarbyråer</NavLink>
+                    <NavLink href="agencies" @onclick="CloseNavMenu">Mäklarbyråer</NavLink>
                 </li>
                 <AuthorizeView>
                     <Authorized>
@@ -24,15 +24,15 @@
                             <NavLink href="createListing">Ny bostad</NavLink>
                         </li>
                         <li class="separator">
-                            <NavLink href="@($"/realtor/{realtorId}")">Min profil</NavLink>
+                            <NavLink href="@($"/realtor/{realtorId}")" @onclick="CloseNavMenu">Min profil</NavLink>
                         </li>
                         <li class="login-link">
-                            <NavLink @onclick="() => authService.LogoutAsync()">Logga ut</NavLink>
+                            <NavLink @onclick="LogoutAndCloseNavMenu">Logga ut</NavLink>
                         </li>
                     </Authorized>
                     <NotAuthorized>
                         <li class="login-link">
-                            <NavLink href="login">Logga in</NavLink>
+                            <NavLink href="login" @onclick="CloseNavMenu">Logga in</NavLink>
                         </li>
                     </NotAuthorized>
                 </AuthorizeView>
