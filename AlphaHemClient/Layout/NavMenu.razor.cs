@@ -16,9 +16,8 @@ namespace AlphaHemClient.Layout
         [Inject]
         public AuthService authService { get; set; }
         [Inject]
-        private ILocalStorageService localStorage { get; set; }
-
-        private string? NavMenuCssClass => collapseNavMenu ? "mobile-nav-active" : null;
+        public NavigationManager navigationManager { get; set; }
+        private string NavMenuCssClass => collapseNavMenu ? "navmenu mobile-nav-active" : "navmenu";
         private string? realtorId;
         [CascadingParameter]
         protected Task<AuthenticationState> AuthenticationStateTask { get; set; }
@@ -45,7 +44,16 @@ namespace AlphaHemClient.Layout
 
             StateHasChanged(); 
         }
-
+        private void CloseNavMenu()
+        {
+            collapseNavMenu = false;
+        }
+        private async Task LogoutAndCloseNavMenu()
+        {
+            await authService.LogoutAsync();
+            collapseNavMenu = false;
+            navigationManager.NavigateTo("/");
+        }
     }
 }
 

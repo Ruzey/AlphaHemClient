@@ -1,24 +1,24 @@
-﻿using Blazored.LocalStorage;
-using System.Net.Http.Headers;
+﻿using System.Net.Http.Headers;
 
 namespace AlphaHemClient.Services
 {
     //Author: ALL
+    //Co-Author : Niklas
     public class BaseHttpService
     {
         private readonly HttpClient client;
-        private readonly ILocalStorageService localStorage;
+        protected readonly AuthService authService;
 
-        public BaseHttpService(HttpClient client, ILocalStorageService localStorage)
+        public BaseHttpService(HttpClient client, AuthService authService)
         {
             this.client = client;
-            this.localStorage = localStorage;
+            this.authService = authService;
         }
 
         protected async Task GetBearerToken()
         {
-            var token = await localStorage.GetItemAsync<string>("accessToken");
-            if (token != null)
+            var token = await authService.GetAccessTokenAsync();
+            if (!string.IsNullOrWhiteSpace(token))
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }

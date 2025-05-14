@@ -1,4 +1,5 @@
 ﻿using AlphaHemAPI.Data.DTO;
+using AlphaHemClient.HelperClasses;
 using AlphaHemClient.Model.ViewModel;
 using AlphaHemClient.Services;
 using Microsoft.AspNetCore.Components;
@@ -24,7 +25,14 @@ namespace AlphaHemClient.Components
         private NavigationManager navigationManager { get; set; }
         protected override async Task OnInitializedAsync()
         {
-            Agencies = await AgencyService.GetAllAgencyNames();
+            var response = await AgencyService.GetAllAgencyNames();
+            var page = NavHandler.Handler(response.StatusCode);
+            if (page != null)
+            {
+                navigationManager.NavigateTo(page);
+                return;
+            }
+            Agencies = response.Data;
         }
 
         public async Task ErrorRegister()

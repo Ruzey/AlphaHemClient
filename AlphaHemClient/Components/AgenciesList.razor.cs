@@ -1,4 +1,5 @@
-﻿using AlphaHemClient.Model.ViewModel;
+﻿using AlphaHemClient.HelperClasses;
+using AlphaHemClient.Model.ViewModel;
 using AlphaHemClient.Services;
 using Microsoft.AspNetCore.Components;
 
@@ -11,9 +12,20 @@ namespace AlphaHemClient.Components
 
         [Inject]
         public AgencyService AgencyService { get; set; }
+        [Inject]
+        public NavigationManager navigationManager { get; set; }
+
+        // Co-author: Conny
         protected override async Task OnInitializedAsync()
         {
-            AllAgenciesList = await AgencyService.GetAllAgencies();
+            var response = await AgencyService.GetAllAgencies();
+            var page = NavHandler.Handler(response.StatusCode);
+            if (page != null)
+            {
+                navigationManager.NavigateTo(page);
+                return;
+            }
+            AllAgenciesList = response.Data;
         }
     }
 }

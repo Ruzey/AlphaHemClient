@@ -22,7 +22,8 @@ namespace AlphaHemClient.Model.ViewModel
         public string LastName { get; set; }
         [Required, Phone(ErrorMessage = "Vänligen fyll i ett giltigt telefonnummer.")]
         public string PhoneNumber { get; set; }
-        [Required(ErrorMessage = "Mäklarbyrå är obligatoriskt.")]
+        [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "Du måste välja en mäklarbyrå.")]
         public int AgencyId { get; set; }
     }
 }

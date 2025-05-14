@@ -4,6 +4,8 @@ namespace AlphaHemClient.HelperClasses
 {
     public static class NavHandler
     {
+
+        // Returns null if API call goes well, otherwise returns a string with partial URL to redirect to appropriate error/status code page.
         public static string? Handler(HttpStatusCode statusCode)
         {
             if ((int)statusCode <= 299 && (int)statusCode >= 200)

@@ -1,4 +1,5 @@
-﻿using AlphaHemClient.Model.ViewModel;
+﻿using AlphaHemClient.HelperClasses;
+using AlphaHemClient.Model.ViewModel;
 using AlphaHemClient.Services;
 using Microsoft.AspNetCore.Components;
 using System.Globalization;
@@ -13,6 +14,8 @@ namespace AlphaHemClient.Components
         private ListingService listingService { get; set; }
         [Inject]
         private AuthService authService { get; set; }
+        [Inject]
+        private NavigationManager navigationManager { get; set; }
         private bool IsAuthorized;
 
         private List<MyListingViewModel> listingsVM = new List<MyListingViewModel>();
@@ -36,15 +39,16 @@ namespace AlphaHemClient.Components
         {
             showConfirmModal = false;
 
-            var success = await listingService.DeleteListingAsync(listingIdToDelete);
-            if (success)
+            var response = await listingService.DeleteListingAsync(listingIdToDelete);
+            var page = NavHandler.Handler(response.StatusCode);
+            if (page != null)
             {
-                var item = listingsVM.FirstOrDefault(l => l.Id == listingIdToDelete);
-                if (item != null)
-                {
-                    listingsVM.Remove(item);
-                }
+                navigationManager.NavigateTo(page);
+                return;
             }
+            var listingToDelete = listingsVM.FirstOrDefault(l => l.Id == listingIdToDelete);
+            if (listingToDelete != null)
+                listingsVM.Remove(listingToDelete);
         }
     }
 }

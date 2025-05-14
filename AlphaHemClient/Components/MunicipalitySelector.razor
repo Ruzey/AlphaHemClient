@@ -1,12 +1,16 @@
 ﻿@*Author: Christoffer*@
 
 <div class="mb-3">
-    <select id="municipalitySelect" class="form-select simple-purple-text" style="width: 200px;" @onchange ="OnMunicipalityChanged">
-        <option value="">Alla kommuner  </option>
-
-        @foreach (var municipality in Municipalities)
+    <select id="municipalitySelect" class="form-select simple-purple-text" style="width: 200px;"
+        @onchange="OnMunicipalityChanged">
+        <option value="">Alla kommuner </option>
+        @if (Municipalities != null)
         {
-            <option class="simple-purple-text" value="@municipality.Name">@municipality.Name</option>
+            @foreach (var municipality in Municipalities)
+            {
+                <option class="simple-purple-text" value="@municipality.Name">@municipality.Name</option>
+            }
         }
+
     </select>
 </div>

@@ -9,10 +9,6 @@
 {
     <p class="text-center">Loading...</p>
 }
-else if (isError)
-{
-    <p class="text-danger text-center">Någonting gick fel. Vänligen försök igen.</p>
-}
 else if (realtorProfile == null)
 {
     <p class="text-center">Ingen profil hittad.</p>
@@ -55,14 +51,14 @@ else
                                     <div class="col-6">
                                         <div class="info-item">
                                             <i class="bi bi-envelope label-icon"></i>
-                                            <span class="value">@realtorProfile.Email</span>
+                                            <span class="value email-in-profile">@realtorProfile.Email</span>
                                         </div>
                                     </div>
 
                                     <div class="col-6">
                                         <div class="info-item">
                                             <i class="bi bi-house-door label-icon"></i>
-                                            <a href="/AgencyDetails/@realtorProfile.AgencyId" style="color: #9B2EC9" class="value">@realtorProfile.AgencyName</a>
+                                            <a href="/Agency/@realtorProfile.AgencyId" style="color: #9B2EC9" class="value">@realtorProfile.AgencyName</a>
                                         </div>
                                     </div>
                                 </div>

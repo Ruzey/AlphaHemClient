@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using AlphaHemClient.HelperClasses;
-using AlphaHemClient.Model.DTO;
 using AlphaHemClient.Model.ViewModel;
 using AlphaHemClient.Services;
 using Microsoft.AspNetCore.Components;
@@ -28,41 +27,52 @@ namespace AlphaHemClient.Pages
         // Co-author: ALL
         protected override async Task OnInitializedAsync()
         {
-            var response = await agencyService.GetAgencyById(id);
+            var agencyResponse = await agencyService.GetAgencyById(id);
 
-            var page = NavHandler.Handler(response.StatusCode);
+            var page = NavHandler.Handler(agencyResponse.StatusCode);
             if (page != null)
             {
                 navigationManager.NavigateTo(page);
                 return;
             }
 
-            agency = response.Data;
+            agency = agencyResponse.Data;
 
             loggedInUserId = await authService.GetLoggedInUserId();
-            var realtor = await realtorService.GetRealtorByIdAsync(loggedInUserId);
-            if (realtor == null)
+            if (loggedInUserId == null)
+                return;
+
+            var realtorResponse = await realtorService.GetRealtorByIdAsync(loggedInUserId);
+            page = NavHandler.Handler(realtorResponse.StatusCode);
+            if (page != null)
             {
+                navigationManager.NavigateTo(page);
                 return;
             }
-
-            if (agency.Name == realtor.AgencyName)
+            if (agency.Name == realtorResponse.Data.AgencyName)
                 sameAgency = true;
         }
 
         public async Task ApproveRealtor(string id)
         {
-            var confirmed = await realtorService.ApproveRealtor(id);
-            if (confirmed)
+
+            var response = await realtorService.ApproveRealtor(id);
+            var page = NavHandler.Handler(response.StatusCode);
+            if (page != null)
             {
-                agency.Realtors.FirstOrDefault(r => r.Id == id).EmailConfirmed = true;
+                navigationManager.NavigateTo(page);
+                return;
             }
+            var realtor = agency.Realtors.FirstOrDefault(r => r.Id == id);
+            if (realtor != null)
+                realtor.EmailConfirmed = true;
         }
 
         // Author: Conny
+        // Co-author: Christoffer, Mattias
         public async Task DeclineRealtor(string id)
         {
-            Response response = await realtorService.DeclineRealtorAsync(id);
+            var response = await realtorService.DeclineRealtorAsync(id);
 
             var page = NavHandler.Handler(response.StatusCode);
             if (page != null)
@@ -74,6 +84,11 @@ namespace AlphaHemClient.Pages
             var realtor = agency?.Realtors.FirstOrDefault(r => r.Id == id);
             if (realtor != null)
                 agency?.Realtors.Remove(realtor);
+        }
+
+        private void EditAgency()
+        {
+            navigationManager.NavigateTo($"/editAgency/{id}");
         }
     }
 }

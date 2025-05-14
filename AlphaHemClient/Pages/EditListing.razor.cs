@@ -1,7 +1,6 @@
-﻿using AlphaHemAPI.Data.DTO;
+﻿using AlphaHemClient.HelperClasses;
 using AlphaHemClient.Model.ViewModel;
 using AlphaHemClient.Services;
-using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -10,13 +9,14 @@ using System.Threading.Tasks;
 namespace AlphaHemClient.Pages
 {
     //Author: Dominika
+    // Co-author: Conny
     public partial class EditListing
     {
         [Parameter] public int Id { get; set; }
         private ListingUpdateViewModel listing = new ListingUpdateViewModel { Images = new List<string>() };
         private ListingUpdateViewModel tempListing = new ListingUpdateViewModel { Images = new List<string>() };
         private string imageUrl { get; set; } = string.Empty;
-        private string errorMessage;
+        private string errorMessage = "";
         [Inject] private ListingService listingService { get; set; }
         [Inject] private NavigationManager navigationManager { get; set; }
         [Inject] private AuthService authService { get; set; }
@@ -25,22 +25,14 @@ namespace AlphaHemClient.Pages
 
         private async Task LoadListing()
         {
-            try
+            var response = await listingService.GetListingForUpdateAsync(Id);
+            var page = NavHandler.Handler(response.StatusCode);
+            if (page != null)
             {
-                var response = await listingService.GetListingByIdAsync(Id);
-                if (response != null)
-                {
-                    tempListing = response;
-                }
-                else
-                {
-                    errorMessage = "Bostadsobjektet kunde inte hämtas.";
-                }
+                navigationManager.NavigateTo(page);
+                return;
             }
-            catch (Exception ex)
-            {
-                errorMessage = $"Fel vid hämtning av objekt: {ex.Message}";
-            }
+            tempListing = response.Data;
         }
 
         private void AddImage()
@@ -60,17 +52,14 @@ namespace AlphaHemClient.Pages
         // Co-author: ALL
         private async Task HandleValidSubmit()
         {
-            try
+            var response = await listingService.UpdateListingAsync(Id, listing);
+            var page = NavHandler.Handler(response.StatusCode);
+            if (page == null)
             {
-                await listingService.UpdateListingAsync(Id, listing);
-                await Task.Delay(1000);
-
                 navigationManager.NavigateTo($"/listings/{Id}");
+                return;
             }
-            catch (Exception ex)
-            {
-                errorMessage = $"Fel vid uppdatering av bostad: {ex.Message}";
-            }
+            errorMessage = $"Kunde inte uppdatera bostad : {response.Errors.FirstOrDefault()}";
         }
 
         // Co-author: ALL
@@ -79,12 +68,10 @@ namespace AlphaHemClient.Pages
             await LoadListing();
             if (!await authService.AuthorizeUser(tempListing.RealtorId))
             {
-                navigationManager.NavigateTo("/login");
+                navigationManager.NavigateTo("/403-Forbidden");
+                return;
             }
-            else
-            {
-                listing = tempListing;
-            }
+            listing = tempListing;
         }
     }
 }

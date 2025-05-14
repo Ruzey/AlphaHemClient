@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Net.Http.Json;
 using AlphaHemClient.Model.ViewModel;
 using AlphaHemClient.Services;
+using AlphaHemClient.HelperClasses;
 
 namespace AlphaHemClient.Pages
 {
@@ -36,28 +37,18 @@ namespace AlphaHemClient.Pages
         {
             isLoading = true;
             isError = false;
-            try
+
+            isAuthorized = await authService.AuthorizeUser(Id);
+            var response = await RealtorService.GetRealtorByIdAsync(Id);
+            var page = NavHandler.Handler(response.StatusCode);
+            if (page != null)
             {
-                isAuthorized = await authService.AuthorizeUser(Id);
-                var response = await RealtorService.GetRealtorByIdAsync(Id);
-                if (response != null && response.Data != null)
-                {
-                    realtorProfile = response.Data;
-                }
-                else
-                {
-                    isError = true;
-                }
+                navigationManager.NavigateTo(page);
+                return;
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error fetching realtor: {ex.Message}");
-                isError = true;
-            }
-            finally
-            {
-                isLoading = false;
-            }
+            realtorProfile = response.Data;
+            
+            isLoading = false;
         }
     }
 }

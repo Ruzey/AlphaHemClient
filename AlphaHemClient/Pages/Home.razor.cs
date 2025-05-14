@@ -1,10 +1,15 @@
-﻿using AlphaHemClient.Model.ViewModel;
+﻿using AlphaHemClient.HelperClasses;
+using AlphaHemClient.Model.ViewModel;
 using AlphaHemClient.Services;
+using Microsoft.AspNetCore.Components;
 
 namespace AlphaHemClient.Pages
 {
     public partial class Home
     {
+        [Inject] private MunicipalityService municipalityService { get; set; }
+        [Inject] private ListingService listingService { get; set; }
+        [Inject] private NavigationManager navigationManager { get; set; }
         private ListingPageViewModel viewModel = new ListingPageViewModel();
         private List<MunicipalityViewModel> municipalities = new List<MunicipalityViewModel>();
         private string? selectedMunicipality = null;
@@ -16,7 +21,9 @@ namespace AlphaHemClient.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            municipalities = await MunicipalityService.GetMunicipalitiesAsync();
+            
+            var response = await municipalityService.GetMunicipalitiesAsync();
+            municipalities = response.Data;
 
             await LoadListingsAsync(currentPage, pageSize);
         }
@@ -50,7 +57,7 @@ namespace AlphaHemClient.Pages
 
         private async Task LoadListingsAsync(int pageIndex, int pageSize)
         {
-            var response = await ListingService.GetPaginatedListingsAsync(
+            var response = await listingService.GetPaginatedListingsAsync(
                 pageIndex,
                 pageSize,
                 selectedMunicipality,

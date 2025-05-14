@@ -2,24 +2,26 @@
 using AlphaHemClient.Model.DTO;
 using AlphaHemClient.Model.ViewModel;
 using AutoMapper;
-using Blazored.LocalStorage;
+using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 
 namespace AlphaHemClient.Services
 {
     // Author: Christoffer
+    // Author : Niklas
     public class ListingService : BaseHttpService
     {
-        private readonly HttpClient _http;
-        private readonly IMapper _mapper;
-        private readonly JsLoggingService _jsLoggingService;
+        private readonly HttpClient http;
+        private readonly IMapper mapper;
+        private readonly JsLoggingService jsLoggingService;
+        JsonSerializerOptions options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true }; // Author: Conny
 
-        public ListingService(HttpClient http, IMapper mapper, JsLoggingService jsLoggingService, ILocalStorageService localStorage) : base(http, localStorage)
+        public ListingService(HttpClient http, IMapper mapper, JsLoggingService jsLoggingService, AuthService authService) : base(http, authService) // Author : Niklas
         {
-            _http = http;
-            _mapper = mapper;
-            _jsLoggingService = jsLoggingService;
+            this.http = http;
+            this.mapper = mapper;
+            this.jsLoggingService = jsLoggingService;
         }
 
         public async Task<ListingPageViewModel> GetPaginatedListingsAsync(
@@ -57,108 +59,219 @@ namespace AlphaHemClient.Services
                     url += "?" + string.Join("&", queryParams);
                 }
 
-                var response = await _http.GetAsync(url);
+                var response = await http.GetAsync(url);
 
                 var responseContent = await response.Content.ReadAsStringAsync();
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var options = new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true
-                    };
                     var dto = JsonSerializer.Deserialize<PagedListingListDto>(responseContent, options);
 
-                    var viewModel = _mapper.Map<ListingPageViewModel>(dto);
+                    var viewModel = mapper.Map<ListingPageViewModel>(dto);
 
                     return viewModel;
                 }
                 else
                 {
                     var error = await response.Content.ReadAsStringAsync();
-                    await _jsLoggingService.LogToConsole($"Fel vid API-anrop, status: {response.StatusCode}, error: {error}");
+                    await jsLoggingService.LogToConsole($"Fel vid API-anrop, status: {response.StatusCode}, error: {error}");
                     throw new Exception("Kunde inte hämta bostadsdata.");
                 }
             }
             catch (Exception ex)
             {
                 // Logga och skriv ut fel
-                await _jsLoggingService.LogToConsole($"Error fetching listings: {ex.Message}");
+                await jsLoggingService.LogToConsole($"Error fetching listings: {ex.Message}");
                 return new ListingPageViewModel();
+            }
+        }
+
+        // Author: Conny
+        public async Task<Response<ListingDetailsViewModel>> GetListingByIdAsync(int id)
+        {
+            try
+            {
+                var httpResponse = await http.GetAsync($"api/listing/{id}");
+                var content = await httpResponse.Content.ReadAsStringAsync();
+
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    var listingDto = JsonSerializer.Deserialize<ListingDetailsDto>(content, options);
+                    var listingVM = mapper.Map<ListingDetailsViewModel>(listingDto);
+                    return new Response<ListingDetailsViewModel>
+                    {
+                        StatusCode = httpResponse.StatusCode,
+                        Data = listingVM
+                    };
+                }
+                var responseDto = JsonSerializer.Deserialize<Response<ListingDetailsDto>>(content, options);
+                return new Response<ListingDetailsViewModel>
+                {
+                    StatusCode = responseDto.StatusCode,
+                    Message = responseDto.Message,
+                    Errors = responseDto.Errors
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response<ListingDetailsViewModel>
+                {
+                    StatusCode = HttpStatusCode.ServiceUnavailable,
+                    Message = "Ett oväntat fel har uppstått.",
+                    Errors = new List<string> { $"Felmeddelande: {ex.Message}." }
+                };
             }
         }
 
         // Author: Conny
         public async Task<List<MyListingViewModel>> GetMyListingsAsync(string id)
         {
-            var response = await _http.GetFromJsonAsync<List<ListingListDto>>($"api/listing/realtor/{id}");
+            var response = await http.GetFromJsonAsync<List<ListingListDto>>($"api/listing/realtor/{id}");
             if (response == null)
                 return new List<MyListingViewModel>();
 
-            var listingsVM = _mapper.Map<List<MyListingViewModel>>(response);
+            var listingsVM = mapper.Map<List<MyListingViewModel>>(response);
             return listingsVM;
         }
 
         //Author : Dominika
         // Co-author: Christoffer, Mattias, Conny
-        public async Task CreateListingAsync(ListingCreateViewModel listingVM)
+        public async Task<Response> CreateListingAsync(ListingCreateViewModel listingVM)
         {
-            await GetBearerToken();
-            var listingDto = _mapper.Map<ListingCreateDto>(listingVM);
-            var response = await _http.PostAsJsonAsync("/api/Listing", listingDto);
-            response.EnsureSuccessStatusCode();
+            try
+            {
+                await GetBearerToken();
+                var listingDto = mapper.Map<ListingCreateDto>(listingVM);
+
+                var httpResponse = await http.PostAsJsonAsync("/api/Listing", listingDto);
+                var content = await httpResponse.Content.ReadAsStringAsync();
+
+                var response = JsonSerializer.Deserialize<Response>(content, options);
+                if (httpResponse.IsSuccessStatusCode)
+                    return new Response { StatusCode = response.StatusCode };
+
+                return new Response
+                {
+                    StatusCode = response.StatusCode,
+                    Message = response.Message,
+                    Errors = response.Errors
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response
+                {
+                    StatusCode = HttpStatusCode.ServiceUnavailable,
+                    Message = "Ett oväntat fel har uppstått.",
+                    Errors = new List<string> { $"Felmeddelande: {ex.Message}" }
+                };
+            }
         }
 
         //Author: Dominika
         // Co-author: ALL
-        public async Task UpdateListingAsync(int id, ListingUpdateViewModel listingVM)
+        public async Task<Response> UpdateListingAsync(int id, ListingUpdateViewModel listingVM)
         {
-            await GetBearerToken();
-            var listingDto = _mapper.Map<ListingUpdateDto>(listingVM);
-            var response = await _http.PutAsJsonAsync($"/api/Listing/{id}", listingDto);
+            try
+            {
+                await GetBearerToken();
 
-            if (response.IsSuccessStatusCode)
-            {
-                if (response.Content.Headers.ContentLength > 0)
+                var listingDto = mapper.Map<ListingUpdateDto>(listingVM);
+                var httpResponse = await http.PutAsJsonAsync($"api/Listing/{id}", listingDto);
+                var content = await httpResponse.Content.ReadAsStringAsync();
+
+
+
+                if (httpResponse.IsSuccessStatusCode)
+                    return new Response { StatusCode = httpResponse.StatusCode };
+
+                var response = JsonSerializer.Deserialize<Response>(content, options);
+                return new Response
                 {
-                    await response.Content.ReadFromJsonAsync<ListingDetailsDto>();
-                }
-                else
-                {
-                    Console.WriteLine("Uppdateringen lyckades, men inget innehåll returnerades.");
-                }
+                    StatusCode = response.StatusCode,
+                    Message = response.Message,
+                    Errors = response.Errors
+                };
             }
-            else
+            catch (Exception ex)
             {
-                var error = await response.Content.ReadAsStringAsync();
-                throw new Exception($"Fel vid uppdatering av bostad: {error}");
+                return new Response
+                {
+                    StatusCode = HttpStatusCode.ServiceUnavailable,
+                    Message = "Ett oväntat fel har uppstått.",
+                    Errors = new List<string> { $"Felmeddelande: {ex.Message}" }
+                };
             }
         }
 
         //Author: Dominika
-        public async Task<ListingUpdateViewModel> GetListingByIdAsync(int id)
+        // Co-author: Conny
+        public async Task<Response<ListingUpdateViewModel>> GetListingForUpdateAsync(int id)
         {
-            var response = await _http.GetFromJsonAsync<ListingDetailsDto>($"/api/Listing/{id}");
-            if (response != null)
-                return _mapper.Map<ListingUpdateViewModel>(response);
+            try
+            {
+                var httpResponse = await http.GetAsync($"api/Listing/{id}");
+                var content = await httpResponse.Content.ReadAsStringAsync();
 
-            return null;
+                if (!httpResponse.IsSuccessStatusCode)
+                {
+                    var responseDto = JsonSerializer.Deserialize<Response<ListingDetailsDto>>(content, options);
+                    return new Response<ListingUpdateViewModel>
+                    {
+                        StatusCode = responseDto.StatusCode,
+                        Message = responseDto.Message,
+                        Errors = responseDto.Errors
+                    };
+                }
+
+                var listingDto = JsonSerializer.Deserialize<ListingDetailsDto>(content, options);
+                var listingVM = mapper.Map<ListingUpdateViewModel>(listingDto);
+                return new Response<ListingUpdateViewModel>
+                {
+                    StatusCode = httpResponse.StatusCode,
+                    Data = listingVM
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return new Response<ListingUpdateViewModel>
+                {
+                    StatusCode = HttpStatusCode.ServiceUnavailable,
+                    Message = "Ett oväntat fel har uppstått.",
+                    Errors = new List<string> { $"Felmeddelande: {ex.Message}." }
+                };
+            }
         }
 
         //Author: Niklas
         // Co-author: ALL
-        public async Task<bool> DeleteListingAsync(int id)
+        public async Task<Response> DeleteListingAsync(int id)
         {
-            await GetBearerToken();
             try
             {
-                var response = await _http.DeleteAsync($"/api/listing/{id}");
-                return response.IsSuccessStatusCode;
+                await GetBearerToken();
+                var httpResponse = await http.DeleteAsync($"api/listing/{id}");
+                if (httpResponse.IsSuccessStatusCode)
+                    return new Response { StatusCode = httpResponse.StatusCode };
+
+                var content = await httpResponse.Content.ReadAsStringAsync();
+                var response = JsonSerializer.Deserialize<Response>(content, options);
+                return new Response
+                {
+                    StatusCode = response.StatusCode,
+                    Message = response.Message,
+                    Errors = response.Errors
+                };
             }
             catch (Exception ex)
             {
-                await _jsLoggingService.LogToConsole($"Fel vid borttagning av listing {id}: {ex.Message}");
-                return false;
+                return new Response
+                {
+                    Message = "Ett oväntat fel har uppstått.",
+                    Errors = new List<string> { $"Felmeddelande: {ex.Message}" },
+                    StatusCode = HttpStatusCode.InternalServerError
+                };
             }
         }
     }
