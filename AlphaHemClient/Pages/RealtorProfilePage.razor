@@ -58,7 +58,7 @@ else
                                     <div class="col-6">
                                         <div class="info-item">
                                             <i class="bi bi-house-door label-icon"></i>
-                                            <a href="/Agency/@realtorProfile.AgencyId" style="color: #9B2EC9" class="value">@realtorProfile.AgencyName</a>
+                                            <a href="/Agency/@realtorProfile.AgencyId" style="color:black" class="value">@realtorProfile.AgencyName</a>
                                         </div>
                                     </div>
                                 </div>
@@ -80,6 +80,9 @@ else
                 @* Visa endast om en inloggad mäklare visar sin egen profil *@
                 <MyListings RealtorId="@realtorProfile.Id"></MyListings>
 
+            </div>
+            <div class="text-start my-4 ">
+                <NavLink href="/home" class="btn btn-primary">Tillbaka hem</NavLink>
             </div>
         </div>
     </section>

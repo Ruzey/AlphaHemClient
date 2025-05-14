@@ -8,16 +8,19 @@
 
 <PageTitle>Bostäder</PageTitle>
 
-<MunicipalitySelector 
-Municipalities="@municipalities" 
-OnMunicipalitySelected="OnMunicipalityChanged" />
 
-<CategorySelector
-OnCategorySelected="OnCategoryChanged" />
+<div class="d-flex justify-content-center gap-3 my-4">
+    <MunicipalitySelector 
+    Municipalities="@municipalities" 
+    OnMunicipalitySelected="OnMunicipalityChanged" />
 
-<SortSelector
-SortOptions="@viewModel.SortOptions"    
-OnSortSelected="OnSortChanged" />
+    <CategorySelector
+    OnCategorySelected="OnCategoryChanged" />
+
+    <SortSelector
+    SortOptions="@viewModel.SortOptions"    
+    OnSortSelected="OnSortChanged" />
+</div>
 
 @if (viewModel.Listings != null && viewModel.Listings.Any())
 {

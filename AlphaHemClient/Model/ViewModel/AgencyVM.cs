@@ -1,4 +1,5 @@
 ﻿using AlphaHemAPI.Data.DTO;
+using System.ComponentModel.DataAnnotations;
 
 namespace AlphaHemClient.Model.ViewModel
 {
@@ -7,6 +8,8 @@ namespace AlphaHemClient.Model.ViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
+
+        [Required(ErrorMessage = "Presentation är obligatoriskt.")]
         public string Presentation { get; set; }
         public string Logo { get; set; }
 

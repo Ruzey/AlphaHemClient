@@ -975,8 +975,14 @@ section,
 /*--------------------------------------------------------------
 # Agents Section
 --------------------------------------------------------------*/
+/*.agents {
+    background-color: #F6F5F2;
+}*/
+
 .agents .member {
     position: relative;
+    margin-bottom: 30px;
+    border: solid 2px #F1EFEC;
 }
 
 .agents .member .pic {
@@ -1927,6 +1933,7 @@ code {
     text-decoration: none;
     cursor: pointer;
     color: var(--accent-color);
+    margin-right: 10px;
 }
 
 /* Author: Christoffer*/

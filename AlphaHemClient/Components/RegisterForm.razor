@@ -74,10 +74,10 @@
                 <button type="submit" class="btn btn-primary btn-lg">Skapa konto</button>
             </div>
         </div>
-
+        <br />
         @if(!string.IsNullOrEmpty(message))
         {
-            <div class="@messageName">
+            <div class="alert @(messageName == "text-success" ? "alert-success" : "alert-danger")">
                 @message
             </div> 
         }

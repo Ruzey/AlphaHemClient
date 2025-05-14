@@ -6,14 +6,17 @@ namespace AlphaHemClient.Model.ViewModel
     public class RealtorUpdateViewModel
     {
         public string Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Förnamn är obligatoriskt.")]
         public string FirstName { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Efternamn är obligatoriskt.")]
         public string LastName { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Epost är obligatoriskt.")]
         [EmailAddress]
         public string Email { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Telefonnummer är obligatoriskt.")]
         [Phone]
         public string PhoneNumber { get; set; }
         public string? ProfilePicture { get; set; }
