@@ -31,13 +31,14 @@ else
                         <li class="list-group-item"><strong>Månadsavgift:</strong> @listing.MonthlyFee.ToPriceString()</li>
                         <li class="list-group-item"><strong>Årlig driftkostnad:</strong> @listing.YearlyOperatingCost.ToPriceString()</li>
                     </ul>
-
+                    <div style="border: solid 1px lightgray; padding-left: 10px;">
                     <h4 class="mt-4">Kontaktinformation</h4>
                     <p><i class="bi bi-person-fill"></i> <strong>@listing.Realtor.FullName</strong></p>
                     <p><i class="bi bi-telephone-fill"></i> @listing.Realtor.PhoneNumber</p>
                     <p><i class="bi bi-envelope-fill"></i> @listing.Realtor.Email</p>
                     <p><i class="bi bi-building"></i> @listing.Realtor.AgencyName</p>
                     <a href="/realtor/@listing.Realtor.Id" style="color: #9B2EC9">Se profil</a>
+                    </div>
                 </div>
 
                 <div class="col-md-6">
@@ -57,6 +58,9 @@ else
                         </div>
                     }
                 </div>
+            </div>
+            <div class="text-start my-4 ">
+                <NavLink href="/home" class="btn btn-primary">Tillbaka hem</NavLink>
             </div>
         </div>
     </div>

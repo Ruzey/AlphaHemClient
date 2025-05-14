@@ -11,7 +11,6 @@ else
 {
     <section class="about section">
         <div class="container">
-
             <div class="row gy-4">
 
                 <div class="col-lg-6 about-images" data-aos="fade-up" data-aos-delay="200">
@@ -72,7 +71,6 @@ else
                                             @if (!realtor.EmailConfirmed)
                                             {
                                                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                    <!-- Vänster: Bild + Info -->
                                                     <div class="d-flex">
                                                         <RealtorImage ImageUrl="@realtor.ProfilePicture"
                                                                       class="rounded-circle"
@@ -85,8 +83,6 @@ else
                                                             <a href="/realtor/@realtor.Id" style="color: #9B2EC9">Se profil</a>
                                                         </div>
                                                     </div>
-
-                                                    <!-- Höger: Knappar i rad -->
                                                     <div class="d-flex align-items-start gap-2">
                                                         <button class="btn btn-primary" @onclick="() => ApproveRealtor(realtor.Id)">Godkänn</button>
                                                         <button class="btn btn-danger" @onclick="() => DeclineRealtor(realtor.Id)">Avböj</button>
