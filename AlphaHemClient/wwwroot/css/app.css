@@ -975,13 +975,14 @@ section,
 /*--------------------------------------------------------------
 # Agents Section
 --------------------------------------------------------------*/
-.agents {
+/*.agents {
     background-color: #F6F5F2;
-}
+}*/
 
 .agents .member {
     position: relative;
-    margin-bottom:30px;
+    margin-bottom: 30px;
+    border: solid 2px #F1EFEC;
 }
 
 .agents .member .pic {

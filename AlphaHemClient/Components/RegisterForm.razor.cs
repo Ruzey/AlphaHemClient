@@ -37,8 +37,6 @@ namespace AlphaHemClient.Components
 
         public async Task ErrorRegister()
         {
-            // TODO: Byt färg på error texten, fungrar inte med alert alert-danger
-            //var messageName = "alert alert-danger";
             message = "Ett fel inträffade vid registrering. Försök igen.";
         }
         public async Task HandleRegister()
