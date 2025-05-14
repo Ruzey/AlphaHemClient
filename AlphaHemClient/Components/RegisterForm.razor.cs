@@ -37,14 +37,25 @@ namespace AlphaHemClient.Components
 
         public async Task ErrorRegister()
         {
+            messageName = "Text-danger";
             message = "Ett fel inträffade vid registrering. Försök igen.";
         }
         public async Task HandleRegister()
         {
                 message = await AuthService.RegisterAsync(RegisterModel);
+            if (!string.IsNullOrWhiteSpace(message) && message.ToLower().Contains("lyckades"))
+            {
+                messageName = "text-success";
                 StateHasChanged();
                 await Task.Delay(3000);
                 navigationManager.NavigateTo("/");
+            }
+            else
+            {
+                messageName = "text-danger";
+            }
+
+            StateHasChanged();
         }
     }
 }

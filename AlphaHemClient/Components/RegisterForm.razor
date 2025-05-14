@@ -77,7 +77,7 @@
         <br />
         @if(!string.IsNullOrEmpty(message))
         {
-            <div class="@messageName">
+            <div class="alert @(messageName == "text-success" ? "alert-success" : "alert-danger")">
                 @message
             </div> 
         }
