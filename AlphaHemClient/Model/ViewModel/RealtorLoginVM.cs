@@ -4,9 +4,9 @@ namespace AlphaHemClient.Model.ViewModel
 {
     public class RealtorLoginVM
     {
-        [Required]
+        [Required(ErrorMessage = "Epost är obligatorisk.")]
         public string Email { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Lösenord är obligatoriskt.")]
         public string Password { get; set; }
     }
 }
