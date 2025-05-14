@@ -3,7 +3,7 @@
 @* Author: Conny *@
 @* Co-Author: Niklas *@
 
-<div class="container py-2 mt-5">
+<div class="container py-2 mt-5 pt-4">
     <h4>Mina objekt</h4>
 
     @if (listingsVM == null)
@@ -36,7 +36,6 @@
                             <td>@listing.Category</td>
                             <td>@listing.Price.ToPriceString()</td>
                             <td>
-                                @*Prep inför identity*@
                                 @if (IsAuthorized)
                                 {
                                     <i class="icon bi bi-trash-fill text-danger fs-5 me-2"

@@ -65,29 +65,34 @@ else
                                 <Authorized>
 								@if (agency.Realtors.Any(r => !r.EmailConfirmed))
                                 {
-                                  <h5 class="mt-4">Väntar på konto confirmed</h5>
+                                  <h5 class="mt-4">Väntar på bekräftelse</h5>
                                     <ul>
                                         @foreach (var realtor in agency.Realtors)
                                         {
                                             @if (!realtor.EmailConfirmed)
                                             {
-                                                <li class="list-group-item d-flex align-items-center">
-                                                    <RealtorImage ImageUrl="@realtor.ProfilePicture"
-                                                                  class="rounded-circle"
-                                                                  style="width: 50px; height: 50px; object-fit: cover; margin-right: 15px;" />
-                                                    <div>
-                                                        <strong>@realtor.FirstName @realtor.LastName</strong>
-                                                        <br />
-                                                        <span>@realtor.PhoneNumber</span>
-                                                        <br />
-                                                        <span>@realtor.Email</span>
-                                                        <br />
-                                                        <a href="/realtor/@realtor.Id" style="color: #9B2EC9">Se profil</a>
-													    <br />
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <!-- Vänster: Bild + Info -->
+                                                    <div class="d-flex">
+                                                        <RealtorImage ImageUrl="@realtor.ProfilePicture"
+                                                                      class="rounded-circle"
+                                                                      style="width: 50px; height: 50px; object-fit: cover; margin-right: 15px; margin-top: 25px;" />
+
+                                                        <div>
+                                                            <strong>@realtor.FirstName @realtor.LastName</strong><br />
+                                                            <span>@realtor.PhoneNumber</span><br />
+                                                            <span>@realtor.Email</span><br />
+                                                            <a href="/realtor/@realtor.Id" style="color: #9B2EC9">Se profil</a>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Höger: Knappar i rad -->
+                                                    <div class="d-flex align-items-start gap-2">
                                                         <button class="btn btn-primary" @onclick="() => ApproveRealtor(realtor.Id)">Godkänn</button>
                                                         <button class="btn btn-danger" @onclick="() => DeclineRealtor(realtor.Id)">Avböj</button>
                                                     </div>
                                                 </li>
+
                                             }
                                         }
                                     </ul>
