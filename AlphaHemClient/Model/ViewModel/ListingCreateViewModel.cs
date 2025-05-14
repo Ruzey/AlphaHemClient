@@ -45,7 +45,6 @@ namespace AlphaHemClient.Model.ViewModel
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Bilder är obligatoriskt.")]
-        [Range(1, 40, ErrorMessage = "Du måste ladda upp minst 1 bild och max 40 bilder.")]
         public List<string> Images { get; set; }
 
 
