@@ -24,7 +24,7 @@
                             <NavLink href="createListing">Ny bostad</NavLink>
                         </li>
                         <li class="separator">
-                            <NavLink href="@($"/realtor/{realtorId}")" @onclick="CloseNavMenu">Min profil</NavLink>
+                            <NavLink href="@($"/realtor/{realtorId}")" @onclick="CloseNavMenu">@firstName @lastName</NavLink>
                         </li>
                         <li class="login-link">
                             <NavLink @onclick="LogoutAndCloseNavMenu">Logga ut</NavLink>
