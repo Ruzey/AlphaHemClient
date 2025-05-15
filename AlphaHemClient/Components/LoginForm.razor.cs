@@ -21,9 +21,9 @@ namespace AlphaHemClient.Components
 
         public async Task HandleLogin()
         {
-            loginState = await AuthService.LoginAsync(LoginModel);
+            var responseLoginState = await AuthService.LoginAsync(LoginModel);
 
-            if (loginState)
+            if ((int)responseLoginState.StatusCode == 200)
             {
                 loginMessage = "Inloggning lyckades!";
                 loginMessageClass = "alert alert-success";
@@ -36,7 +36,7 @@ namespace AlphaHemClient.Components
             }
             else
             {
-                loginMessage = "Inloggning misslyckades, kontrollera dina inloggningsuppgifter.";
+                loginMessage = responseLoginState.Message;
                 loginMessageClass = "alert alert-danger";
             }
 
