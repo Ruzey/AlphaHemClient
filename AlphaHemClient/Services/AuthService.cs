@@ -1,13 +1,16 @@
 ﻿using System.Diagnostics;
+using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 using AlphaHemAPI.Data.DTO;
 using AlphaHemClient.Model;
+using AlphaHemClient.Model.DTO;
 using AlphaHemClient.Model.ViewModel;
 using AlphaHemClient.Providers;
 using AutoMapper;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace AlphaHemClient.Services
 {
@@ -54,17 +57,23 @@ namespace AlphaHemClient.Services
             }
         }
 
-        public async Task<bool> LoginAsync(RealtorLoginVM loginUser)
+        public async Task<Response> LoginAsync(RealtorLoginVM loginUser)
         {
             try
             {
                 var realtor = map.Map<RealtorLoginDto>(loginUser);
                 var response = await http.PostAsJsonAsync("api/Auth/login", realtor);
                 var content = await response.Content.ReadAsStringAsync();
-
+                
                 if (!response.IsSuccessStatusCode)
                 {
-                    return false;
+                    var errorResponse = await response.Content.ReadFromJsonAsync<Dictionary<string, string[]>>();
+                    var error = errorResponse?[""]?[0];
+                    return new Response
+                    {
+                        Message = error,
+                        StatusCode = response.StatusCode
+                    };
                 }
 
                 var data = JsonSerializer.Deserialize<UserData>(content);
@@ -76,12 +85,18 @@ namespace AlphaHemClient.Services
 
                 await alphaApiAuthenticationStateProvider.LoggedIn();
 
-                return true;
+                return new Response
+                {
+                    StatusCode = response.StatusCode
+                };
 
             }
             catch
             {
-                return false;
+                return new Response
+                {
+                    StatusCode = HttpStatusCode.InternalServerError
+                };
             }
         }
 
