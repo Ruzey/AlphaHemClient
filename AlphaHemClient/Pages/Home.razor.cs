@@ -30,40 +30,60 @@ namespace AlphaHemClient.Pages
 
             // Author: Conny
             if (viewModel.Listings.Count == 0)
-            {
                 message = "Inga bostäder hittades.";
-            }
             else
-            {
                 message = null;
-            }
         }
 
         private async Task OnMunicipalityChanged(string? municipality)
         {
             selectedMunicipality = municipality;
             currentPage = 1;
+            message = "Laddar...";
             await LoadListingsAsync(currentPage, pageSize);
+            // Author: Conny
+            if (viewModel.Listings.Count == 0)
+                message = "Inga bostäder hittades.";
+            else
+                message = null;
         }
         private async Task OnCategoryChanged(string? category)
         {
             selectedCategory = category;
             currentPage = 1;
+            message = "Laddar...";
             await LoadListingsAsync(currentPage, pageSize);
+            // Author: Conny
+            if (viewModel.Listings.Count == 0)
+                message = "Inga bostäder hittades.";
+            else
+                message = null;
         }
 
         private async Task OnSortChanged(string sortOption)
         {
             selectedSortOption = sortOption;
             currentPage = 1;
+            message = "Laddar...";
             await LoadListingsAsync(currentPage, pageSize);
+            // Author: Conny
+            if (viewModel.Listings.Count == 0)
+                message = "Inga bostäder hittades.";
+            else
+                message = null;
         }
 
         private async Task OnPageChanged(int page)
         {
             currentPage = page;
+            message = "Laddar...";
             await LoadListingsAsync(currentPage, pageSize);
             await InvokeAsync(StateHasChanged);
+            // Author: Conny
+            if (viewModel.Listings.Count == 0)
+                message = "Inga bostäder hittades.";
+            else
+                message = null;
         }
 
         private async Task LoadListingsAsync(int pageIndex, int pageSize)
