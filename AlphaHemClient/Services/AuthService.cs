@@ -51,7 +51,6 @@ namespace AlphaHemClient.Services
             catch (Exception ex)
             {
                 return $"Registrering misslyckades: {ex.Message}";
-
             }
         }
 
@@ -72,22 +71,28 @@ namespace AlphaHemClient.Services
                 await localStorage.SetItemAsync("accessToken", data.Token);
                 await localStorage.SetItemAsync("email", data.Email);
                 await localStorage.SetItemAsync("userId", data.UserId);
+                await localStorage.SetItemAsync("firstName", data.FirstName);
+                await localStorage.SetItemAsync("lastName", data.LastName);
 
                 await alphaApiAuthenticationStateProvider.LoggedIn();
 
                 return true;
 
             }
-            catch (Exception ex)
+            catch
             {
                 return false;
             }
         }
 
-        public async Task<string> GetLoggedInUserId()
+        public async Task<string?> GetLoggedInUserId()
         {
             var userId = await localStorage.GetItemAsync<string>("userId");
             return userId;
+        }
+        public async Task<(string?, string?)> GetLoggedInUserNames()
+        { 
+            return (await localStorage.GetItemAsync<string>("firstName"), await localStorage.GetItemAsync<string>("lastName"));
         }
         public async Task LogoutAsync()
         {

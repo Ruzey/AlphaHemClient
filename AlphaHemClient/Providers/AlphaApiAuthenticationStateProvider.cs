@@ -32,6 +32,7 @@ namespace AlphaHemClient.Providers
 
             if(tokenContent.ValidTo < DateTime.UtcNow)
             {
+                await LoggedOut();
                 return new AuthenticationState(user);
             }
 
@@ -64,6 +65,9 @@ namespace AlphaHemClient.Providers
             await localStorage.RemoveItemAsync("accessToken");
             await localStorage.RemoveItemAsync("userId");
             await localStorage.RemoveItemAsync("email");
+            await localStorage.RemoveItemAsync("firstName");
+            await localStorage.RemoveItemAsync("lastName");
+
             var nobody = new ClaimsPrincipal(new ClaimsIdentity());
             var authState = Task.FromResult(new AuthenticationState(nobody));
             NotifyAuthenticationStateChanged(authState);

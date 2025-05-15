@@ -21,6 +21,8 @@ namespace AlphaHemClient.Layout
         private string? realtorId;
         [CascadingParameter]
         protected Task<AuthenticationState> AuthenticationStateTask { get; set; }
+        private string? firstName;
+        private string? lastName;
 
 
         private void ToggleNavMenu()
@@ -36,10 +38,13 @@ namespace AlphaHemClient.Layout
             if (user.Identity?.IsAuthenticated == true)
             {
                 realtorId = user.FindFirst("uid")?.Value;
+                (firstName, lastName) = await authService.GetLoggedInUserNames();
             }
             else
             {
                 realtorId = null;
+                firstName = null;
+                lastName = null;
             }
 
             StateHasChanged(); 
