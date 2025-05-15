@@ -15,7 +15,7 @@ namespace AlphaHemClient.Pages
         private string? selectedMunicipality = null;
         private string? selectedCategory = null;
         private string? selectedSortOption = null;
-        private string? message = "Laddar...";
+        private string? message = "Laddar..."; // Author: Conny
         private int currentPage = 1;
         private int totalPages = 1;
         private int pageSize = 9;
@@ -28,6 +28,7 @@ namespace AlphaHemClient.Pages
 
             await LoadListingsAsync(currentPage, pageSize);
 
+            // Author: Conny
             if (viewModel.Listings.Count == 0)
             {
                 message = "Inga bostäder hittades.";
